@@ -123,8 +123,6 @@ var
   dataPath: String;
 begin
   // default game path
-  // Mango add
-  GamePath := 'E:\Games\Fallout 4(Pure)\';
   if GamePath = '' then
     GamePath := NativeGetGamePath(GameArray[id]);
 

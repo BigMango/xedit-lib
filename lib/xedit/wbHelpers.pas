@@ -1,14 +1,8 @@
-{*******************************************************************************
+{******************************************************************************
 
-     The contents of this file are subject to the Mozilla Public License
-     Version 1.1 (the "License"); you may not use this file except in
-     compliance with the License. You may obtain a copy of the License at
-     http://www.mozilla.org/MPL/
-
-     Software distributed under the License is distributed on an "AS IS"
-     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-     License for the specific language governing rights and limitations
-     under the License.
+  This Source Code Form is subject to the terms of the Mozilla Public License,
+  v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain
+  one at https://mozilla.org/MPL/2.0/.
 
 *******************************************************************************}
 
@@ -21,8 +15,8 @@ interface
 uses
   Classes,
   Windows,
+  System.UITypes,
   SysUtils,
-  Vcl.Graphics,
   ShellAPI,
   ShlObj,
   IniFiles,
@@ -87,9 +81,6 @@ function wbStringToSignatures(aSignatures: string): TwbSignatures;
 function wbGetSiblingREFRsWithin(const aMainRecord: IwbMainRecord; aDistance: Single): TDynMainRecords;
 function wbGetSiblingRecords(const aElement: IwbElement; aSignatures: TwbSignatures; aOverrides: Boolean): TDynMainRecords;
 function FindMatchText(Strings: TStrings; const Str: string): Integer;
-function IsFileESM(const aFileName: string): Boolean;
-function IsFileESP(const aFileName: string): Boolean;
-function IsFileESL(const aFileName: string): Boolean;
 function IsFileCC(const aFileName: string): Boolean;
 procedure DeleteDirectory(const DirName: string);
 function FullPathToFilename(aString: string): string;
@@ -100,8 +91,10 @@ procedure SaveFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
 procedure LoadFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
 function wbDDSDataToBitmap(aData: TBytes; Bitmap: TBitmap): Boolean;
 function wbDDSStreamToBitmap(aStream: TStream; Bitmap: TBitmap): Boolean;
-function wbCRC32Data(aData: TBytes): Cardinal;
-function wbCRC32File(aFileName: string): Cardinal;
+function wbCRC32Ptr(aData: Pointer; aSize: Integer): TwbCRC32;
+function wbCRC32Data(aData: TBytes): TwbCRC32;
+function wbCRC32File(aFileName: string): TwbCRC32;
+function wbCRC32App: TwbCRC32;
 function bscrc32(const aText: string): Cardinal; // hashing func used in Fallout 4
 function wbDecodeCRCList(const aList: string): TDynCardinalArray;
 function wbSHA1Data(aData: TBytes): string;
@@ -111,6 +104,7 @@ function wbMD5File(aFileName: string): string;
 function wbIsAssociatedWithExtension(aExt: string): Boolean;
 function wbAssociateWithExtension(aExt, aName, aDescr: string): Boolean;
 function ExecuteCaptureConsoleOutput(const aCommandLine: string): Cardinal;
+function wbExpandFileName(const aFileName: string): string;
 
 
 type
@@ -122,44 +116,151 @@ type
 
 procedure wbLeveledListCheckCircular(const aMainRecord: IwbMainRecord; aStack: PnxLeveledListCheckCircularStack);
 
-type
-  TnxFastStringList = class(TStringList)
-  protected
-    function CompareStrings(const S1, S2: string): Integer; override;
-  public
-    constructor CreateSorted(aDups : TDuplicates = dupError);
-
-    procedure Clear(aFreeObjects: Boolean = False); reintroduce;
-  end;
-
-  TnxFastStringListCS = class(TnxFastStringList)
-  public
-    procedure AfterConstruction; override;
-  end;
-
-  TnxFastStringListIC = class(TnxFastStringList)
-  end;
-
 function wbExtractNameFromPath(aPathName: String): String;
 
 function wbCounterAfterSet(aCounterName: String; const aElement: IwbElement): Boolean;
 function wbCounterByPathAfterSet(aCounterName: String; const aElement: IwbElement): Boolean;
 function wbCounterContainerAfterSet(aCounterName: String; anArrayName: String; const aElement: IwbElement): Boolean;
 function wbCounterContainerByPathAfterSet(aCounterName: String; anArrayName: String; const aElement: IwbElement): Boolean;
-function wbFormVerDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement; aMinimum: Integer): Integer;
-function wbFormVer78Decider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
 
 // BSA helper
 
 function MakeDataFileName(FileName, DataPath: String): String;
-function FindBSAs(IniName, DataPath: String; var bsaNames: TStringList; var bsaMissing: TStringList): Integer;
+function CheckAddFilesToString(var mIni: TIniFile; var cIni: TIniFile; Section, Ident: String): String;
+function FindBSAs(IniName, DataPath: String; var bsaNames: TStringList; var bsaMissing: TStringList): Integer; overload;
+function FindBSAs(IniName, CustomIniName, DataPath: String; var bsaNames: TStringList; var bsaMissing: TStringList): Integer; overload;
 function HasBSAs(ModName, DataPath: String; Exact, modini: Boolean; var bsaNames: TStringList; var bsaMissing: TStringList): Integer;
+
+function wbStripDotGhost(const aFileName: string): string;
+
+type
+  TPassThroughFunc<T> = reference to function (const a: T): T;
+
+  TDynStringArray = TArray<string>;
+
+  TStringArrayHelper = record helper for TDynStringArray
+    function ForEach(const aFunc: TPassThroughFunc<string>): TArray<string>;
+    function AddPrefix(const aPrefix: string): TArray<string>;
+    function RemoveEmpty: TArray<string>;
+    function ToCommaText: string;
+    function ToText: string;
+    procedure ReportAsProgress;
+    procedure Add(const s: string);
+  end;
+
+  TDynPointerArray = TArray<Pointer>;
+
+  TPointerArrayHelper = record helper for TDynPointerArray
+    procedure Add(p: Pointer);
+  end;
+
+function  wbIsAeroEnabled: Boolean;
+
+function wbGetLastWriteTime(const s: string): TDateTime;
+
+type
+  wb<T> = record
+    class function Iff(aCond: Boolean; const aTrue, aFalse: T): T; static;
+  end;
+
+procedure wbCodeBlock(const aProc: TProc);
+
+function wbVarArray(const aElements: array of Variant): Variant;
 
 implementation
 
 uses
+  System.SyncObjs,
+  System.IOUtils,
   StrUtils,
   wbSort;
+
+function TStringArrayHelper.AddPrefix(const aPrefix: string): TArray<string>;
+begin
+  Result := Self.ForEach(function(const s: string): string begin
+    Result := aPrefix + s;
+  end);
+end;
+
+function TStringArrayHelper.ForEach(const aFunc: TPassThroughFunc<string>): TArray<string>;
+var
+  i: Integer;
+begin
+  Result := nil;
+  SetLength(Result, Length(Self));
+  for i := Low(Self) to High(Self) do
+    Result[i] := aFunc(Self[i]);
+end;
+
+function TStringArrayHelper.RemoveEmpty: TArray<string>;
+var
+  i, j: Integer;
+begin
+  Result := Copy(Self);
+  j := 0;
+  for i := Low(Result) to High(Result) do begin
+    if Result[i] <> '' then begin
+      if i <> j then
+        Result[j] := Result[i];
+      Inc(j);
+    end;
+  end;
+  SetLength(Result, j);
+end;
+
+procedure TStringArrayHelper.ReportAsProgress;
+var
+  i: Integer;
+begin
+  for i := Low(Self) to High(Self) do
+    wbProgress(Self[i]);
+end;
+
+function TStringArrayHelper.ToCommaText: string;
+begin
+  with TStringList.Create do try
+    AddStrings(Self);
+    Result := CommaText;
+  finally
+    Free;
+  end;
+end;
+
+function TStringArrayHelper.ToText: string;
+begin
+  with TStringList.Create do try
+    AddStrings(Self);
+    Result := Text;
+  finally
+    Free;
+  end;
+end;
+
+procedure TStringArrayHelper.Add(const s: string);
+var
+  Len: Integer;
+begin
+  Len := Length(Self);
+  SetLength(Self, Succ(Len));
+  Self[Len] := s;
+end;
+
+procedure TPointerArrayHelper.Add(p: Pointer);
+var
+  Len: Integer;
+begin
+  Len := Length(Self);
+  SetLength(Self, Succ(Len));
+  Self[Len] := p;
+end;
+
+
+function wbStripDotGhost(const aFileName: string): string;
+begin
+  Result := aFileName;
+  if aFileName.EndsWith(csDotGhost, True) then
+    SetLength(Result, Length(Result) - Length(csDotGhost));
+end;
 
 procedure wbLeveledListCheckCircular(const aMainRecord: IwbMainRecord; aStack: PnxLeveledListCheckCircularStack);
 var
@@ -263,7 +364,7 @@ begin
     StrictDelimiter := True;
     DelimitedText := aSignatures;
     for i := 0 to Pred(Count) do begin
-      s := AnsiString(Strings[i]);
+      s := Trim(AnsiString(Strings[i]));
       if Length(s) >= SizeOf(TwbSignature) then begin
         SetLength(Result, Succ(Length(Result)));
         System.Move(s[1], Result[Pred(Length(Result))][0], SizeOf(TwbSignature));
@@ -334,7 +435,7 @@ begin
 
 
   if Length(Result) > 1 then begin
-    wbMergeSort(@Result[0], Length(Result), CompareElementsFormIDAndLoadOrder);
+    wbMergeSortPtr(@Result[0], Length(Result), CompareElementsFormIDAndLoadOrder);
 
     j := 0;
     for i := Succ(Low(Result)) to High(Result) do begin
@@ -391,7 +492,7 @@ begin
   SetLength(Result, Count);
   // removing duplicates (overridden records)
   if aOverrides and (Length(Result) > 1) then begin
-    wbMergeSort(@Result[0], Length(Result), CompareElementsFormIDAndLoadOrder);
+    wbMergeSortPtr(@Result[0], Length(Result), CompareElementsFormIDAndLoadOrder);
     j := 0;
     for i := Succ(Low(Result)) to High(Result) do begin
       if Result[j].LoadOrderFormID <> Result[i].LoadOrderFormID then
@@ -409,30 +510,6 @@ begin
     if SameText(Strings[Result], Str) then
       Exit;
   Result := -1;
-end;
-
-function IsFileESM(const aFileName: string): Boolean;
-const
-  ghostesm = '.esm.ghost';
-begin
-  Result := SameText(ExtractFileExt(aFileName), '.esm') or
-    SameText(Copy(aFileName, Length(aFileName) - Length(ghostesm) + 1, Length(ghostesm)), ghostesm)
-end;
-
-function IsFileESP(const aFileName: string): Boolean;
-const
-  ghostesp = '.esp.ghost';
-begin
-  Result := SameText(ExtractFileExt(aFileName), '.esp') or
-    SameText(Copy(aFileName, Length(aFileName) - Length(ghostesp) + 1, Length(ghostesp)), ghostesp)
-end;
-
-function IsFileESL(const aFileName: string): Boolean;
-const
-  ghostesl = '.esl.ghost';
-begin
-  Result := SameText(ExtractFileExt(aFileName), '.esl') or
-    SameText(Copy(aFileName, Length(aFileName) - Length(ghostesl) + 1, Length(ghostesl)), ghostesl)
 end;
 
 function IsFileCC(const aFileName: string): Boolean;
@@ -475,11 +552,11 @@ begin
       Delete(s, i+1, 1);
     end else if Copy(s, i, 2) = ' \' then begin
       Delete(s, i, 1);
-  	end else if s[i] = '"' then
+    end else if s[i] = '"' then
       s[i] := ''''
-  	else if s[i] = ':' then
+    else if s[i] = ':' then
       s[i] := '-'
-  	else if s[i] = '/' then
+    else if s[i] = '/' then
       s[i] := ' ';
   while (Length(s)>0) and (s[Length(s)]=' ') do
     Delete(s, Length(s), 1);
@@ -561,6 +638,15 @@ begin
   aFont.Size    := aIni.ReadInteger(aSection, aName + 'Size', aFont.Size);
   aFont.Style   := TFontStyles(Byte(aIni.ReadInteger(aSection, aName + 'Style', Byte(aFont.Style))));
 end;
+
+function wbExpandFileName(const aFileName: string): string;
+begin
+  if (ExtractFilePath(aFileName) = '') and not SameText(aFileName, wbGameExeName) then
+    Result := wbDataPath + ExtractFileName(aFileName)
+  else
+    Result := aFileName;
+end;
+
 
 var
   crctbl: array[0..7] of array[0..255] of cardinal;
@@ -730,12 +816,17 @@ asm
 {$ENDIF WIN32}
 end;
 
-function wbCRC32Data(aData: TBytes): Cardinal;
+function wbCRC32Ptr(aData: Pointer; aSize: Integer): TwbCRC32;
+begin
+  Result := not ShaCrcRefresh($FFFFFFFF, aData, aSize);
+end;
+
+function wbCRC32Data(aData: TBytes): TwbCRC32;
 begin
   Result := not ShaCrcRefresh($FFFFFFFF, @aData[0], Length(aData));
 end;
 
-function wbCRC32File(aFileName: string): Cardinal;
+function wbCRC32File(aFileName: string): TwbCRC32;
 var
   Data: TBytes;
 begin
@@ -748,6 +839,30 @@ begin
     finally
       Free;
     end;
+end;
+
+var
+  _CRC32AppLock : TRTLCriticalSection;
+  _CRC32App     : Cardinal;
+
+function wbCRC32App: TwbCRC32;
+begin
+  if (DebugHook <> 0) or wbDevMode then
+    Exit(wbDevCRC32App);
+
+  Result := _CRC32App;
+  if Result = 0 then begin
+    _CRC32AppLock.Enter;
+    try
+      Result := _CRC32App;
+      if Result = 0 then begin
+        Result := wbCRC32File(ParamStr(0));
+        _CRC32App := Result;
+      end;
+    finally
+      _CRC32AppLock.Leave;
+    end;
+  end;
 end;
 
 function wbDecodeCRCList(const aList: string): TDynCardinalArray;
@@ -891,46 +1006,6 @@ begin
     end;
 end;
 
-
-{ TnxFastStringList }
-
-procedure TnxFastStringList.Clear(aFreeObjects: Boolean);
-var
-  i: Integer;
-begin
-  if aFreeObjects then
-    for i := 0 to Pred(Count) do
-      Objects[i].Free;
-  inherited Clear;
-end;
-
-function TnxFastStringList.CompareStrings(const S1, S2: string): Integer;
-begin
-  {x$IFDEF DCC6OrLater}
-  if CaseSensitive then
-    Result := CompareStr(S1, S2)
-  else
-  {x$ENDIF}
-    Result := CompareText(S1, S2);
-end;
-
-constructor TnxFastStringList.CreateSorted(aDups: TDuplicates);
-begin
-  Create;
-  Duplicates := aDups;
-  Sorted := True;
-end;
-
-{ TnxFastStringListCS }
-
-procedure TnxFastStringListCS.AfterConstruction;
-begin
-  inherited;
-  {x$IFDEF DCC6OrLater}
-  CaseSensitive := True;
-  {x$ENDIF}
-end;
-
 function wbExtractNameFromPath(aPathName: String): String;
 begin
   Result := aPathName;
@@ -945,7 +1020,7 @@ var
   SelfAsContainer : IwbContainer;
 begin
   Result := False;
-  if wbBeginInternalEdit then try
+  if wbBeginInternalEdit(True) then try
     if (Length(aCounterName) >= 4) and Supports(aElement.Container, IwbContainer, Container) and
       Supports(aElement, IwbContainer, SelfAsContainer) then begin
       Element := Container.ElementByName[aCounterName];
@@ -954,7 +1029,7 @@ begin
       if Assigned(Element) and (SameText(Element.Name, aCounterName)) then try
         if Element.GetNativeValue <> SelfAsContainer.GetElementCount then
           // if count = 0 and counter element is not required, then just remove it
-          if (SelfAsContainer.GetElementCount = 0) and not Element.Def.Required then
+          if (SelfAsContainer.GetElementCount = 0) and Element.IsRemoveable then
             Element.Remove
           else
             Element.SetNativeValue(SelfAsContainer.GetElementCount);
@@ -976,7 +1051,7 @@ var
   SelfAsContainer : IwbContainer;
 begin
   Result := False;
-  if wbBeginInternalEdit then try
+  if wbBeginInternalEdit(True) then try
     if (Length(aCounterName) >= 4) and Supports(aElement.Container, IwbContainer, Container) and
       Supports(aElement, IwbContainer, SelfAsContainer) then begin
       Element := Container.ElementByPath[aCounterName];
@@ -1007,7 +1082,7 @@ var
   Container       : IwbContainer;
 begin
   Result := False;  // You may need to check alternative counter name
-  if wbBeginInternalEdit then try
+  if wbBeginInternalEdit(True) then try
     if not Supports(aElement, IwbContainer, Container) then
       Exit;
 
@@ -1036,7 +1111,7 @@ var
   Container       : IwbContainer;
 begin
   Result := False;  // You may need to check alterative counter name
-  if wbBeginInternalEdit then try
+  if wbBeginInternalEdit(True) then try
     if Supports(aElement, IwbContainer, Container) then begin
       Element := Container.ElementByPath[aCounterName];
       Elems   := Container.ElementByName[anArrayName];
@@ -1063,6 +1138,15 @@ begin
     Result := DataPath + FileName
   else
     Result := FileName;
+end;
+
+function CheckAddFilesToString(var mIni: TIniFile; var cIni: TIniFile; Section, Ident: String): String;
+begin
+  Result := '';
+  if cIni.ValueExists(Section, Ident) then
+    Result := StringReplace(cIni.ReadString(Section, Ident, ''), ',' ,#10, [rfReplaceAll])
+  else
+    Result := StringReplace(mIni.ReadString(Section, Ident, ''), ',' ,#10, [rfReplaceAll]);
 end;
 
 function FindBSAs(IniName, DataPath: String; var bsaNames: TStringList; var bsaMissing: TStringList): Integer;
@@ -1098,7 +1182,7 @@ begin
             ReadString('Archive', 'sResourceArchiveList2', ''),
             ',', #10, [rfReplaceAll]
           )
-        else if wbIsFallout4 then
+        else if wbIsFallout4 or wbIsFallout76 or wbIsStarfield then
           Text := StringReplace(
             ReadString('Archive', 'sResourceIndexFileList', '') + ',' +
             ReadString('Archive', 'sResourceStartUpArchiveList', '') + ',' +
@@ -1127,6 +1211,81 @@ begin
     end;
 end;
 
+function FindBSAs(IniName, CustomIniName, DataPath: String; var bsaNames: TStringList; var bsaMissing: TStringList): Integer;
+var
+  i: Integer;
+  j: Integer;
+  s: String;
+  t: String;
+  cIni, mIni: TIniFile;
+begin
+  Result := 0;
+  j := 0;
+  if Assigned(bsaNames) then
+    j := bsaNames.Count;
+  if Assigned(bsaMissing) then
+    j := j + bsaMissing.Count;
+
+  if Assigned(bsaNames) then
+    // TIniFile uses GetPrivateProfileString() to read data, it is virtualized by MO
+    // TMemIniFile reads from string list directly, not supported by MO
+    cIni := TIniFile.Create(CustomIniName);
+    try
+      if not cIni.SectionExists('Archive') then
+        Result := FindBSAs(IniName, DataPath, bsaNames, bsaMissing)
+      else begin
+        mIni := TIniFile.Create(IniName);
+        try
+          with TStringList.Create do try
+            if wbGameMode in [gmTES4, gmFO3, gmFNV] then begin
+              s := CheckAddFilesToString(mIni, cIni, 'Archive', 'sArchiveList');
+              // Update.bsa is hardcoded to load in FNV
+              if wbGameMode = gmFNV then begin
+                if s <> '' then s := s + #10;
+                s := s + 'Update.bsa';
+              end;
+              Text := s;
+            end else if wbIsSkyrim then begin
+              s := CheckAddFilesToString(mIni, cIni, 'Archive', 'sResourceArchiveList');
+              if s <> '' then s := s + #10;
+              s := s + CheckAddFilesToString(mIni, cIni, 'Archive', 'sResourceArchiveList2');
+              Text := s;
+            end else if wbIsFallout4 or wbIsFallout76 or wbIsStarfield then begin
+              s := CheckAddFilesToString(mIni, cIni, 'Archive', 'sResourceIndexFileList');
+              if s <> '' then s := s + #10;
+              s := s + CheckAddFilesToString(mIni, cIni, 'Archive', 'sResourceStartUpArchiveList');
+              if s <> '' then s := s + #10;
+              s := s + CheckAddFilesToString(mIni, cIni, 'Archive', 'sResourceArchiveList');
+              if s <> '' then s := s + #10;
+              s := s + CheckAddFilesToString(mIni, cIni, 'Archive', 'sResourceArchiveList2');
+              Text := s;
+            end;
+
+            for i := 0 to Pred(Count) do begin
+              s := Trim(Strings[i]);
+              t := MakeDataFileName(s, DataPath);
+              if (Length(t)>0) then
+                if FileExists(t) then begin
+                  if wbContainerHandler.ContainerExists(t) then
+                    Continue;
+                  bsaNames.Add(s);
+                end else
+                  if Assigned(bsaMissing) then
+                    bsaMissing.Add(s);
+            end;
+            Result := bsaNames.Count  + bsaMissing.Count - j; // How many were added
+          finally
+            Free;
+          end;
+        finally
+          FreeAndNil(mIni);
+        end;
+      end;
+    finally
+      FreeAndNil(cIni);
+    end;
+end;
+
 function HasBSAs(ModName, DataPath: String; Exact, modini: Boolean; var bsaNames: TStringList; var bsaMissing: TStringList): Integer;
 var
   j: Integer;
@@ -1134,6 +1293,10 @@ var
   F: TSearchRec;
 begin
   Result := 0;
+
+  if modIni then
+    Result := Result + FindBSAs(DataPath+ChangeFileExt(ModName, '.ini'), DataPath, bsaNames, bsaMissing);
+
   j := 0;
   if Assigned(bsaNames) then
     j := bsaNames.Count;
@@ -1160,9 +1323,6 @@ begin
   finally
     FindClose(F);
   end;
-
-  if modIni then
-    Result := Result + FindBSAs(DataPath+ChangeFileExt(ModName, '.ini'), DataPath, bsaNames, bsaMissing);
 end;
 
 function wbDDSDataToBitmap(aData: TBytes; Bitmap: TBitmap): Boolean;
@@ -1262,30 +1422,6 @@ begin
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
 end;
 
-function wbFormVerDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement; aMinimum: Integer): Integer;
-var
-  FormVer    : Integer;
-  MainRecord : IwbMainRecord;
-  Element    : IwbElement;
-begin
-  Result := 1;
-  if not Assigned(aElement) then Exit;
-  MainRecord := aElement.GetContainingMainRecord;
-  if not Assigned(MainRecord) then Exit;
-
-  Element := MainRecord.ElementByPath['Record Header\Form Version'];
-  if Assigned(Element) then begin
-    FormVer := Element.NativeValue;
-    if FormVer<aMinimum then
-      Result := 0;
-  end;
-end;
-
-function wbFormVer78Decider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
-begin
-  Result := wbFormVerDecider(aBasePtr, aEndPtr, aElement, 78);
-end;
-
 function ExecuteCaptureConsoleOutput(const aCommandLine: string): Cardinal;
 type
   OemString = type AnsiString(CP_OEMCP);
@@ -1322,7 +1458,7 @@ begin
         try
           repeat
             dRunning := WaitForSingleObject(piProcess.hProcess, 100);
-            //Application.ProcessMessages;
+            Application.ProcessMessages;
 
             if wbForceTerminate or (GetKeyState(VK_ESCAPE) and 128 = 128) then begin
               dw := Integer(TerminateProcess(piProcess.hProcess, 1));
@@ -1365,9 +1501,78 @@ begin
     RaiseLastOSError;
 end;
 
+function wbIsAeroEnabled: Boolean;
+type
+  _DwmIsCompositionEnabledFunc = function(var IsEnabled: BOOL): HRESULT; stdcall;
+var
+  Flag                       : BOOL;
+  DllHandle                  : THandle;
+  OsVersion                  : TOSVersionInfo;
+  DwmIsCompositionEnabledFunc: _DwmIsCompositionEnabledFunc;
+begin
+  Result:=False;
+  ZeroMemory(@OsVersion, SizeOf(OsVersion));
+  OsVersion.dwOSVersionInfoSize := SizeOf(TOSVERSIONINFO);
 
+  if ((GetVersionEx(OsVersion)) and (OsVersion.dwPlatformId = VER_PLATFORM_WIN32_NT) and (OsVersion.dwMajorVersion >= 6)) then //is Vista or Win7?
+  begin
+    DllHandle := LoadLibrary('dwmapi.dll');
+    try
+      if DllHandle <> 0 then
+      begin
+        @DwmIsCompositionEnabledFunc := GetProcAddress(DllHandle, 'DwmIsCompositionEnabled');
+        if (@DwmIsCompositionEnabledFunc <> nil) then
+        begin
+          if DwmIsCompositionEnabledFunc(Flag)= S_OK then
+           Result:=Flag;
+        end;
+      end;
+    finally
+      if DllHandle <> 0 then
+        FreeLibrary(DllHandle);
+    end;
+  end;
+end;
+
+function wbGetLastWriteTime(const s: string): TDateTime;
+var
+  F: TSearchRec;
+begin
+  if FindFirst(s, faAnyFile, F) = 0 then try
+    Result := F.TimeStamp;
+  finally
+    FindClose(F);
+  end else
+    Result := TFile.GetLastWriteTime(s);
+end;
+
+class function wb<T>.Iff(aCond: Boolean; const aTrue, aFalse: T): T;
+begin
+  if aCond then
+    Result := aTrue
+  else
+    Result := aFalse;
+end;
+
+procedure wbCodeBlock(const aProc: TProc);
+begin
+  aProc;
+end;
+
+function wbVarArray(const aElements: array of Variant): Variant;
+var
+  Elements : array of Variant;
+  i        : Integer;
+begin
+  SetLength(Elements, Length(aElements));
+  for i := Low(aElements) to High(aElements) do
+    Elements[i] := aElements[i];
+  Result := Elements;
+end;
 
 initialization
   CRCInit;
-
+  _CRC32AppLock.Initialize;
+finalization
+  _CRC32AppLock.Destroy;
 end.

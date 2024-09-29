@@ -1,14 +1,8 @@
-{*******************************************************************************
+{******************************************************************************
 
-     The contents of this file are subject to the Mozilla Public License
-     Version 1.1 (the "License"); you may not use this file except in
-     compliance with the License. You may obtain a copy of the License at
-     http://www.mozilla.org/MPL/
-
-     Software distributed under the License is distributed on an "AS IS"
-     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-     License for the specific language governing rights and limitations
-     under the License.
+  This Source Code Form is subject to the terms of the Mozilla Public License, 
+  v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain 
+  one at https://mozilla.org/MPL/2.0/.
 
 *******************************************************************************}
 
@@ -22,54 +16,50 @@ uses
   wbInterface;
 
 var
-	wbBipedObjectFlags: IwbFlagsDef;
-	wbEquipType: IwbFlagsDef;
-	wbFurnitureEntryTypeFlags: IwbFlagsDef;
-	wbPKDTFlags: IwbFlagsDef;
-	wbPKDTInterruptFlags: IwbFlagsDef;
-	wbSMNodeFlags: IwbFlagsDef;
+  wbBipedObjectFlags: IwbFlagsDef;
+  wbEquipType: IwbFlagsDef;
+  wbFurnitureEntryTypeFlags: IwbFlagsDef;
+  wbPKDTFlags: IwbFlagsDef;
+  wbPKDTInterruptFlags: IwbFlagsDef;
+  wbSMNodeFlags: IwbFlagsDef;
 
-	wbActorPropertyEnum: IwbEnumDef;
-	wbAdvanceActionEnum: IwbEnumDef;
-	wbStaggerEnum: IwbEnumDef;
-	wbAlignmentEnum: IwbEnumDef;
-	wbArmorPropertyEnum: IwbEnumDef;
-	wbAxisEnum: IwbEnumDef;
-	wbBipedObjectEnum: IwbEnumDef;
-	wbBlendModeEnum: IwbEnumDef;
-	wbBlendOpEnum: IwbEnumDef;
-	wbBodyPartIndexEnum: IwbEnumDef;
-	wbCastEnum: IwbEnumDef;
-	wbCastingSourceEnum: IwbEnumDef;
-	wbCrimeTypeEnum: IwbEnumDef;
-	wbCriticalStageEnum: IwbEnumDef;
-	wbEmotionTypeEnum: IwbEnumDef;
-	wbEntryPointsEnum: IwbEnumDef;
-	wbEventFunctionEnum: IwbEnumDef;
-	wbEventMemberEnum: IwbEnumDef;
-	wbFormTypeEnum: IwbEnumDef;
-	wbFurnitureAnimTypeEnum: IwbEnumDef;
-	wbLocationEnum: IwbEnumDef;
-	wbMiscStatEnum: IwbEnumDef;
-	wbMusicEnum: IwbEnumDef;
+  wbCRCValuesEnum: IwbEnumDef;
+  wbActorBehaviorEnum: IwbEnumDef;
+  wbActorPropertyEnum: IwbEnumDef;
+  wbAdvanceActionEnum: IwbEnumDef;
+  wbStaggerEnum: IwbEnumDef;
+  wbAlignmentEnum: IwbEnumDef;
+  wbArmorPropertyEnum: IwbEnumDef;
+  wbBipedObjectEnum: IwbEnumDef;
+  wbBlendModeEnum: IwbEnumDef;
+  wbBlendOpEnum: IwbEnumDef;
+  wbCastEnum: IwbEnumDef;
+  wbCastingSourceEnum: IwbEnumDef;
+  wbCrimeTypeEnum: IwbEnumDef;
+  wbCriticalStageEnum: IwbEnumDef;
+  wbEmotionTypeEnum: IwbEnumDef;
+  wbEntryPointsEnum: IwbEnumDef;
+  wbEventFunctionEnum: IwbEnumDef;
+  wbEventMemberEnum: IwbEnumDef;
+  wbFormTypeEnum: IwbEnumDef;
+  wbFurnitureAnimTypeEnum: IwbEnumDef;
+  wbLocationEnum: IwbEnumDef;
+  wbMiscStatEnum: IwbEnumDef;
+  wbMusicEnum: IwbEnumDef;
   wbObjectModProperties: IwbArrayDef;
-	wbObjectTypeEnum: IwbEnumDef;
-	wbPropTypeEnum: IwbEnumDef;
-	wbQuadrantEnum: IwbEnumDef;
-	wbSexEnum: IwbEnumDef;
-	wbSkillEnum: IwbEnumDef;
-	wbSoulGemEnum: IwbEnumDef;
-	wbSoundLevelEnum: IwbEnumDef;
-	wbTargetEnum: IwbEnumDef;
-	wbVatsValueFunctionEnum: IwbEnumDef;
-	wbWardStateEnum: IwbEnumDef;
-	wbWeaponAnimTypeEnum: IwbEnumDef;
-	wbWeaponPropertyEnum: IwbEnumDef;
-	wbZTestFuncEnum: IwbEnumDef;
+  wbObjectTypeEnum: IwbEnumDef;
+  wbPropTypeEnum: IwbEnumDef;
+  wbSkillEnum: IwbEnumDef;
+  wbSoundLevelEnum: IwbEnumDef;
+  wbTargetEnum: IwbEnumDef;
+  wbVatsValueFunctionEnum: IwbEnumDef;
+  wbWardStateEnum: IwbEnumDef;
+  wbWeaponAnimTypeEnum: IwbEnumDef;
+  wbWeaponPropertyEnum: IwbEnumDef;
+  wbZTestFuncEnum: IwbEnumDef;
   wbKeywordTypeEnum: IwbEnumDef;
   wbReverbClassEnum: IwbEnumDef;
   wbHitBehaviourEnum: IwbEnumDef;
-  wbBoolEnum: IwbEnumDef;
 
 procedure DefineFO4;
 
@@ -81,827 +71,23 @@ uses
   SysUtils,
   Math,
   Variants,
-  wbHelpers;
+  wbHelpers,
+  wbDefinitionsCommon,
+  wbDefinitionsSignatures;
+
+type
+  TVarRecs = array of TVarRec;
 
 const
-  _00_IAD: TwbSignature = #$00'IAD';
-  _01_IAD: TwbSignature = #$01'IAD';
-  _02_IAD: TwbSignature = #$02'IAD';
-  _03_IAD: TwbSignature = #$03'IAD';
-  _04_IAD: TwbSignature = #$04'IAD';
-  _05_IAD: TwbSignature = #$05'IAD';
-  _06_IAD: TwbSignature = #$06'IAD';
-  _07_IAD: TwbSignature = #$07'IAD';
-  _08_IAD: TwbSignature = #$08'IAD';
-  _09_IAD: TwbSignature = #$09'IAD';
-  _0A_IAD: TwbSignature = #$0A'IAD';
-  _0B_IAD: TwbSignature = #$0B'IAD';
-  _0C_IAD: TwbSignature = #$0C'IAD';
-  _0D_IAD: TwbSignature = #$0D'IAD';
-  _0E_IAD: TwbSignature = #$0E'IAD';
-  _0F_IAD: TwbSignature = #$0F'IAD';
-  _10_IAD: TwbSignature = #$10'IAD';
-  _11_IAD: TwbSignature = #$11'IAD';
-  _12_IAD: TwbSignature = #$12'IAD';
-  _13_IAD: TwbSignature = #$13'IAD';
-  _14_IAD: TwbSignature = #$14'IAD';
-  _40_IAD: TwbSignature = #$40'IAD';
-  _41_IAD: TwbSignature = #$41'IAD';
-  _42_IAD: TwbSignature = #$42'IAD';
-  _43_IAD: TwbSignature = #$43'IAD';
-  _44_IAD: TwbSignature = #$44'IAD';
-  _45_IAD: TwbSignature = #$45'IAD';
-  _46_IAD: TwbSignature = #$46'IAD';
-  _47_IAD: TwbSignature = #$47'IAD';
-  _48_IAD: TwbSignature = #$48'IAD';
-  _49_IAD: TwbSignature = #$49'IAD';
-  _4A_IAD: TwbSignature = #$4A'IAD';
-  _4B_IAD: TwbSignature = #$4B'IAD';
-  _4C_IAD: TwbSignature = #$4C'IAD';
-  _4D_IAD: TwbSignature = #$4D'IAD';
-  _4E_IAD: TwbSignature = #$4E'IAD';
-  _4F_IAD: TwbSignature = #$4F'IAD';
-  _50_IAD: TwbSignature = #$50'IAD';
-  _51_IAD: TwbSignature = #$51'IAD';
-  _52_IAD: TwbSignature = #$52'IAD';
-  _53_IAD: TwbSignature = #$53'IAD';
-  _54_IAD: TwbSignature = #$54'IAD';
-
-{00TX} _00_0TX: TwbSignature = #$30'0TX';
-{10TX} _10_0TX: TwbSignature = #$31'0TX';
-{20TX} _20_0TX: TwbSignature = #$32'0TX';
-{30TX} _30_0TX: TwbSignature = #$33'0TX';
-{40TX} _40_0TX: TwbSignature = #$34'0TX';
-{50TX} _50_0TX: TwbSignature = #$35'0TX';
-{60TX} _60_0TX: TwbSignature = #$36'0TX';
-{70TX} _70_0TX: TwbSignature = #$37'0TX';
-{80TX} _80_0TX: TwbSignature = #$38'0TX';
-{90TX} _90_0TX: TwbSignature = #$39'0TX';
-{:0TX} _3A_0TX: TwbSignature = #$3A'0TX';
-{;0TX} _3B_0TX: TwbSignature = #$3B'0TX';
-{<0TX} _3C_0TX: TwbSignature = #$3C'0TX';
-{=0TX} _3D_0TX: TwbSignature = #$3D'0TX';
-{>0TX} _3E_0TX: TwbSignature = #$3E'0TX';
-{?0TX} _3F_0TX: TwbSignature = #$3F'0TX';
-{@0TX} _40h_0TX: TwbSignature = #$40'0TX';
-{A0TX} A0TX: TwbSignature = 'A0TX';
-{B0TX} B0TX: TwbSignature = 'B0TX';
-{C0TX} C0TX: TwbSignature = 'C0TX';
-{D0TX} D0TX: TwbSignature = 'D0TX';
-{E0TX} E0TX: TwbSignature = 'E0TX';
-{F0TX} F0TX: TwbSignature = 'F0TX';
-{G0TX} G0TX: TwbSignature = 'G0TX';
-{H0TX} H0TX: TwbSignature = 'H0TX';
-{I0TX} I0TX: TwbSignature = 'I0TX';
-{J0TX} J0TX: TwbSignature = 'J0TX';
-{K0TX} K0TX: TwbSignature = 'K0TX';
-{L0TX} L0TX: TwbSignature = 'L0TX';
-
-  AACT : TwbSignature = 'AACT';
-  ACBS : TwbSignature = 'ACBS';
-  ACEC : TwbSignature = 'ACEC'; { New To Dawnguard }
-  ACEP : TwbSignature = 'ACEP'; { New To Dawnguard }
-  ACHR : TwbSignature = 'ACHR';
-  ACID : TwbSignature = 'ACID'; { New To Dawnguard }
-  ACPR : TwbSignature = 'ACPR'; { New To Skyrim }
-  ACSR : TwbSignature = 'ACSR'; { New To Dawnguard }
-  ACTI : TwbSignature = 'ACTI';
-  ACTV : TwbSignature = 'ACTV'; { New To Fallout 4 }
-  ACUN : TwbSignature = 'ACUN'; { New To Dawnguard }
-  ADDN : TwbSignature = 'ADDN';
-  AECH : TwbSignature = 'AECH'; { New To Fallout 4 }
-  AHCF : TwbSignature = 'AHCF'; { New To Skyrim }
-  AHCM : TwbSignature = 'AHCM'; { New To Skyrim }
-  AIDT : TwbSignature = 'AIDT';
-  ALCA : TwbSignature = 'ALCA'; { New To Skyrim }
-  ALCC : TwbSignature = 'ALCC'; { New To Fallout 4 }
-  ALCH : TwbSignature = 'ALCH';
-  ALCL : TwbSignature = 'ALCL'; { New To Skyrim }
-  ALCO : TwbSignature = 'ALCO'; { New To Skyrim }
-  ALCS : TwbSignature = 'ALCS'; { New To Fallout 4 }
-  ALDI : TwbSignature = 'ALDI'; { New To Fallout 4 }
-  ALDN : TwbSignature = 'ALDN'; { New To Skyrim }
-  ALEA : TwbSignature = 'ALEA'; { New To Skyrim }
-  ALED : TwbSignature = 'ALED'; { New To Skyrim }
-  ALEQ : TwbSignature = 'ALEQ'; { New To Skyrim }
-  ALFA : TwbSignature = 'ALFA'; { New To Skyrim }
-  ALFC : TwbSignature = 'ALFC'; { New To Skyrim }
-  ALFD : TwbSignature = 'ALFD'; { New To Skyrim }
-  ALFE : TwbSignature = 'ALFE'; { New To Skyrim }
-  ALFI : TwbSignature = 'ALFI'; { New To Skyrim }
-  ALFL : TwbSignature = 'ALFL'; { New To Skyrim }
-  ALFR : TwbSignature = 'ALFR'; { New To Skyrim }
-  ALFV : TwbSignature = 'ALFV'; { New To Fallout 4 }
-  ALID : TwbSignature = 'ALID'; { New To Skyrim }
-  ALLA : TwbSignature = 'ALLA'; { New To Fallout 4 }
-  ALLS : TwbSignature = 'ALLS'; { New To Skyrim }
-  ALMI : TwbSignature = 'ALMI'; { New To Fallout 4 }
-  ALNA : TwbSignature = 'ALNA'; { New To Skyrim }
-  ALNT : TwbSignature = 'ALNT'; { New To Skyrim }
-  ALPC : TwbSignature = 'ALPC'; { New To Skyrim }
-  ALRT : TwbSignature = 'ALRT'; { New To Skyrim }
-  ALSP : TwbSignature = 'ALSP'; { New To Skyrim }
-  ALST : TwbSignature = 'ALST'; { New To Skyrim }
-  ALUA : TwbSignature = 'ALUA'; { New To Skyrim }
-  AMDL : TwbSignature = 'AMDL'; { New To Fallout 4 }
-  AMMO : TwbSignature = 'AMMO';
-  ANAM : TwbSignature = 'ANAM';
-  ANIO : TwbSignature = 'ANIO';
-  AOR2 : TwbSignature = 'AOR2'; { New To Fallout 4 }
-  AORU : TwbSignature = 'AORU'; { New To Fallout 4 }
-  APPR : TwbSignature = 'APPR'; { New To Fallout 4 }
-  ARMA : TwbSignature = 'ARMA';
-  ARMO : TwbSignature = 'ARMO';
-  ARTO : TwbSignature = 'ARTO';
-  ASPC : TwbSignature = 'ASPC';
-  ASTP : TwbSignature = 'ASTP';
-  ATKD : TwbSignature = 'ATKD'; { New to Skyrim }
-  ATKE : TwbSignature = 'ATKE'; { New to Skyrim }
-  ATKR : TwbSignature = 'ATKR'; { New to Skyrim }
-  ATKT : TwbSignature = 'ATKT'; { New To Fallout 4 }
-  ATKS : TwbSignature = 'ATKS'; { New To Fallout 4 }
-  ATKW : TwbSignature = 'ATKW'; { New To Fallout 4 }
-  ATTN : TwbSignature = 'ATTN'; { New To Fallout 4 }
-  ATTX : TwbSignature = 'ATTX'; { New To Fallout 4 }
-  ATXT : TwbSignature = 'ATXT';
-  AVFL : TwbSignature = 'AVFL'; { New To Fallout 4 }
-  AVIF : TwbSignature = 'AVIF';
-  AVSK : TwbSignature = 'AVSK'; { New to Skyrim }
-  BAMT : TwbSignature = 'BAMT'; { New to Skyrim }
-  BCLF : TwbSignature = 'BCLF'; { New to Fallout 4 }
-  BIDS : TwbSignature = 'BIDS'; { New to Skyrim }
-  BIPL : TwbSignature = 'BIPL';
-  BMCT : TwbSignature = 'BMCT';
-  BMMP : TwbSignature = 'BMMP'; { New to Fallout 4 }
-  BNAM : TwbSignature = 'BNAM';
-  BNDS : TwbSignature = 'BNDS'; { New to Fallout 4 }
-  BOD2 : TwbSignature = 'BOD2'; { New to Skyrim 1.6.91 CK}
-  BODT : TwbSignature = 'BODT'; { New to Skyrim }
-  BOOK : TwbSignature = 'BOOK';
-  BPND : TwbSignature = 'BPND';
-  BPNI : TwbSignature = 'BPNI';
-  BPNN : TwbSignature = 'BPNN';
-  BPNT : TwbSignature = 'BPNT';
-  BPTD : TwbSignature = 'BPTD';
-  BPTN : TwbSignature = 'BPTN';
-  BSIZ : TwbSignature = 'BSIZ'; { New to Fallout 4 }
-  BSMB : TwbSignature = 'BSMB'; { New to Fallout 4 }
-  BSMP : TwbSignature = 'BSMP'; { New to Fallout 4 }
-  BSMS : TwbSignature = 'BSMS'; { New to Fallout 4 }
-  BTXT : TwbSignature = 'BTXT';
-  CAMS : TwbSignature = 'CAMS';
-  CDIX : TwbSignature = 'CDIX'; { New to Fallout 4 }
-  CELL : TwbSignature = 'CELL';
-  CIS1 : TwbSignature = 'CIS1'; { New to Skyrim }
-  CIS2 : TwbSignature = 'CIS2'; { New to Skyrim }
-  CITC : TwbSignature = 'CITC'; { New to Skyrim }
-  CLAS : TwbSignature = 'CLAS';
-  CLFM : TwbSignature = 'CLFM';
-  CLMT : TwbSignature = 'CLMT';
-  CLSZ : TwbSignature = 'CLSZ'; { New to Fallout 4 }
-  CMPO : TwbSignature = 'CMPO'; { New to Fallout 4 }
-  CNAM : TwbSignature = 'CNAM';
-  CNTO : TwbSignature = 'CNTO';
-  COBJ : TwbSignature = 'COBJ';
-  COCT : TwbSignature = 'COCT'; { New to Skyrim 'Count'}
-  COED : TwbSignature = 'COED';
-  COLL : TwbSignature = 'COLL';
-  CONT : TwbSignature = 'CONT';
-  CPTH : TwbSignature = 'CPTH';
-  CRDT : TwbSignature = 'CRDT';
-  CRGR : TwbSignature = 'CRGR'; { New to Skyrim }
-  CRIF : TwbSignature = 'CRIF'; { New to Skyrim }
-  CRIS : TwbSignature = 'CRIS'; { New to Fallout 4 }
-  CRVA : TwbSignature = 'CRVA'; { New to Skyrim }
-  CS2H : TwbSignature = 'CS2H'; { New To Fallout 4 }
-  CS2D : TwbSignature = 'CS2D'; { New To Fallout 4 }
-  CS2E : TwbSignature = 'CS2E'; { New To Fallout 4 }
-  CS2F : TwbSignature = 'CS2F'; { New To Fallout 4 }
-  CS2K : TwbSignature = 'CS2K'; { New To Fallout 4 }
-  CSCR : TwbSignature = 'CSCR';
-  CSCV : TwbSignature = 'CSCV'; { New To Fallout 4 }
-  CSDC : TwbSignature = 'CSDC';
-  CSDI : TwbSignature = 'CSDI';
-  CSDT : TwbSignature = 'CSDT';
-  CSFL : TwbSignature = 'CSFL'; { New to Skyrim }
-  CSGD : TwbSignature = 'CSGD'; { New to Skyrim }
-  CSLR : TwbSignature = 'CSLR'; { New to Skyrim }
-  CSMD : TwbSignature = 'CSMD'; { New to Skyrim }
-  CSME : TwbSignature = 'CSME'; { New to Skyrim }
-  CSRA : TwbSignature = 'CSRA'; { New To Fallout 4 }
-  CSTY : TwbSignature = 'CSTY';
-  CTDA : TwbSignature = 'CTDA';
-  CUSD : TwbSignature = 'CUSD'; { New to Fallout 4 }
-  CVPA : TwbSignature = 'CVPA'; { New to Fallout 4 }
-  DALC : TwbSignature = 'DALC'; { New to Skyrim }
-  DAMA : TwbSignature = 'DAMA'; { New to Fallout 4 }
-  DAMC : TwbSignature = 'DAMC'; { New to Fallout 4 }
-  DATA : TwbSignature = 'DATA';
-  DEBR : TwbSignature = 'DEBR';
-  DELE : TwbSignature = 'DELE';
-  DEMO : TwbSignature = 'DEMO'; { New to Skyrim }
-  DESC : TwbSignature = 'DESC';
-  DEST : TwbSignature = 'DEST';
-  DEVA : TwbSignature = 'DEVA'; { New to Skyrim }
-  DFOB : TwbSignature = 'DFOB'; { New to Fallout 4 }
-  DFTF : TwbSignature = 'DFTF'; { New To Skyrim }
-  DFTM : TwbSignature = 'DFTM'; { New To Skyrim }
-  DIAL : TwbSignature = 'DIAL';
-  DLBR : TwbSignature = 'DLBR';
-  DLVW : TwbSignature = 'DLVW';
-  DMAX : TwbSignature = 'DMAX'; { New to Skyrim }
-  DMDC : TwbSignature = 'DMDC'; { New to Fallout 4 }
-  DMDL : TwbSignature = 'DMDL';
-  DMDS : TwbSignature = 'DMDS'; { New to Skyrim }
-  DMDT : TwbSignature = 'DMDT';
-  DMGT : TwbSignature = 'DMGT'; { New to Fallout 4 }
-  DMIN : TwbSignature = 'DMIN'; { New to Skyrim }
-  DNAM : TwbSignature = 'DNAM';
-  DOBJ : TwbSignature = 'DOBJ';
-  DODT : TwbSignature = 'DODT';
-  DOFT : TwbSignature = 'DOFT'; { New to Skyrim }
-  DOOR : TwbSignature = 'DOOR';
-  DPLT : TwbSignature = 'DPLT'; { New to Skyrim }
-  DSTA : TwbSignature = 'DSTA'; { New To Fallout 4 }
-  DSTD : TwbSignature = 'DSTD';
-  DSTF : TwbSignature = 'DSTF';
-  DTGT : TwbSignature = 'DTGT'; { New To Fallout 4 }
-  DTID : TwbSignature = 'DTID'; { New To Fallout 4 }
-  DUAL : TwbSignature = 'DUAL';
-  EAMT : TwbSignature = 'EAMT';
-  ECOR : TwbSignature = 'ECOR'; { New to Skyrim }
-  ECZN : TwbSignature = 'ECZN';
-  EDID : TwbSignature = 'EDID';
-  EFID : TwbSignature = 'EFID';
-  EFIT : TwbSignature = 'EFIT';
-  EFSH : TwbSignature = 'EFSH';
-  EITM : TwbSignature = 'EITM';
-  ENAM : TwbSignature = 'ENAM';
-  ENCH : TwbSignature = 'ENCH';
-  ENIT : TwbSignature = 'ENIT';
-  EPF2 : TwbSignature = 'EPF2';
-  EPF3 : TwbSignature = 'EPF3';
-  EPFB : TwbSignature = 'EPFB'; { New To Fallout 4 }
-  EPFD : TwbSignature = 'EPFD';
-  EPFT : TwbSignature = 'EPFT';
-  EQUP : TwbSignature = 'EQUP';
-  ESCE : TwbSignature = 'ESCE';
-  ETYP : TwbSignature = 'ETYP';
-  EXPL : TwbSignature = 'EXPL';
-  EYES : TwbSignature = 'EYES';
-  FACT : TwbSignature = 'FACT';
-  FCHT : TwbSignature = 'FCHT'; { New to Skyrim }
-  FCPL : TwbSignature = 'FCPL'; { New To Fallout 4 }
-  FFFF : TwbSignature = 'FFFF';
-  FIMD : TwbSignature = 'FIMD'; { New To Fallout 4 }
-  FLMV : TwbSignature = 'FLMV'; { New to Skyrim }
-  FLOR : TwbSignature = 'FLOR';
-  FLST : TwbSignature = 'FLST';
-  FLTR : TwbSignature = 'FLTR'; { New to Skyrim }
-  FLTV : TwbSignature = 'FLTV';
-  FMIN : TwbSignature = 'FMIN'; { New To Fallout 4 }
-  FMRI : TwbSignature = 'FMRI'; { New To Fallout 4 }
-  FMRN : TwbSignature = 'FMRN'; { New To Fallout 4 }
-  FMRS : TwbSignature = 'FMRS'; { New To Fallout 4 }
-  FNAM : TwbSignature = 'FNAM';
-  FNMK : TwbSignature = 'FNMK'; { New to Skyrim }
-  FNPR : TwbSignature = 'FNPR'; { New to Skyrim }
-  FPRT : TwbSignature = 'FPRT'; { New to Skyrim }
-  FSTP : TwbSignature = 'FSTP';
-  FSTS : TwbSignature = 'FSTS';
-  FTSF : TwbSignature = 'FTSF'; { New to Skyrim }
-  FTSM : TwbSignature = 'FTSM'; { New to Skyrim }
-  FTST : TwbSignature = 'FTST'; { New to Skyrim }
-  FTYP : TwbSignature = 'FTYP'; { New To Fallout 4 }
-  FULL : TwbSignature = 'FULL';
-  FURN : TwbSignature = 'FURN';
-  FVPA : TwbSignature = 'FVPA'; { New To Fallout 4 }
-  GDRY : TwbSignature = 'GDRY'; { New to Fallout 4 }
-  GLOB : TwbSignature = 'GLOB';
-  GMST : TwbSignature = 'GMST';
-  GNAM : TwbSignature = 'GNAM';
-  GRAS : TwbSignature = 'GRAS';
-  GREE : TwbSignature = 'GREE'; { New to Fallout 4 }
-  GWOR : TwbSignature = 'GWOR'; { New to Skyrim }
-  HAZD : TwbSignature = 'HAZD';
-  HCLF : TwbSignature = 'HCLF'; { New to Skyrim }
-  HDPT : TwbSignature = 'HDPT';
-  HEAD : TwbSignature = 'HEAD'; { New to Skyrim }
-  HEDR : TwbSignature = 'HEDR';
-  HLTX : TwbSignature = 'HLTX'; { New to Fallout 4 }
-  HNAM : TwbSignature = 'HNAM';
-  HTID : TwbSignature = 'HTID'; { New to Skyrim }
-  ICO2 : TwbSignature = 'ICO2';
-  ICON : TwbSignature = 'ICON';
-  IDLA : TwbSignature = 'IDLA';
-  IDLB : TwbSignature = 'IDLB';
-  IDLC : TwbSignature = 'IDLC';
-  IDLE : TwbSignature = 'IDLE';
-  IDLF : TwbSignature = 'IDLF';
-  IDLM : TwbSignature = 'IDLM';
-  IDLT : TwbSignature = 'IDLT';
-  IMAD : TwbSignature = 'IMAD';
-  IMGS : TwbSignature = 'IMGS';
-  IMSP : TwbSignature = 'IMSP'; { New to Skyrim }
-  INAM : TwbSignature = 'INAM';
-  INCC : TwbSignature = 'INCC'; { New to Skyrim }
-  INDX : TwbSignature = 'INDX';
-  INFO : TwbSignature = 'INFO';
-  INGR : TwbSignature = 'INGR';
-  INNR : TwbSignature = 'INNR'; { New To Fallout 4 }
-  INRD : TwbSignature = 'INRD'; { New To Fallout 4 }
-  INTT : TwbSignature = 'INTT'; { New To Fallout 4 }
-  INTV : TwbSignature = 'INTV';
-  IOVR : TwbSignature = 'IOVR'; { New To Fallout 4 }
-  IPCT : TwbSignature = 'IPCT';
-  IPDS : TwbSignature = 'IPDS';
-  ISIZ : TwbSignature = 'ISIZ'; { New To Fallout 4 }
-  ITID : TwbSignature = 'ITID'; { New To Fallout 4 }
-  ITMC : TwbSignature = 'ITMC'; { New To Fallout 4 }
-  ITME : TwbSignature = 'ITME'; { New To Fallout 4 }
-  ITMS : TwbSignature = 'ITMS'; { New To Fallout 4 }
-  ITXT : TwbSignature = 'ITXT';
-  JAIL : TwbSignature = 'JAIL'; { New To Skyrim }
-  JNAM : TwbSignature = 'JNAM';
-  JOUT : TwbSignature = 'JOUT'; { New To Skyrim }
-  KEYM : TwbSignature = 'KEYM';
-  KNAM : TwbSignature = 'KNAM';
-  KSIZ : TwbSignature = 'KSIZ';
-  KSSM : TwbSignature = 'KSSM'; { New To Fallout 4 }
-  KWDA : TwbSignature = 'KWDA';
-  KYWD : TwbSignature = 'KYWD';
-  LAND : TwbSignature = 'LAND';
-  LAYR : TwbSignature = 'LAYR'; { New to Fallout 4 }
-  LCEC : TwbSignature = 'LCEC'; { New to Skyrim }
-  LCEP : TwbSignature = 'LCEP'; { New to Skyrim }
-  LCID : TwbSignature = 'LCID'; { New to Skyrim }
-  LCPR : TwbSignature = 'LCPR'; { New to Skyrim }
-  LCRT : TwbSignature = 'LCRT';
-  LCSR : TwbSignature = 'LCSR'; { New to Skyrim }
-  LCTN : TwbSignature = 'LCTN';
-  LCUN : TwbSignature = 'LCUN'; { New to Skyrim }
-  LENS : TwbSignature = 'LENS'; { New to Fallout 4 }
-  LFSD : TwbSignature = 'LFSD'; { New to Fallout 4 }
-  LFSP : TwbSignature = 'LFSP'; { New to Fallout 4 }
-  LGTM : TwbSignature = 'LGTM';
-  LIGH : TwbSignature = 'LIGH';
-  LLCT : TwbSignature = 'LLCT'; {New to Skyrim, part of LVLI 'Count'}
-  LLKC : TwbSignature = 'LLKC'; { New to Fallout 4 }
-  LNAM : TwbSignature = 'LNAM';
-  LSCR : TwbSignature = 'LSCR';
-  LSPR : TwbSignature = 'LSPR'; { New to Fallout 4 }
-  LTEX : TwbSignature = 'LTEX';
-  LTMP : TwbSignature = 'LTMP';
-  LTPT : TwbSignature = 'LTPT'; { New to Fallout 4 }
-  LTPC : TwbSignature = 'LTPC'; { New to Fallout 4 }
-  LVLC : TwbSignature = 'LVLC';
-  LVLD : TwbSignature = 'LVLD';
-  LVLF : TwbSignature = 'LVLF';
-  LVLG : TwbSignature = 'LVLG';
-  LVLI : TwbSignature = 'LVLI';
-  LVLM : TwbSignature = 'LVLM'; { New to Fallout 4 }
-  LVLN : TwbSignature = 'LVLN';
-  LVLO : TwbSignature = 'LVLO';
-  LVSG : TwbSignature = 'LVSG'; { New to Fallout 4 }
-  LVSP : TwbSignature = 'LVSP';
-  MASE : TwbSignature = 'MASE'; { New To Fallout 4 }
-  MAST : TwbSignature = 'MAST';
-  MATO : TwbSignature = 'MATO';
-  MATT : TwbSignature = 'MATT';
-  MCHT : TwbSignature = 'MCHT'; { New to Skyrim }
-  MDOB : TwbSignature = 'MDOB';
-  MESG : TwbSignature = 'MESG';
-  MGEF : TwbSignature = 'MGEF';
-  MHDT : TwbSignature = 'MHDT'; { New to Skyrim }
-  MIC2 : TwbSignature = 'MIC2';
-  MICN : TwbSignature = 'MICN'; { New to Fallout 4 }
-  MICO : TwbSignature = 'MICO';
-  MISC : TwbSignature = 'MISC';
-  MLSI : TwbSignature = 'MLSI'; { New to Fallout 4 }
-  MNAM : TwbSignature = 'MNAM';
-  MO2C : TwbSignature = 'MO2C'; { New to Fallout 4 }
-  MO2F : TwbSignature = 'MO2F'; { New to Fallout 4 }
-  MO2S : TwbSignature = 'MO2S';
-  MO2T : TwbSignature = 'MO2T';
-  MO3C : TwbSignature = 'MO3C'; { New to Fallout 4 }
-  MO3F : TwbSignature = 'MO3F'; { New to Fallout 4 }
-  MO3S : TwbSignature = 'MO3S';
-  MO3T : TwbSignature = 'MO3T';
-  MO4C : TwbSignature = 'MO4C'; { New to Fallout 4 }
-  MO4F : TwbSignature = 'MO4F'; { New to Fallout 4 }
-  MO4S : TwbSignature = 'MO4S';
-  MO4T : TwbSignature = 'MO4T';
-  MO5C : TwbSignature = 'MO5C'; { New to Fallout 4 }
-  MO5F : TwbSignature = 'MO5F'; { New to Fallout 4 }
-  MO5S : TwbSignature = 'MO5S'; { New to Skyrim }
-  MO5T : TwbSignature = 'MO5T'; { New to Skyrim }
-  MOD2 : TwbSignature = 'MOD2';
-  MOD3 : TwbSignature = 'MOD3';
-  MOD4 : TwbSignature = 'MOD4';
-  MOD5 : TwbSignature = 'MOD5'; { New to Skyrim }
-  MODC : TwbSignature = 'MODC'; { New to Fallout 4 }
-  MODF : TwbSignature = 'MODF'; { New to Fallout 4 }
-  MODL : TwbSignature = 'MODL';
-  MODS : TwbSignature = 'MODS';
-  MODT : TwbSignature = 'MODT';
-  MODQ : TwbSignature = 'MODQ'; { New to Fallout 4 }
-  MOVT : TwbSignature = 'MOVT';
-  MPAI : TwbSignature = 'MPAI'; { New To Skyrim }
-  MPAV : TwbSignature = 'MPAV'; { New To Skyrim }
-  MPCD : TwbSignature = 'MPCD'; { New to Fallout 4 }
-  MPGN : TwbSignature = 'MPGN'; { New to Fallout 4 }
-  MPGS : TwbSignature = 'MPGS'; { New to Fallout 4 }
-  MPPC : TwbSignature = 'MPPC'; { New to Fallout 4 }
-  MPPF : TwbSignature = 'MPPF'; { New to Fallout 4 }
-  MPPI : TwbSignature = 'MPPI'; { New to Fallout 4 }
-  MPPK : TwbSignature = 'MPPK'; { New to Fallout 4 }
-  MPPM : TwbSignature = 'MPPM'; { New to Fallout 4 }
-  MPPN : TwbSignature = 'MPPN'; { New to Fallout 4 }
-  MPPT : TwbSignature = 'MPPT'; { New to Fallout 4 }
-  MPRT : TwbSignature = 'MPRT'; { New to Skyrim }
-  MRSV : TwbSignature = 'MRSV'; { New to Fallout 4 }
-  MSDK : TwbSignature = 'MSDK'; { New to Fallout 4 }
-  MSDV : TwbSignature = 'MSDV'; { New to Fallout 4 }
-  MSID : TwbSignature = 'MSID'; { New to Fallout 4 }
-  MSM0 : TwbSignature = 'MSM0'; { New to Fallout 4 }
-  MSM1 : TwbSignature = 'MSM1'; { New to Fallout 4 }
-  MSTT : TwbSignature = 'MSTT';
-  MSWP : TwbSignature = 'MSWP'; { New to Fallout 4 }
-  MTNM : TwbSignature = 'MTNM'; { New to Skyrim }
-  MTYP : TwbSignature = 'MTYP'; { New To Skyrim }
-  MUSC : TwbSignature = 'MUSC';
-  MUST : TwbSignature = 'MUST';
-  MWGT : TwbSignature = 'MWGT'; { New to Fallout 4 }
-  NAM0 : TwbSignature = 'NAM0';
-  NAM1 : TwbSignature = 'NAM1';
-  NAM2 : TwbSignature = 'NAM2';
-  NAM3 : TwbSignature = 'NAM3';
-  NAM4 : TwbSignature = 'NAM4';
-  NAM5 : TwbSignature = 'NAM5';
-  NAM6 : TwbSignature = 'NAM6';
-  NAM7 : TwbSignature = 'NAM7';
-  NAM8 : TwbSignature = 'NAM8';
-  NAM9 : TwbSignature = 'NAM9';
-  NAMA : TwbSignature = 'NAMA'; { New to Skyrim }
-  NAME : TwbSignature = 'NAME';
-  NAVI : TwbSignature = 'NAVI';
-  NAVM : TwbSignature = 'NAVM';
-  NETO : TwbSignature = 'NETO'; { New to Fallout 4 }
-  NEXT : TwbSignature = 'NEXT';
-  NNAM : TwbSignature = 'NNAM';
-  NNGT : TwbSignature = 'NNGT'; { New to Fallout 4 }
-  NNGS : TwbSignature = 'NNGS'; { New to Fallout 4 }
-  NNUS : TwbSignature = 'NNUS'; { New to Fallout 4 }
-  NNUT : TwbSignature = 'NNUT'; { New to Fallout 4 }
-  NOCM : TwbSignature = 'NOCM'; { New to Fallout 4 }
-  NONE : TwbSignature = 'NONE'; { New to Fallout 4, used in OMOD Form Type }
-  NOTE : TwbSignature = 'NOTE'; { New to Fallout 4 }
-  NPC_ : TwbSignature = 'NPC_';
-  NPOS : TwbSignature = 'NPOS'; { New to Fallout 4 }
-  NPOT : TwbSignature = 'NPOT'; { New to Fallout 4 }
-  NQUS : TwbSignature = 'NQUS'; { New to Fallout 4 }
-  NQUT : TwbSignature = 'NQUT'; { New to Fallout 4 }
-  NTOP : TwbSignature = 'NTOP'; { New to Fallout 4 }
-  NTRM : TwbSignature = 'NTRM'; { New to Fallout 4 }
-  NULL : TwbSignature = 'NULL';
-  NVER : TwbSignature = 'NVER';
-  NVMI : TwbSignature = 'NVMI';
-  NVNM : TwbSignature = 'NVNM'; { New to Skyrim }
-  NVPP : TwbSignature = 'NVPP'; { New to Skyrim }
-  NVSI : TwbSignature = 'NVSI'; { New to Dawnguard }
-  OBND : TwbSignature = 'OBND';
-  OBTE : TwbSignature = 'OBTE'; { New to Fallout 4 }
-  OBTF : TwbSignature = 'OBTF'; { New to Fallout 4 }
-  OBTS : TwbSignature = 'OBTS'; { New to Fallout 4 }
-  OCOR : TwbSignature = 'OCOR'; { New to Skyrim }
-  OFST : TwbSignature = 'OFST';
-  OMOD : TwbSignature = 'OMOD'; { New to Fallout 4 }
-  ONAM : TwbSignature = 'ONAM';
-  OTFT : TwbSignature = 'OTFT';
-  OVIS : TwbSignature = 'OVIS'; { New to Fallout 4 }
-  PACK : TwbSignature = 'PACK';
-  PARW : TwbSignature = 'PARW'; { New to Skyrim }
-  PBAR : TwbSignature = 'PBAR'; { New to Skyrim }
-  PBEA : TwbSignature = 'PBEA'; { New to Skyrim }
-  PCMB : TwbSignature = 'PCMB'; { New to Fallout 4 }
-  PCON : TwbSignature = 'PCON'; { New to Skyrim }
-  PDTO : TwbSignature = 'PDTO'; { New to Skyrim }
-  PERK : TwbSignature = 'PERK';
-  PFIG : TwbSignature = 'PFIG';
-  PFLA : TwbSignature = 'PFLA'; { New to Skyrim }
-  PFO2 : TwbSignature = 'PFO2'; { New to Skyrim }
-  PFOR : TwbSignature = 'PFOR'; { New to Skyrim }
-  PFPC : TwbSignature = 'PFPC';
-  PFRN : TwbSignature = 'PFRN'; { New to Fallout 4 }
-  PGRE : TwbSignature = 'PGRE';
-  PHTN : TwbSignature = 'PHTN'; { New to Skyrim }
-  PHWT : TwbSignature = 'PHWT'; { New to Skyrim }
-  PHZD : TwbSignature = 'PHZD';
-  PKC2 : TwbSignature = 'PKC2'; { New to Skyrim }
-  PKCU : TwbSignature = 'PKCU'; { New to Skyrim }
-  PKDT : TwbSignature = 'PKDT';
-  PKID : TwbSignature = 'PKID';
-  PKIN : TwbSignature = 'PKIN'; { New to Fallout 4 }
-  PLCN : TwbSignature = 'PLCN'; { New to Skyrim }
-  PLDT : TwbSignature = 'PLDT';
-  PLVD : TwbSignature = 'PLVD'; { New to Skyrim }
-  PLYR : TwbSignature = 'PLYR';
-  PMIS : TwbSignature = 'PMIS';
-  PNAM : TwbSignature = 'PNAM';
-  POBA : TwbSignature = 'POBA';
-  POCA : TwbSignature = 'POCA';
-  POEA : TwbSignature = 'POEA';
-  PRCB : TwbSignature = 'PRCB'; { New to Skyrim }
-  PRKC : TwbSignature = 'PRKC';
-  PRKE : TwbSignature = 'PRKE';
-  PRKF : TwbSignature = 'PRKF';
-  PRKR : TwbSignature = 'PRKR'; { New to Skyrim }
-  PRKZ : TwbSignature = 'PRKZ'; { New to Skyrim }
-  PROJ : TwbSignature = 'PROJ';
-  PRPS : TwbSignature = 'PRPS'; { New to Fallout 4 }
-  PSDT : TwbSignature = 'PSDT';
-  PTDA : TwbSignature = 'PTDA'; { New to Skyrim }
-  PTOP : TwbSignature = 'PTOP'; { New to Fallout 4 }
-  PTRN : TwbSignature = 'PTRN'; { New to Fallout 4 }
-  QNAM : TwbSignature = 'QNAM';
-  QOBJ : TwbSignature = 'QOBJ';
-  QSDT : TwbSignature = 'QSDT';
-  QSTA : TwbSignature = 'QSTA';
-  QSTI : TwbSignature = 'QSTI'; { New to Fallout 4 }
-  QTGL : TwbSignature = 'QTGL'; { New To Skyrim }
-  QTOP : TwbSignature = 'QTOP'; { New to Fallout 4 }
-  QUAL : TwbSignature = 'QUAL'; { New To Skyrim }
-  QUST : TwbSignature = 'QUST';
-  RACE : TwbSignature = 'RACE';
-  RADR : TwbSignature = 'RADR'; { New To Fallout 4 }
-  RBPC : TwbSignature = 'RBPC'; { New To Fallout 4 }
-  RCEC : TwbSignature = 'RCEC'; { New To Skyrim }
-  RCLR : TwbSignature = 'RCLR';
-  RCPR : TwbSignature = 'RCPR'; { New to Dawnguard }
-  RCSR : TwbSignature = 'RCSR'; { New To Skyrim }
-  RCUN : TwbSignature = 'RCUN'; { New To Skyrim }
-  RDAT : TwbSignature = 'RDAT';
-  RDGS : TwbSignature = 'RDGS';
-  RDMO : TwbSignature = 'RDMO';
-  RDMP : TwbSignature = 'RDMP';
-  RDOT : TwbSignature = 'RDOT';
-  RDSA : TwbSignature = 'RDSA'; { New to Skyrim }
-  RDWT : TwbSignature = 'RDWT';
-  REFR : TwbSignature = 'REFR';
-  REGN : TwbSignature = 'REGN';
-  RELA : TwbSignature = 'RELA';
-  REPL : TwbSignature = 'REPL';
-  REPT : TwbSignature = 'REPT'; { New To Fallout 4 }
-  REVB : TwbSignature = 'REVB';
-  RFCT : TwbSignature = 'RFCT';
-  RFGP : TwbSignature = 'RFGP'; { New to Fallout 4 }
-  RGDL : TwbSignature = 'RGDL'; { Unused in Skyrim, but contained in Skyrim.esm }
-  RLDM : TwbSignature = 'RLDM'; { New to Fallout 4 }
-  RNAM : TwbSignature = 'RNAM';
-  RNMV : TwbSignature = 'RNMV'; { New to Skyrim }
-  RPLD : TwbSignature = 'RPLD';
-  RPLI : TwbSignature = 'RPLI';
-  RPRF : TwbSignature = 'RPRF'; { New To Skyrim }
-  RPRM : TwbSignature = 'RPRM'; { New To Skyrim }
-  RVIS : TwbSignature = 'RVIS'; { New to Fallout 4 }
-  SADD : TwbSignature = 'SADD'; { New To Fallout 4 }
-  SAKD : TwbSignature = 'SAKD'; { New To Fallout 4 }
-  SAPT : TwbSignature = 'SAPT'; { New To Fallout 4 }
-  SCCO : TwbSignature = 'SCCO'; { New To Fallout 4 }
-  SCDA : TwbSignature = 'SCDA';
-  SCEN : TwbSignature = 'SCEN';
-  SCHR : TwbSignature = 'SCHR';
-  SCOL : TwbSignature = 'SCOL'; { Unused in Skyrim, but contained in Skyrim.esm }
-  SCPT : TwbSignature = 'SCPT'; { Unused in Skyrim, but contained in Skyrim.esm }
-  SCQS : TwbSignature = 'SCQS'; { New To Fallout 4 }
-  SCRL : TwbSignature = 'SCRL';
-  SCRN : TwbSignature = 'SCRN';
-  SCRO : TwbSignature = 'SCRO';
-  SCSN : TwbSignature = 'SCSN'; { New To Fallout 4 }
-  SCTX : TwbSignature = 'SCTX';
-  SDSC : TwbSignature = 'SDSC'; { New to Skyrim }
-  SGNM : TwbSignature = 'SGNM'; { New to Fallout 4 }
-  SHOU : TwbSignature = 'SHOU';
-  SHRT : TwbSignature = 'SHRT'; { New to Skyrim }
-  SKIL : TwbSignature = 'SKIL'; { New to Fallout 4 }
-  SLCP : TwbSignature = 'SLCP';
-  SLGM : TwbSignature = 'SLGM';
-  SMBN : TwbSignature = 'SMBN';
-  SMEN : TwbSignature = 'SMEN';
-  SMQN : TwbSignature = 'SMQN';
-  SNAM : TwbSignature = 'SNAM';
-  SNCT : TwbSignature = 'SNCT';
-  SNDD : TwbSignature = 'SNDD';
-  SNDR : TwbSignature = 'SNDR';
-  SNMV : TwbSignature = 'SNMV'; { New to Skyrim }
-  SOFT : TwbSignature = 'SOFT'; { New to Skyrim }
-  SOPM : TwbSignature = 'SOPM';
-  SOUL : TwbSignature = 'SOUL';
-  SOUN : TwbSignature = 'SOUN';
-  SPCT : TwbSignature = 'SPCT'; { New to Skyrim }
-  SPED : TwbSignature = 'SPED'; { New To Skyrim }
-  SPEL : TwbSignature = 'SPEL';
-  SPGD : TwbSignature = 'SPGD';
-  SPIT : TwbSignature = 'SPIT';
-  SPLO : TwbSignature = 'SPLO';
-  SPMV : TwbSignature = 'SPMV'; { New To Skyrim }
-  SPOR : TwbSignature = 'SPOR'; { New to Skyrim }
-  SRAC : TwbSignature = 'SRAC'; { New to Fallout 4 }
-  SRAF : TwbSignature = 'SRAF'; { New to Fallout 4 }
-  SSPN : TwbSignature = 'SSPN'; { New to Fallout 4 }
-  STAG : TwbSignature = 'STAG'; { New to Fallout 4 }
-  STAT : TwbSignature = 'STAT';
-  STCP : TwbSignature = 'STCP'; { New to Fallout 4 }
-  STKD : TwbSignature = 'STKD'; { New to Fallout 4 }
-  STOL : TwbSignature = 'STOL'; { New to Skyrim }
-  STOP : TwbSignature = 'STOP'; { New to Fallout 4 }
-  STSC : TwbSignature = 'STSC'; { New to Fallout 4 }
-  SWMV : TwbSignature = 'SWMV'; { New to Skyrim }
-  TACT : TwbSignature = 'TACT';
-  TCLT : TwbSignature = 'TCLT';
-  TERM : TwbSignature = 'TERM'; { New to Fallout 4 }
-  TES4 : TwbSignature = 'TES4';
-  TETI : TwbSignature = 'TETI'; { New to Fallout 4 }
-  TEND : TwbSignature = 'TEND'; { New to Fallout 4 }
-  TIAS : TwbSignature = 'TIAS'; { New to Skyrim }
-  TIFC : TwbSignature = 'TIFC'; { New To Skyrim }
-  TINC : TwbSignature = 'TINC'; { New to Skyrim }
-  TIND : TwbSignature = 'TIND'; { New to Skyrim }
-  TINI : TwbSignature = 'TINI'; { New to Skyrim }
-  TINL : TwbSignature = 'TINL'; { New to Skyrim }
-  TINP : TwbSignature = 'TINP'; { New to Skyrim }
-  TINT : TwbSignature = 'TINT'; { New to Skyrim }
-  TINV : TwbSignature = 'TINV'; { New to Skyrim }
-  TIQS : TwbSignature = 'TIQS'; { New to Fallout 4 }
-  TIRS : TwbSignature = 'TIRS'; { New to Skyrim }
-  TLOD : TwbSignature = 'TLOD'; { New to Fallout 4 }
-  TNAM : TwbSignature = 'TNAM';
-  TOFT : TwbSignature = 'TOFT'; { New to Fallout 4 }
-  TPIC : TwbSignature = 'TPIC';
-  TPLT : TwbSignature = 'TPLT';
-  TPTA : TwbSignature = 'TPTA'; { New To Fallout 4 }
-  TRDA : TwbSignature = 'TRDA'; { New To Fallout 4 }
-  TRDT : TwbSignature = 'TRDT';
-  TREE : TwbSignature = 'TREE';
-  TRNS : TwbSignature = 'TRNS'; { New To Fallout 4 }
-  TSCE : TwbSignature = 'TSCE'; { New To Fallout 4 }
-  TTEB : TwbSignature = 'TTEB'; { New To Fallout 4 }
-  TTEC : TwbSignature = 'TTEC'; { New To Fallout 4 }
-  TTED : TwbSignature = 'TTED'; { New To Fallout 4 }
-  TTEF : TwbSignature = 'TTEF'; { New To Fallout 4 }
-  TTET : TwbSignature = 'TTET'; { New To Fallout 4 }
-  TTGE : TwbSignature = 'TTGE'; { New To Fallout 4 }
-  TTGP : TwbSignature = 'TTGP'; { New To Fallout 4 }
-  TVDT : TwbSignature = 'TVDT'; { New To Skyrim }
-  TWAT : TwbSignature = 'TWAT'; { New To Skyrim }
-  TX00 : TwbSignature = 'TX00';
-  TX01 : TwbSignature = 'TX01';
-  TX02 : TwbSignature = 'TX02';
-  TX03 : TwbSignature = 'TX03';
-  TX04 : TwbSignature = 'TX04';
-  TX05 : TwbSignature = 'TX05';
-  TX06 : TwbSignature = 'TX06'; { New To Skyrim }
-  TX07 : TwbSignature = 'TX07'; { New To Skyrim }
-  TXST : TwbSignature = 'TXST';
-  UNAM : TwbSignature = 'UNAM';
-  UNES : TwbSignature = 'UNES'; { New To Skyrim }
-  UNWP : TwbSignature = 'UNWP'; { New To Fallout 4 }
-  VATS : TwbSignature = 'VATS';
-  VCLR : TwbSignature = 'VCLR';
-  VENC : TwbSignature = 'VENC'; { New To Skyrim }
-  VEND : TwbSignature = 'VEND'; { New To Skyrim }
-  VENV : TwbSignature = 'VENV'; { New To Skyrim }
-  VHGT : TwbSignature = 'VHGT';
-  VISI : TwbSignature = 'VISI'; { New To Fallout 4 }
-  VMAD : TwbSignature = 'VMAD';
-  VNAM : TwbSignature = 'VNAM';
-  VNML : TwbSignature = 'VNML';
-  VTCK : TwbSignature = 'VTCK';
-  VTEX : TwbSignature = 'VTEX';
-  VTXT : TwbSignature = 'VTXT';
-  VTYP : TwbSignature = 'VTYP';
-  WAIT : TwbSignature = 'WAIT'; { New To Skyrim }
-  WAMD : TwbSignature = 'WAMD'; { New To Fallout 4 }
-  WATR : TwbSignature = 'WATR';
-  WBDT : TwbSignature = 'WBDT'; { New to Skyrim }
-  WCTR : TwbSignature = 'WCTR'; { New To Skyrim }
-  WEAP : TwbSignature = 'WEAP';
-  WGDR : TwbSignature = 'WGDR'; { New To Fallout 4 }
-  WKMV : TwbSignature = 'WKMV'; { New to Skyrim }
-  WLEV : TwbSignature = 'WLEV'; { New To Fallout 4 }
-  WLST : TwbSignature = 'WLST';
-  WMAP : TwbSignature = 'WMAP'; { New To Fallout 4 }
-  WNAM : TwbSignature = 'WNAM';
-  WOOP : TwbSignature = 'WOOP';
-  WRLD : TwbSignature = 'WRLD';
-  WTHR : TwbSignature = 'WTHR';
-  WZMD : TwbSignature = 'WZMD'; { New To Fallout 4 }
-  XACT : TwbSignature = 'XACT';
-  XALP : TwbSignature = 'XALP'; { New To Skyrim }
-  XAMC : TwbSignature = 'XAMC'; { New To Fallout 4 }
-  XAPD : TwbSignature = 'XAPD';
-  XAPR : TwbSignature = 'XAPR';
-  XASP : TwbSignature = 'XASP'; { New To Fallout 4 }
-  XATP : TwbSignature = 'XATP'; { New To Fallout 4 }
-  XATR : TwbSignature = 'XATR'; { New To Dawnguard }
-  XBSD : TwbSignature = 'XBSD'; { New To Fallout 4 }
-  XCAS : TwbSignature = 'XCAS';
-  XCCM : TwbSignature = 'XCCM';
-  XCHG : TwbSignature = 'XCHG';
-  XCIM : TwbSignature = 'XCIM';
-  XCLC : TwbSignature = 'XCLC';
-  XCLL : TwbSignature = 'XCLL';
-  XCLP : TwbSignature = 'XCLP';
-  XCLR : TwbSignature = 'XCLR';
-  XCLW : TwbSignature = 'XCLW';
-  XCMO : TwbSignature = 'XCMO';
-  XCNT : TwbSignature = 'XCNT';
-  XCRI : TwbSignature = 'XCRI'; { New To Fallout 4 }
-  XCVL : TwbSignature = 'XCVL'; { New To Skyrim }
-  XCVR : TwbSignature = 'XCVR'; { New To Fallout 4 }
-  XCWT : TwbSignature = 'XCWT';
-  XCZA : TwbSignature = 'XCZA'; { New To Skyrim }
-  XCZC : TwbSignature = 'XCZC'; { New To Skyrim }
-  XCZR : TwbSignature = 'XCZR'; { New To Skyrim }
-  XDCR : TwbSignature = 'XDCR';
-  XEMI : TwbSignature = 'XEMI';
-  XESP : TwbSignature = 'XESP';
-  XEZN : TwbSignature = 'XEZN';
-  XFVC : TwbSignature = 'XFVC'; { New To Skyrim }
-  XGDR : TwbSignature = 'XGDR'; { New To Fallout 4 }
-  XGLB : TwbSignature = 'XGLB';
-  XHLP : TwbSignature = 'XHLP';
-  XHLT : TwbSignature = 'XHLT'; { New To Fallout 4 }
-  XHOR : TwbSignature = 'XHOR'; { New To Skyrim }
-  XHTW : TwbSignature = 'XHTW'; { New To Skyrim }
-  XIBS : TwbSignature = 'XIBS';
-  XILL : TwbSignature = 'XILL'; { New To Skyrim }
-  XILW : TwbSignature = 'XILW'; { New To Fallout 4 }
-  XIS2 : TwbSignature = 'XIS2'; { New To Skyrim }
-  XLCM : TwbSignature = 'XLCM';
-  XLCN : TwbSignature = 'XLCN'; { New To Skyrim }
-  XLIB : TwbSignature = 'XLIB'; { New To Skyrim }
-  XLIG : TwbSignature = 'XLIG'; { New To Skyrim }
-  XLKR : TwbSignature = 'XLKR';
-  XLKT : TwbSignature = 'XLKT'; { New To Fallout 4 }
-  XLOC : TwbSignature = 'XLOC';
-  XLOD : TwbSignature = 'XLOD';
-  XLRL : TwbSignature = 'XLRL'; { New To Skyrim }
-  XLRM : TwbSignature = 'XLRM';
-  XLRT : TwbSignature = 'XLRT'; { New To Skyrim }
-  XLTW : TwbSignature = 'XLTW';
-  XLYR : TwbSignature = 'XLYR'; { New To Fallout 4 }
-  XMBO : TwbSignature = 'XMBO';
-  XMBP : TwbSignature = 'XMBP';
-  XMBR : TwbSignature = 'XMBR';
-  XMRC : TwbSignature = 'XMRC';
-  XMRK : TwbSignature = 'XMRK';
-  XMSP : TwbSignature = 'XMSP'; { New To Fallout 4 }
-  XNAM : TwbSignature = 'XNAM';
-  XNDP : TwbSignature = 'XNDP';
-  XOCP : TwbSignature = 'XOCP';
-  XORD : TwbSignature = 'XORD';
-  XOWN : TwbSignature = 'XOWN';
-  XPDD : TwbSignature = 'XPDD'; { New To Fallout 4 }
-  XPLK : TwbSignature = 'XPLK'; { New To Fallout 4 }
-  XPOD : TwbSignature = 'XPOD';
-  XPPA : TwbSignature = 'XPPA';
-  XPRD : TwbSignature = 'XPRD';
-  XPRI : TwbSignature = 'XPRI'; { New To Fallout 4 }
-  XPRM : TwbSignature = 'XPRM';
-  XPTL : TwbSignature = 'XPTL';
-  XPWR : TwbSignature = 'XPWR';
-  XRDO : TwbSignature = 'XRDO'; { New To Fallout 4 }
-  XRDS : TwbSignature = 'XRDS';
-  XRFG : TwbSignature = 'XRFG'; { New To Fallout 4 }
-  XRGB : TwbSignature = 'XRGB';
-  XRGD : TwbSignature = 'XRGD';
-  XRMR : TwbSignature = 'XRMR';
-  XRNK : TwbSignature = 'XRNK';
-  XSCL : TwbSignature = 'XSCL';
-  XSPC : TwbSignature = 'XSPC'; { New To Skyrim }
-  XTEL : TwbSignature = 'XTEL';
-  XTNM : TwbSignature = 'XTNM'; { New To Skyrim }
-  XTRI : TwbSignature = 'XTRI';
-  XWCN : TwbSignature = 'XWCN'; { New To Skyrim }
-  XWCS : TwbSignature = 'XWCS'; { New To Skyrim }
-  XWCU : TwbSignature = 'XWCU'; { New To Skyrim }
-  XWEM : TwbSignature = 'XWEM'; { New To Skyrim }
-  XWPG : TwbSignature = 'XWPG'; { New To Fallout 4 }
-  XWPN : TwbSignature = 'XWPN'; { New To Fallout 4 }
-  XXXX : TwbSignature = 'XXXX';
-  YNAM : TwbSignature = 'YNAM';
-  ZNAM : TwbSignature = 'ZNAM';
-  ZOOM : TwbSignature = 'ZOOM'; { New To Fallout 4 }
-
   // signatures of reference records
-  sigReferences : array [0..11] of TwbSignature = (
+  sigReferences : TwbSignatures = [
     'NULL', 'PLYR', 'ACHR', 'REFR', 'PGRE', 'PHZD',
     'PMIS', 'PARW', 'PBAR', 'PBEA', 'PCON', 'PFLA'
-  );
+  ]
+  ;
 
   // signatures of referenceable records (placed by references or constructable)
-  sigBaseObjects : array [0..43] of TwbSignature = (
+  sigBaseObjects : TwbSignatures = [
     'NULL', 'ACTI', 'ADDN', 'ALCH', 'AMMO', 'ARMO',
     'ARTO', 'ASPC', 'BNDS', 'BOOK', 'CMPO', 'COBJ',
     'CONT', 'DEBR', 'DOOR', 'EXPL', 'FLST', 'FLOR',
@@ -909,8 +95,8 @@ const
     'LVLI', 'LVLN', 'LVSP', 'MISC', 'MSTT', 'NOTE',
     'NPC_', 'OMOD', 'PROJ', 'SCOL', 'SCRL', 'SOUN',
     'SPEL', 'STAT', 'TACT', 'TERM', 'TREE', 'TXST',
-    'WATR', 'WEAP'
-  );
+    'WATR', 'WEAP', 'ENCH'
+  ];
 
 var
   wbPKDTSpecificFlagsUnused : Boolean;
@@ -918,8 +104,6 @@ var
   wbCOED: IwbSubRecordDef;
   wbXLCM: IwbSubRecordDef;
   wbEITM: IwbSubRecordDef;
-  wbOBND: IwbSubRecordDef;
-  wbOBNDReq: IwbSubRecordDef;
   wbDEST: IwbSubRecordStructDef;
   wbDESTActor: IwbSubRecordStructDef;
   wbDODT: IwbSubRecordDef;
@@ -927,7 +111,7 @@ var
   wbXRGB: IwbSubRecordDef;
   wbSPLO: IwbSubRecordDef;
   wbSPLOs: IwbSubRecordArrayDef;
-  wbCNTO: IwbSubRecordStructDef;
+  wbCNTO: IwbRecordMemberDef;
   wbCNTOs: IwbSubRecordArrayDef;
   wbAIDT: IwbSubRecordDef;
   wbFULL: IwbSubRecordDef;
@@ -936,11 +120,9 @@ var
   wbDESC: IwbSubRecordDef;
   wbDESCReq: IwbSubRecordDef;
   wbXSCL: IwbSubRecordDef;
-  wbDATAPosRot: IwbSubRecordDef;
-  wbPosRot: IwbStructDef;
   wbMODC: IwbSubRecordDef;
+  wbModelFlags: IwbFlagsDef;
   wbMODF: IwbSubRecordDef;
-  wbMODL: IwbSubRecordStructDef;
   wbMODS: IwbSubRecordDef;
   wbMO2S: IwbSubRecordDef;
   wbMO3S: IwbSubRecordDef;
@@ -953,13 +135,12 @@ var
   wbMO3C: IwbSubRecordDef;
   wbMO4C: IwbSubRecordDef;
   wbMO5C: IwbSubRecordDef;
-  wbMODLActor: IwbSubRecordStructDef;
-  wbMODLReq: IwbSubRecordStructDef;
-  wbCTDA: IwbSubRecordStructDef;
+  wbComponent: IwbValueDef;
+  wbComponents: IwbSubRecordDef;
+  wbCTDA: IwbRecordMemberDef;
   wbCTDAs: IwbSubRecordArrayDef;
   wbCTDAsReq: IwbSubRecordArrayDef;
   wbCTDAsCount: IwbSubRecordArrayDef;
-  wbXLOD: IwbSubRecordDef;
   wbXESP: IwbSubRecordDef;
   wbICON: IwbSubRecordDef;
   wbMICO: IwbSubRecordDef;
@@ -971,16 +152,17 @@ var
   wbEffectsReq: IwbSubRecordArrayDef;
   wbFirstPersonFlagsU32: IwbIntegerDef;
   wbBOD2: IwbSubRecordDef;
-  wbScriptEntry: IwbStructDef;
+  wbScriptEntry: IwbValueDef;
   wbScriptFlags: IwbIntegerDef;
   wbScriptPropertyObject: IwbUnionDef;
   wbScriptPropertyStruct: IwbArrayDef;
+  wbScriptProperty: IwbValueDef;
   wbScriptProperties: IwbArrayDef;
-  wbScriptFragments: IwbStructDef;
-  wbScriptFragmentsQuest: IwbStructDef;
-  wbScriptFragmentsInfo: IwbStructDef;
-  wbScriptFragmentsPack: IwbStructDef;
-  wbScriptFragmentsScen: IwbStructDef;
+  wbScriptFragments: IwbValueDef;
+  wbScriptFragmentsQuest: IwbValueDef;
+  wbScriptFragmentsInfo: IwbValueDef;
+  wbScriptFragmentsPack: IwbValueDef;
+  wbScriptFragmentsScen: IwbValueDef;
   wbPLDT: IwbSubRecordDef;
   wbPLVD: IwbSubRecordDef;
   wbTargetData: IwbStructDef;
@@ -998,31 +180,24 @@ var
   wbKWDAs: IwbSubRecordDef;
   wbReqKWDAs: IwbSubRecordDef;
   wbKeywords: IwbSubRecordStructDef;
-  wbCNAM: IwbSubRecordDef;
   wbCITC: IwbSubRecordDef;
   wbCITCReq: IwbSubRecordDef;
   wbMGEFData: IwbSubRecordStructDef;
   wbMGEFType: IwbIntegerDef;
-  wbMDOB: IwbSubRecordDef;
   wbSPIT: IwbSubRecordDef;
   wbDMDC: IwbSubRecordDef;
   wbDMDS: IwbSubRecordDef;
   wbMO5S: IwbSubRecordDef;
   wbSPCT: IwbSubRecordDef;
-  wbMODT: IwbSubRecordDef;
-  wbDMDT: IwbSubRecordDef;
   wbXOWN: IwbSubRecordDef;
   wbXRNK: IwbSubRecordDef;
   wbPhonemeTargets: IwbSubRecordDef;
   wbPHWT: IwbSubRecordStructDef;
-  wbHeadPart: IwbSubRecordStructDef;
   wbQUSTAliasFlags: IwbSubRecordDef;
   wbPDTO: IwbSubRecordDef;
   wbPDTOs: IwbSubRecordArrayDef;
   wbUNAMs: IwbSubRecordArrayDef;
   wbNull: IwbValueDef;
-  wbTimeInterpolator: IwbStructDef;
-  wbColorInterpolator: IwbStructDef;
   wbYNAM: IwbSubRecordDef;
   wbZNAM: IwbSubRecordDef;
   wbSPED: IwbSubRecordDef;
@@ -1032,10 +207,12 @@ var
   wbSTCP: IwbSubRecordDef;
   wbNTRM: IwbSubRecordDef;
   wbPRPS: IwbSubRecordDef;
+  wbObjectProperty: IwbValueDef;
   wbFLTR: IwbSubRecordDef;
   wbAPPR: IwbSubRecordDef;
   wbObjectTemplate: IwbSubRecordStructDef;
   wbBSMPSequence: IwbSubRecordArrayDef;
+  wbArmorAddonBSMPSequence: IwbSubRecordArrayDef;
   wbFTYP: IwbSubRecordDef;
   wbATTX: IwbSubRecordDef;
   wbMNAMFurnitureMarker: IwbSubRecordDef;
@@ -1046,13 +223,53 @@ var
   //wbRaceFRMI: IwbSubrecordArrayDef;
   wbRaceRBPC: IwbSubRecordDef;
   wbNVNM: IwbSubRecordDef;
-  wbMaxHeightDataCELL: IwbSubRecordDef;
-  wbMaxHeightDataWRLD: IwbSubRecordDef;
-  wbOFST: IwbSubRecordDef;
+  wbNavmeshVertices: IwbArrayDef;
+  wbNavmeshTriangles: IwbArrayDef;
+  wbNavmeshEdgeLinks: IwbArrayDef;
+  wbNavmeshDoorTypeEnum: IwbEnumDef;
+  wbNavmeshDoorTriangles: IwbArrayDef;
+  wbNavmeshCoverArray: IwbArrayDef;
+  wbNavmeshCoverTriangleMap: IwbArrayDef;
+  wbNavmeshWaypoints: IwbArrayDef;
+  wbNavmeshGrid: IwbStructDef;
+  wbMNAMNAVM: IwbSubRecordDef;
+  wbBlendOperationEnum: IwbEnumDef;
+  a, b, c : TVarRecs;
 
-function Sig2Int(aSignature: TwbSignature): Cardinal; inline;
+function wbGenericModel(aRequired: Boolean = False; aDontShow: TwbDontShowCallback = nil): IwbRecordMemberDef;
 begin
-  Result := PCardinal(@aSignature)^;
+  Result :=
+    wbRStructSK([0], 'Model', [
+      wbString(MODL, 'Model FileName'),
+      wbMODT,
+      wbMODC,
+      wbMODS,
+      wbMODF
+    ], [], cpNormal, aRequired, aDontShow)
+    .SetSummaryKey([0])
+    .IncludeFlag(dfSummaryMembersNoName)
+    .IncludeFlag(dfSummaryNoSortKey)
+    .IncludeFlag(dfCollapsed, wbCollapseModels)
+    .IncludeFlag(dfAllowAnyMember);
+end;
+
+function wbTexturedModel(aSubRecordName: string; const aSignatures: TwbSignatures; const aTextureSubRecords: array of IwbRecordMemberDef): IwbRecordMemberDef;
+var
+  Members: array of IwbRecordMemberDef;
+begin
+  SetLength(Members, Length(aTextureSubRecords) + 2);
+  Members[0] := wbString(aSignatures[0], 'Model FileName');
+  Members[1] := wbModelInfo(aSignatures[1]);
+  for var i := Low(aTextureSubRecords) to High(aTextureSubRecords) do
+    Members[2 + i] := aTextureSubRecords[i];
+
+  Result :=
+    wbRStruct(aSubRecordName, Members, [])
+    .SetSummaryKey([0])
+    .IncludeFlag(dfSummaryMembersNoName)
+    .IncludeFlag(dfSummaryNoSortKey)
+    .IncludeFlag(dfCollapsed, wbCollapseModels)
+    .IncludeFlag(dfAllowAnyMember);
 end;
 
 function wbEPFDActorValueToStr(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
@@ -1064,12 +281,12 @@ begin
   AsFloat := PSingle(@AsCardinal)^;
   aInt := Round(AsFloat);
   case aType of
-    ctToStr: Result := wbActorValueEnum.ToString(aInt, aElement);
+    ctToStr, ctToSummary: Result := wbActorValueEnum.ToString(aInt, aElement, aType = ctToSummary);
     ctToSortKey: Result := wbActorValueEnum.ToSortKey(aInt, aElement);
     ctCheck: Result := wbActorValueEnum.Check(aInt, aElement);
     ctToEditValue: Result := wbActorValueEnum.ToEditValue(aInt, aElement);
     ctEditType: Result := 'ComboBox';
-    ctEditInfo: Result := wbActorValueEnum.EditInfo[aInt, aElement];
+    ctEditInfo: Result := wbActorValueEnum.EditInfo[aElement].ToCommaText;
   end;
 end;
 
@@ -1095,8 +312,12 @@ var
   s, t       : string;
 begin
   case aType of
-    ctToStr: Result := IntToStr(aInt) + ' <Warning: Could not resolve Parameter 1>';
-    ctToEditValue: Result := IntToStr(aInt);
+    ctToStr, ctToSummary: begin
+      Result := aInt.ToString;
+      if aType = ctToStr then
+        Result := Result + ' <Warning: Could not resolve Parameter 1>';
+    end;
+    ctToEditValue: Result := aInt.ToString;
     ctToSortKey: begin
       Result := IntToHex64(aInt, 8);
       Exit;
@@ -1106,16 +327,11 @@ begin
     ctEditInfo: Result := '';
   end;
 
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerRefFromUnionOrValue(aElement);
-  if not Assigned(Container) then Exit;
-
-  Param1 := Container.ElementByName['Parameter #1'];
-
-  if not Assigned(Param1) then
+  if not wbTryGetContainerRefFromUnionOrValue(aElement, Container) then
     Exit;
 
-  if not Supports(Param1.LinksTo, IwbMainRecord, MainRecord) then
+  Param1 := Container.ElementByName['Parameter #1'];
+  if not wbTryGetMainRecord(Param1, MainRecord) then
     Exit;
 
   // get winning quest override except for partial forms
@@ -1126,7 +342,11 @@ begin
 
   if MainRecord.Signature <> QUST then begin
     case aType of
-      ctToStr: Result := IntToStr(aInt) + ' <Warning: "'+MainRecord.ShortName+'" is not a Quest record>';
+      ctToStr, ctToSummary: begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Warning: "'+MainRecord.ShortName+'" is not a Quest record>';
+      end;
       ctCheck: Result := '<Warning: "'+MainRecord.ShortName+'" is not a Quest record>';
     end;
     Exit;
@@ -1157,7 +377,7 @@ begin
             EditInfos.AddObject(t, TObject(j))
           else if j = aInt then begin
             case aType of
-              ctToStr, ctToEditValue: Result := t;
+              ctToStr, ctToSummary, ctToEditValue: Result := t;
               ctCheck: Result := '';
             end;
             Exit;
@@ -1166,7 +386,11 @@ begin
     end;
 
     case aType of
-      ctToStr: Result := IntToStr(aInt) + ' <Warning: Quest Stage not found in "' + MainRecord.Name + '">';
+      ctToStr, ctToSummary: begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Warning: Quest Stage not found in "' + MainRecord.Name + '">';
+      end;
       ctCheck: Result := '<Warning: Quest Stage not found in "' + MainRecord.Name + '">';
       ctEditInfo: begin
         EditInfos.Sort;
@@ -1190,8 +414,12 @@ var
   s, t       : string;
 begin
   case aType of
-    ctToStr: Result := IntToStr(aInt) + ' <Warning: Could not resolve Quest>';
-    ctToEditValue: Result := IntToStr(aInt);
+    ctToStr, ctToSummary: begin
+      Result := aInt.ToString;
+      if aType = ctToStr then
+        Result := Result + ' <Warning: Could not resolve Quest>';
+    end;
+    ctToEditValue: Result := aInt.ToString;
     ctToSortKey: begin
       Result := IntToHex64(aInt, 8);
       Exit;
@@ -1201,16 +429,11 @@ begin
     ctEditInfo: Result := '';
   end;
 
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerRefFromUnionOrValue(aElement);
-  if not Assigned(Container) then Exit;
-
-  Param1 := Container.ElementByName['Quest'];
-
-  if not Assigned(Param1) then
+  if not wbTryGetContainerRefFromUnionOrValue(aElement, Container) then
     Exit;
 
-  if not Supports(Param1.LinksTo, IwbMainRecord, MainRecord) then
+  Param1 := Container.ElementByName['Quest'];
+  if not wbTryGetMainRecord(Param1, MainRecord) then
     Exit;
 
   // get winning quest override except for partial forms
@@ -1221,7 +444,11 @@ begin
 
   if MainRecord.Signature <> QUST then begin
     case aType of
-      ctToStr: Result := IntToStr(aInt) + ' <Warning: "'+MainRecord.ShortName+'" is not a Quest record>';
+      ctToStr, ctToSummary: begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Warning: "'+MainRecord.ShortName+'" is not a Quest record>';
+      end;
       ctCheck: Result := '<Warning: "'+MainRecord.ShortName+'" is not a Quest record>';
     end;
     Exit;
@@ -1252,7 +479,7 @@ begin
             EditInfos.AddObject(t, TObject(j))
           else if j = aInt then begin
             case aType of
-              ctToStr, ctToEditValue: Result := t;
+              ctToStr, ctToSummary, ctToEditValue: Result := t;
               ctCheck: Result := '';
             end;
             Exit;
@@ -1261,7 +488,11 @@ begin
     end;
 
     case aType of
-      ctToStr: Result := IntToStr(aInt) + ' <Warning: Quest Stage not found in "' + MainRecord.Name + '">';
+      ctToStr, ctToSummary: begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Warning: Quest Stage not found in "' + MainRecord.Name + '">';
+      end;
       ctCheck: Result := '<Warning: Quest Stage not found in "' + MainRecord.Name + '">';
       ctEditInfo: begin
         EditInfos.Sort;
@@ -1273,7 +504,7 @@ begin
   end;
 end;
 
-function wbCTDAParam2QuestStageToInt(const aString: string; const aElement: IwbElement): Int64;
+function wbQuestStageToInt(const aString: string; const aElement: IwbElement): Int64;
 var
   i    : Integer;
   s    : string;
@@ -1287,6 +518,48 @@ begin
   Result := StrToInt(s);
 end;
 
+function wbCTDAParamQuestOverlay(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): Int64;
+
+  procedure ResolveOverlay;
+  var
+    MainRecord : IwbMainRecord;
+    GroupRecord: IwbGroupRecord;
+    Element    : IwbElement;
+  begin
+    if not Assigned(aElement) then
+      Exit;
+    MainRecord := aElement.ContainingMainRecord;
+    if not Assigned(MainRecord) then
+      Exit;
+
+    if MainRecord.Signature = QUST then
+      Result := MainRecord.FixedFormID.ToCardinal
+    else if MainRecord.Signature = SCEN then begin
+      Element := MainRecord.ElementBySignature[PNAM];
+      if Assigned(Element) then
+        Result := Element.NativeValue;
+    end else if MainRecord.Signature = PACK then begin
+      Element := MainRecord.ElementBySignature[QNAM];
+      if Assigned(Element) then
+        Result := Element.NativeValue;
+    end else if MainRecord.Signature = INFO then begin
+      // get DIAL for INFO
+      if Supports(MainRecord.Container, IwbGroupRecord, GroupRecord) then
+        if Supports(GroupRecord.ChildrenOf, IwbMainRecord, MainRecord) then
+          if MainRecord.Signature = DIAL then begin
+            Element := MainRecord.ElementBySignature[QNAM];
+            if Assigned(Element) then
+              Result := Element.NativeValue;
+          end;
+    end;
+  end;
+
+begin
+  Result := aInt;
+  if (aInt = 0) and (aType in [ctCheck, ctToStr, ctToSummary, ctToSortKey, ctLinksTo]) then
+    ResolveOverlay;
+end;
+
 function wbREFRNavmeshTriangleToStr(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
 var
   Container  : IwbContainerElementRef;
@@ -1295,8 +568,8 @@ var
   Triangles  : IwbContainerElementRef;
 begin
   case aType of
-    ctToStr: Result := IntToStr(aInt);
-    ctToEditValue: Result := IntToStr(aInt);
+    ctToStr, ctToSummary: Result := aInt.ToString;
+    ctToEditValue: Result := aInt.ToString;
     ctToSortKey: begin
       Result := IntToHex64(aInt, 8);
       Exit;
@@ -1306,23 +579,22 @@ begin
     ctEditInfo: Result := '';
   end;
 
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerRefFromUnionOrValue(aElement);
-  if not Assigned(Container) then Exit;
-
-  Navmesh := Container.Elements[0];
-
-  if not Assigned(Navmesh) then
+  if not wbTryGetContainerRefFromUnionOrValue(aElement, Container) then
     Exit;
 
-  if not Supports(Navmesh.LinksTo, IwbMainRecord, MainRecord) then
+  Navmesh := Container.Elements[0];
+  if not wbTryGetMainRecord(Navmesh, MainRecord) then
     Exit;
 
   MainRecord := MainRecord.WinningOverride;
 
   if MainRecord.Signature <> NAVM then begin
     case aType of
-      ctToStr: Result := IntToStr(aInt) + ' <Warning: "'+MainRecord.ShortName+'" is not a Navmesh record>';
+      ctToStr, ctToSummary: begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Warning: "'+MainRecord.ShortName+'" is not a Navmesh record>';
+      end;
       ctCheck: Result := '<Warning: "'+MainRecord.ShortName+'" is not a Navmesh record>';
     end;
     Exit;
@@ -1338,6 +610,432 @@ begin
   Result := StrToIntDef(aString, 0);
 end;
 
+function wbEdgeToStr(aEdge: Integer; aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+var
+  Triangle   : IwbContainerElementRef;
+  Flags      : Int64;
+  MainRecord : IwbMainRecord;
+  EdgeLinks  : IwbContainerElementRef;
+  EdgeLink   : IwbContainerElementRef;
+  FormID     : TwbFormID;
+begin
+  case aType of
+    ctToStr, ctToSummary: begin
+      if aInt < 0 then
+        Exit('None');
+
+      Result := aInt.ToString;
+
+      if not Assigned(aElement) then
+        Exit;
+
+      Triangle := aElement.Container as IwbContainerElementRef;
+      if not Assigned(Triangle) then
+        Exit;
+
+      MainRecord := aElement.ContainingMainRecord;
+      if not Assigned(MainRecord) then
+        Exit;
+
+      Flags := Triangle.ElementNativeValues['Flags'];
+      if Flags and (1 shl aEdge) <> 0 then begin
+        if not Supports(MainRecord.ElementByPath['NVNM\Edge Links'], IwbContainerElementRef, EdgeLinks) then
+          Exit;
+
+        if aInt >= EdgeLinks.ElementCount then
+          Exit;
+
+        if aInt < 0 then
+          Exit;
+
+        EdgeLink := EdgeLinks.Elements[aInt] as IwbContainerElementRef;
+
+        MainRecord := nil;
+        if not Supports(EdgeLink.ElementLinksTo['Mesh'], IwbMainRecord, MainRecord) then
+          Exit;
+
+        aInt := EdgeLink.ElementNativeValues['Triangle'];
+
+        Result := Result + ' (#' + aInt.ToString + ' in ' + MainRecord.Name + ')';
+      end;
+    end;
+    ctToSortKey: begin
+      Result := '00000000' + IntToHex(aInt, 4);
+      if not Assigned(aElement) then
+        Exit;
+
+      Triangle := aElement.Container as IwbContainerElementRef;
+      if not Assigned(Triangle) then
+        Exit;
+
+      MainRecord := aElement.ContainingMainRecord;
+      if not Assigned(MainRecord) then
+        Exit;
+
+      FormID := MainRecord.LoadOrderFormID;
+
+      Flags := Triangle.ElementNativeValues['Flags'];
+      if Flags and (1 shl aEdge) <> 0 then begin
+        if not Supports(MainRecord.ElementByPath['NVNM\Edge Links'], IwbContainerElementRef, EdgeLinks) then
+          Exit;
+        if aInt >= EdgeLinks.ElementCount then
+          Exit;
+        if aInt < 0 then
+          Exit;
+        EdgeLink := EdgeLinks.Elements[aInt] as IwbContainerElementRef;
+        if not Assigned(EdgeLink) then
+          Exit;
+
+        MainRecord := nil;
+        if not Supports(EdgeLink.ElementLinksTo['Mesh'], IwbMainRecord, MainRecord) then
+          Exit;
+        if Assigned(MainRecord) then
+          FormID := MainRecord.LoadOrderFormID
+        else
+          FormID := TwbFormID.Null;
+        aInt := EdgeLink.ElementNativeValues['Triangle'];
+      end;
+
+      Result := FormID.ToString + IntToHex(aInt, 4);
+    end;
+    ctCheck: Result := '';
+    ctToEditValue: if aInt < 0 then
+                     Result := ''
+                   else
+                     Result := aInt.ToString;
+    ctEditType: Result := '';
+    ctEditInfo: Result := '';
+  end;
+end;
+
+function wbEdgeLinksTo(aEdge: Integer; const aElement: IwbElement): IwbElement;
+var
+  aInt       : Int64;
+  Triangle   : IwbContainerElementRef;
+  Triangles  : IwbContainerElementRef;
+  Flags      : Int64;
+  MainRecord : IwbMainRecord;
+  EdgeLinks  : IwbContainerElementRef;
+  EdgeLink   : IwbContainerElementRef;
+begin
+  Result := nil;
+  if not Assigned(aElement) then
+    Exit;
+
+  Triangle := aElement.Container as IwbContainerElementRef;
+  if not Assigned(Triangle) then
+    Exit;
+
+  MainRecord := aElement.ContainingMainRecord;
+  if not Assigned(MainRecord) then
+    Exit;
+
+  aInt := aElement.NativeValue;
+
+  Flags := Triangle.ElementNativeValues['Flags'];
+  if Flags and (1 shl aEdge) <> 0 then begin
+    if not Supports(MainRecord.ElementByPath['NVNM\Edge Links'], IwbContainerElementRef, EdgeLinks) then
+      Exit;
+
+    if aInt >= EdgeLinks.ElementCount then
+      Exit;
+
+    if aInt < 0 then
+      Exit;
+
+    EdgeLink := EdgeLinks.Elements[aInt] as IwbContainerElementRef;
+
+    MainRecord := nil;
+    if not Supports(EdgeLink.ElementLinksTo['Mesh'], IwbMainRecord, MainRecord) then
+      Exit;
+
+    aInt := EdgeLink.ElementNativeValues['Triangle'];
+  end;
+
+  if not Supports(MainRecord.ElementByPath['NVNM\Triangles'], IwbContainerElementRef, Triangles) then
+    Exit;
+
+  if aInt >= Triangles.ElementCount then
+    Exit;
+
+  if aInt < 0 then
+    Exit;
+
+  Triangle := Triangles.Elements[aInt] as IwbContainerElementRef;
+
+  Result := Triangle;
+end;
+
+function wbEdgeLinksTo0(const aElement: IwbElement): IwbElement;
+begin
+  Result := wbEdgeLinksTo(0, aElement);
+end;
+
+function wbEdgeLinksTo1(const aElement: IwbElement): IwbElement;
+begin
+  Result := wbEdgeLinksTo(1, aElement);
+end;
+
+function wbEdgeLinksTo2(const aElement: IwbElement): IwbElement;
+begin
+  Result := wbEdgeLinksTo(2, aElement);
+end;
+
+function wbTriangleLinksTo(const aElement: IwbElement): IwbElement;
+var
+  aInt       : Int64;
+  Triangle   : IwbContainerElementRef;
+  Triangles  : IwbContainerElementRef;
+  MainRecord : IwbMainRecord;
+begin
+  Result := nil;
+  if not Assigned(aElement) then
+    Exit;
+
+  Triangle := aElement.Container as IwbContainerElementRef;
+  if not Assigned(Triangle) then
+    Exit;
+
+  MainRecord := aElement.ContainingMainRecord;
+  if not Assigned(MainRecord) then
+    Exit;
+
+  aInt := aElement.NativeValue;
+
+  if not Supports(MainRecord.ElementByPath['NVNM\Triangles'], IwbContainerElementRef, Triangles) then
+    Exit;
+
+  if aInt >= Triangles.ElementCount then
+    Exit;
+
+  if aInt < 0 then
+    Exit;
+
+  Triangle := Triangles.Elements[aInt] as IwbContainerElementRef;
+
+  Result := Triangle;
+end;
+
+function wbVertexToStr(aVertex: Integer; aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+var
+  Triangle   : IwbContainerElementRef;
+  MainRecord : IwbMainRecord;
+  Vertices  : IwbContainerElementRef;
+  Vertex   : IwbContainerElementRef;
+begin
+  case aType of
+    ctToStr, ctToSummary: begin
+      Result := aInt.ToString;
+      if not Assigned(aElement) then
+        Exit;
+
+      Triangle := aElement.Container as IwbContainerElementRef;
+      if not Assigned(Triangle) then
+        Exit;
+
+      MainRecord := aElement.ContainingMainRecord;
+      if not Assigned(MainRecord) then
+        Exit;
+
+      if not Supports(MainRecord.ElementByPath['NVNM\Vertices'], IwbContainerElementRef, Vertices) then
+        Exit;
+
+      if aInt >= Vertices.ElementCount then
+        Exit;
+
+      if aInt < 0 then
+        Exit;
+
+      Vertex := Vertices.Elements[aInt] as IwbContainerElementRef;
+
+      with Vertex do try
+        Result := Result + Format(' (%s, %s, %s)', [ElementEditValues['X'], ElementEditValues['Y'], ElementEditValues['Z']]);
+      except
+        // TODO: yikes, suppressing exceptions?
+      end;
+    end;
+    ctToSortKey: begin
+      Result := IntToHex(aInt, 4);
+      if not Assigned(aElement) then
+        Exit;
+
+      Triangle := aElement.Container as IwbContainerElementRef;
+      if not Assigned(Triangle) then
+        Exit;
+
+      MainRecord := aElement.ContainingMainRecord;
+      if not Assigned(MainRecord) then
+        Exit;
+
+      if not Supports(MainRecord.ElementByPath['NVNM\Vertices'], IwbContainerElementRef, Vertices) then
+        Exit;
+
+      if aInt >= Vertices.ElementCount then
+        Exit;
+
+      Vertex := Vertices.Elements[aInt] as IwbContainerElementRef;
+
+      with Vertex do try
+        Result := SortKey[False];
+      except
+        // yikes, suppressing exceptions?
+      end;
+    end;
+    ctCheck: Result := '';
+    ctToEditValue: Result := aInt.ToString;
+    ctEditType: Result := '';
+    ctEditInfo: Result := '';
+  end;
+end;
+
+
+function wbVertexLinksTo(const aElement: IwbElement): IwbElement;
+var
+  aInt       : Int64;
+  Triangle   : IwbContainerElementRef;
+  MainRecord : IwbMainRecord;
+  Vertices   : IwbContainerElementRef;
+  Vertex     : IwbContainerElementRef;
+begin
+  Result := nil;
+  if not Assigned(aElement) then
+    Exit;
+
+  Triangle := aElement.Container as IwbContainerElementRef;
+  if not Assigned(Triangle) then
+    Exit;
+
+  MainRecord := aElement.ContainingMainRecord;
+  if not Assigned(MainRecord) then
+    Exit;
+
+  if not Supports(MainRecord.ElementByPath['NVNM\Vertices'], IwbContainerElementRef, Vertices) then
+    Exit;
+
+  aInt := aElement.NativeValue;
+
+  if aInt >= Vertices.ElementCount then
+    Exit;
+  if aInt < 0 then
+    Exit;
+
+  Vertex := Vertices.Elements[aInt] as IwbContainerElementRef;
+
+  Result := Vertex;
+end;
+
+function wbCoverLinksTo(const aElement: IwbElement): IwbElement;
+var
+  aInt       : Int64;
+  Triangle   : IwbContainerElementRef;
+  MainRecord : IwbMainRecord;
+  CoverArray   : IwbContainerElementRef;
+  Cover     : IwbContainerElementRef;
+begin
+  Result := nil;
+  if not Assigned(aElement) then
+    Exit;
+
+  Triangle := aElement.Container as IwbContainerElementRef;
+  if not Assigned(Triangle) then
+    Exit;
+
+  MainRecord := aElement.ContainingMainRecord;
+  if not Assigned(MainRecord) then
+    Exit;
+
+  if not Supports(MainRecord.ElementByPath['NVNM\Cover Array'], IwbContainerElementRef, CoverArray) then
+    Exit;
+
+  aInt := aElement.NativeValue;
+
+  if aInt >= CoverArray.ElementCount then
+    Exit;
+  if aInt < 0 then
+    Exit;
+
+  Cover := CoverArray.Elements[aInt] as IwbContainerElementRef;
+
+  Result := Cover;
+end;
+
+function wbVertexToInt(aVertex: Integer; const aString: string; const aElement: IwbElement): Int64;
+begin
+  Result := StrToIntDef(aString, 0);
+end;
+
+function wbVertexToStr0(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+begin
+  Result := wbVertexToStr(0, aInt, aElement, aType);
+end;
+
+function wbVertexToInt0(const aString: string; const aElement: IwbElement): Int64;
+begin
+  Result := wbVertexToInt(0, aString, aElement);
+end;
+
+function wbVertexToStr1(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+begin
+  Result := wbVertexToStr(1, aInt, aElement, aType);
+end;
+
+function wbVertexToInt1(const aString: string; const aElement: IwbElement): Int64;
+begin
+  Result := wbVertexToInt(1, aString, aElement);
+end;
+
+function wbVertexToStr2(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+begin
+  Result := wbVertexToStr(2, aInt, aElement, aType);
+end;
+
+function wbVertexToInt2(const aString: string; const aElement: IwbElement): Int64;
+begin
+  Result := wbVertexToInt(2, aString, aElement);
+end;
+
+
+function wbEdgeToInt(aEdge: Integer; const aString: string; const aElement: IwbElement): Int64;
+var
+  s: string;
+begin
+  s := Trim(aString);
+  if (s = '')  or SameText(s, 'None') then
+    Result := -1
+  else
+    Result := StrToIntDef(aString, 0);
+end;
+
+function wbEdgeToStr0(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+begin
+  Result := wbEdgeToStr(0, aInt, aElement, aType);
+end;
+
+function wbEdgeToInt0(const aString: string; const aElement: IwbElement): Int64;
+begin
+  Result := wbEdgeToInt(0, aString, aElement);
+end;
+
+function wbEdgeToStr1(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+begin
+  Result := wbEdgeToStr(1, aInt, aElement, aType);
+end;
+
+function wbEdgeToInt1(const aString: string; const aElement: IwbElement): Int64;
+begin
+  Result := wbEdgeToInt(1, aString, aElement);
+end;
+
+function wbEdgeToStr2(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+begin
+  Result := wbEdgeToStr(2, aInt, aElement, aType);
+end;
+
+function wbEdgeToInt2(const aString: string; const aElement: IwbElement): Int64;
+begin
+  Result := wbEdgeToInt(2, aString, aElement);
+end;
+
 { Alias to string conversion, requires quest reference or quest record specific to record that references alias }
 function wbAliasToStr(aInt: Int64; const aQuestRef: IwbElement; aType: TwbCallbackType): string;
 var
@@ -1349,14 +1047,17 @@ var
   s, t       : string;
 begin
   case aType of
-    ctToStr: if aInt = -1 then
+    ctToStr, ctToSummary: if aInt = -1 then
         Result := 'None'
       else if aInt = -2 then
         Result := 'Player'
-      else
-        Result := IntToStr(aInt) + ' <Warning: Could not resolve alias>';
+      else begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Warning: Could not resolve alias>';
+      end;
     ctToEditValue: if aInt = -1 then Result := 'None' else
-      Result := IntToStr(aInt);
+      Result := aInt.ToString;
     ctToSortKey: begin
       Result := IntToHex64(aInt, 8);
       Exit;
@@ -1386,7 +1087,11 @@ begin
 
   if MainRecord.Signature <> QUST then begin
     case aType of
-      ctToStr: Result := IntToStr(aInt) + ' <Warning: "' + MainRecord.ShortName + '" is not a Quest record>';
+      ctToStr, ctToSummary: begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Warning: "' + MainRecord.ShortName + '" is not a Quest record>';
+      end;
       ctCheck: Result := '<Warning: "' + MainRecord.ShortName + '" is not a Quest record>';
     end;
     Exit;
@@ -1422,7 +1127,7 @@ begin
             EditInfos.Add(t)
           else if j = aInt then begin
             case aType of
-              ctToStr, ctToEditValue: Result := t;
+              ctToStr, ctToSummary, ctToEditValue: Result := t;
               ctCheck: Result := '';
             end;
             Exit;
@@ -1431,7 +1136,11 @@ begin
     end;
 
     case aType of
-      ctToStr: Result := IntToStr(aInt) + ' <Warning: Quest Alias not found in "' + MainRecord.Name + '">';
+      ctToStr, ctToSummary: begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Warning: Quest Alias not found in "' + MainRecord.Name + '">';
+      end;
       ctCheck: Result := '<Warning: Quest Alias not found in "' + MainRecord.Name + '">';
       ctEditInfo: begin
         EditInfos.Add('None');
@@ -1452,8 +1161,9 @@ begin
   Result := -1;
 
   if aString = 'None' then
-    Exit
-  else if aString = 'Player' then begin
+    Exit;
+
+  if aString = 'Player' then begin
     Result := -2;
     Exit;
   end;
@@ -1473,7 +1183,7 @@ var
 begin
   if not wbResolveAlias then begin
     case aType of
-      ctToStr, ctToEditValue: Result := IntToStr(aInt);
+      ctToStr, ctToSummary, ctToEditValue: Result := aInt.ToString;
       ctToSortKey: Result := IntToHex64(aInt, 8);
     else
       Result := '';
@@ -1481,12 +1191,7 @@ begin
     Exit;
   end;
 
-  if not Assigned(aElement) then
-    Exit;
-
-  Container := GetContainerRefFromUnionOrValue(aElement);
-
-  if not Assigned(Container) then
+  if not wbTryGetContainerRefFromUnionOrValue(aElement, Container) then
     Exit;
 
   Result := wbAliasToStr(aInt, Container.ElementByName['FormID'], aType);
@@ -1498,7 +1203,7 @@ var
 begin
   if not wbResolveAlias then begin
     case aType of
-      ctToStr, ctToEditValue: Result := IntToStr(aInt);
+      ctToStr, ctToSummary, ctToEditValue: Result := aInt.ToString;
       ctToSortKey: Result := IntToHex64(aInt, 8);
     else
       Result := '';
@@ -1506,11 +1211,9 @@ begin
     Exit;
   end;
 
-  if not Assigned(aElement) then
+  if not wbTryGetContainerFromUnion(aElement, Container) then
     Exit;
 
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
   while Assigned(Container) and (Container.ElementType <> etMainRecord) do
     Container := Container.Container;
 
@@ -1526,7 +1229,7 @@ var
 begin
   if not wbResolveAlias then begin
     case aType of
-      ctToStr, ctToEditValue: Result := IntToStr(aInt);
+      ctToStr, ctToSummary, ctToEditValue: Result := aInt.ToString;
       ctToSortKey: Result := IntToHex64(aInt, 8);
     else
       Result := '';
@@ -1534,11 +1237,9 @@ begin
     Exit;
   end;
 
-  if not Assigned(aElement) then
+  if not wbTryGetContainerFromUnion(aElement, Container) then
     Exit;
 
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
   while Assigned(Container) and (Container.ElementType <> etMainRecord) do
     Container := Container.Container;
 
@@ -1554,7 +1255,7 @@ var
 begin
   if not wbResolveAlias then begin
     case aType of
-      ctToStr, ctToEditValue: Result := IntToStr(aInt);
+      ctToStr, ctToSummary, ctToEditValue: Result := aInt.ToString;
       ctToSortKey: Result := IntToHex64(aInt, 8);
     else
       Result := '';
@@ -1573,6 +1274,100 @@ begin
   Result := wbAliasToStr(aInt, Container.ElementBySignature['ALEQ'] , aType);
 end;
 
+function wbCTDAParam1StringToInt(const aString: string; const aElement: IwbElement): Int64;
+var
+  Container  : IwbContainerElementRef;
+begin
+  Result := 0;
+
+  if not Assigned(aElement) then
+    Exit;
+
+  Container := GetContainerFromUnion(aElement) as IwbContainerElementRef;
+  if not Assigned(Container) then
+    Exit;
+
+  Container.ElementEditValues['..\CIS1'] := aString
+end;
+
+function wbCTDAParam1StringToString(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+var
+  Container  : IwbContainerElementRef;
+begin
+  case aType of
+    ctToStr, ctToSummary, ctToSortKey, ctToEditValue, ctToNativeValue: begin
+      Result := '';
+
+      if not Assigned(aElement) then
+        Exit;
+
+      Container := GetContainerFromUnion(aElement) as IwbContainerElementRef;
+      if not Assigned(Container) then
+        Exit;
+
+      case aType of
+        ctToSummary:
+          Result := Container.ElementEditValues['..\CIS1'];
+        ctToEditValue, ctToNativeValue:
+          Result := Container.ElementEditValues['..\CIS1'];
+      else
+        Result := Container.ElementValues['..\CIS1'];
+      end;
+    end;
+    ctCheck, ctEditType, ctEditInfo, ctLinksTo:
+      Result := '';
+  else
+    Result := aInt.ToString;
+  end;
+end;
+
+function wbCTDAParam2StringToInt(const aString: string; const aElement: IwbElement): Int64;
+var
+  Container  : IwbContainerElementRef;
+begin
+  Result := 0;
+
+  if not Assigned(aElement) then
+    Exit;
+
+  Container := GetContainerFromUnion(aElement) as IwbContainerElementRef;
+  if not Assigned(Container) then
+    Exit;
+
+  Container.ElementEditValues['..\CIS2'] := aString
+end;
+
+function wbCTDAParam2StringToString(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
+var
+  Container  : IwbContainerElementRef;
+begin
+  case aType of
+    ctToStr, ctToSummary, ctToSortKey, ctToEditValue, ctToNativeValue: begin
+      Result := '';
+
+      if not Assigned(aElement) then
+        Exit;
+
+      Container := GetContainerFromUnion(aElement) as IwbContainerElementRef;
+      if not Assigned(Container) then
+        Exit;
+
+      case aType of
+        ctToSummary:
+          Result := Container.ElementSummaries['..\CIS2'];
+        ctToEditValue, ctToNativeValue:
+          Result := Container.ElementEditValues['..\CIS2'];
+      else
+        Result := Container.ElementValues['..\CIS2'];
+      end;
+    end;
+    ctCheck, ctEditType, ctEditInfo, ctLinksTo:
+      Result := '';
+  else
+    Result := aInt.ToString;
+  end;
+end;
+
 function wbConditionAliasToStr(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
 var
   Container  : IwbContainer;
@@ -1581,7 +1376,7 @@ var
 begin
   if not wbResolveAlias then begin
     case aType of
-      ctToStr, ctToEditValue: Result := IntToStr(aInt);
+      ctToStr, ctToSummary, ctToEditValue: Result := aInt.ToString;
       ctToSortKey: Result := IntToHex64(aInt, 8);
     else
       Result := '';
@@ -1589,11 +1384,9 @@ begin
     Exit;
   end;
 
-  if not Assigned(aElement) then
+  if not wbTryGetContainerFromUnion(aElement, Container) then
     Exit;
 
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
   while Assigned(Container) and (Container.ElementType <> etMainRecord) do
     Container := Container.Container;
 
@@ -1618,7 +1411,7 @@ begin
   // this should never be called since aliases in conditions can be in the forms above only
   // but just in case
   case aType of
-    ctToStr, ctToEditValue: Result := IntToStr(aInt);
+    ctToStr, ctToSummary, ctToEditValue: Result := aInt.ToString;
     ctToSortKey: Result := IntToHex64(aInt, 8);
   else
     Result := '';
@@ -1634,7 +1427,10 @@ begin
   Result := '';
   if aType = ctToSortKey then begin
     Result := IntToHex64(aInt, 2);
-  end else if aType = ctToStr then begin
+    Exit;
+  end;
+
+  if aType in [ctToStr, ctToSummary] then begin
     PhaseLength := aInt mod 64;
     Masser := (aInt and 64) <> 0;
     Secunda := (aInt and 128) <> 0;
@@ -1656,7 +1452,7 @@ function wbClmtTime(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackT
 begin
   if aType = ctToSortKey then
     Result := IntToHex64(aInt, 4)
-  else if aType = ctToStr then
+  else if aType in [ctToStr, ctToSummary] then
     Result := TimeToStr( EncodeTime(aInt div 6, (aInt mod 6) * 10, 0, 0) )
   else
     Result := '';
@@ -1728,7 +1524,7 @@ begin
       if (aInt and $10) <> 0 then // Swap Subject and Target
         Result[8] := '1';
     end;
-    ctToStr: begin
+    ctToStr, ctToSummary: begin
       case aInt and $E0 of
         $00 : Result := 'Equal to';
         $20 : Result := 'Not equal to';
@@ -1739,7 +1535,7 @@ begin
       else
         Result := '<Unknown Compare operator>'
       end;
-      s := wbCtdaTypeFlags.ToString(aInt and $1F, aElement);
+      s := wbCtdaTypeFlags.ToString(aInt and $1F, aElement, aType = ctToSummary);
       if s <> '' then
         Result := Result + ' / ' + s;
     end;
@@ -1825,7 +1621,7 @@ begin
   EventFunction := aInt and $FFFF;
   EventMember := aInt shr 16;
   case aType of
-    ctToStr, ctToEditValue: begin
+    ctToStr, ctToSummary, ctToEditValue: begin
       Result := wbEventFunctionEnum.ToEditValue(EventFunction, nil);
       Result := Result + ':' + wbEventMemberEnum.ToEditValue(EventMember, nil);
     end;
@@ -1846,7 +1642,7 @@ begin
       Result := wbEventFunctionAndMemberEditInfo;
       if Result = '' then try
         slMember := TStringList.Create;
-        slMember.CommaText := wbEventMemberEnum.EditInfo[0, nil];
+        slMember.AddStrings(wbEventMemberEnum.EditInfo[nil]);
         with TStringList.Create do try
           for i := 0 to Pred(wbEventFunctionEnum.NameCount) do
             for j := 0 to Pred(slMember.Count) do
@@ -1890,7 +1686,7 @@ var
 begin
   Result := '';
   case aType of
-    ctToStr, ctToEditValue: Result := IntToStr(aInt);
+    ctToStr, ctToSummary, ctToEditValue: Result := aInt.ToString;
     ctCheck: begin
 
       AddonIndex := aInt;
@@ -1901,7 +1697,7 @@ begin
         for i := 0 to Pred(Includes.ElementCount) do begin
           if not Supports(Includes.Elements[i], IwbContainer, Include) then
             Continue;
-          if not Supports(Include.ElementByName['Mod'].LinksTo, IwbMainRecord, OMOD) then
+          if not Supports(Include.ElementLinksTo['Mod'], IwbMainRecord, OMOD) then
             Continue;
           if not Supports(OMOD.ElementByPath['DATA\Properties'], IwbContainerElementRef, Entries) then
             Continue;
@@ -1942,16 +1738,20 @@ var
 begin
   if VarSameValue(aOldValue, aNewValue) then
     Exit;
-  if Supports(aElement.Container, IwbContainerElementRef, Container) then begin
-    OldValue := Integer(aOldValue) and 1;
-    NewValue := Integer(aNewValue) and 1;
-    if NewValue = OldValue then
-      Exit;
-    if NewValue = 1 then
-      Container.RemoveElement('TNAM')
-    else
-      Container.Add('TNAM', True);
-  end;
+
+  if not Supports(aElement.Container, IwbContainerElementRef, Container) then
+    Exit;
+
+  OldValue := Integer(aOldValue) and 1;
+  NewValue := Integer(aNewValue) and 1;
+
+  if NewValue = OldValue then
+    Exit;
+
+  if NewValue = 1 then
+    Container.RemoveElement('TNAM')
+  else
+    Container.Add('TNAM', True);
 end;
 
 procedure wbGMSTEDIDAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -1961,13 +1761,16 @@ var
 begin
   if VarSameValue(aOldValue, aNewValue) then
     Exit;
-  if Supports(aElement.Container, IwbContainerElementRef, Container) then begin
-    OldValue := aOldValue;
-    NewValue := aNewValue;
-    if (Length(OldValue) < 1) or (Length(OldValue) < 1) or (OldValue[1] <> NewValue[1]) then begin
-      Container.RemoveElement('DATA');
-      Container.Add('DATA', True);
-    end;
+
+  if not Supports(aElement.Container, IwbContainerElementRef, Container) then
+    Exit;
+
+  OldValue := aOldValue;
+  NewValue := aNewValue;
+
+  if (Length(OldValue) < 1) or (Length(OldValue) < 1) or (OldValue[1] <> NewValue[1]) then begin
+    Container.RemoveElement('DATA');
+    Container.Add('DATA', True);
   end;
 end;
 
@@ -1981,21 +1784,24 @@ const
 begin
   if VarSameValue(aOldValue, aNewValue) then
     Exit;
-  if Supports(aElement.Container, IwbContainerElementRef, Container) then begin
-    OldValue := aOldValue;
-    NewValue := aNewValue;
 
-    if Length(OldValue) > Length(OrderedList) then
-      Delete(OldValue, 1, Length(OldValue)-Length(OrderedList));
-    if Length(NewValue) > Length(OrderedList) then
-      Delete(NewValue, 1, Length(NewValue)-Length(OrderedList));
+  if not Supports(aElement.Container, IwbContainerElementRef, Container) then
+    Exit;
 
-    OldOrdered := SameText(OldValue, OrderedList);
-    NewOrdered := SameText(NewValue, OrderedList);
+  OldValue := aOldValue;
+  NewValue := aNewValue;
 
-    if OldOrdered <> NewOrdered then
-      Container.RemoveElement('FormIDs');
-  end;
+  if Length(OldValue) > Length(OrderedList) then
+    Delete(OldValue, 1, Length(OldValue)-Length(OrderedList));
+
+  if Length(NewValue) > Length(OrderedList) then
+    Delete(NewValue, 1, Length(NewValue)-Length(OrderedList));
+
+  OldOrdered := SameText(OldValue, OrderedList);
+  NewOrdered := SameText(NewValue, OrderedList);
+
+  if OldOrdered <> NewOrdered then
+    Container.RemoveElement('FormIDs');
 end;
 
 procedure wbCtdaTypeAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -2005,12 +1811,14 @@ var
 begin
   if VarSameValue(aOldValue, aNewValue) then
     Exit;
+
   if not Supports(aElement, IwbContainerElementRef, Container) then
     Exit;
 
   // reset value if "use global" has changed
   OldValue := aOldValue and $04;
   NewValue := aNewValue and $04;
+
   if OldValue <> NewValue then
     Container.ElementNativeValues['..\Comparison Value'] := 0;
 
@@ -2027,26 +1835,12 @@ begin
   Exit;
 end;
 
-function wbMODTCallback(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
-var
-  Strings: TDynStrings;
-  i: Integer;
-begin
-  Result := '';
-  if wbLoaderDone and (aType in [ctToStr, ctToSortKey] ) then begin
-    Strings := wbContainerHandler.ResolveHash(aInt);
-    for i := Low(Strings) to High(Strings) do
-      Result := Result + Strings[i] + ', ';
-    SetLength(Result, Length(Result) -2 );
-  end;
-end;
-
 {>>> Needs revision for Skyrim <<<}
 //function wbIdleAnam(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
 //begin
 //  Result := '';
 //  case aType of
-//    ctToStr: begin
+//    ctToStr, ctToSummary: begin
 //      case aInt and not $C0 of
 //        0: Result := 'Idle';
 //        1: Result := 'Movement';
@@ -2080,50 +1874,6 @@ end;
 //  end;
 //end;
 
-function wbScaledInt4ToStr(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
-const
-  PlusMinus : array[Boolean] of string = ('+', '-');
-begin
-  Result := '';
-  case aType of
-    ctToStr, ctToEditValue: Result := FloatToStrF(aInt / 10000, ffFixed, 99, 4);
-    ctToSortKey: begin
-      Result := FloatToStrF(aInt / 10000, ffFixed, 99, 4);
-      if Length(Result) < 22 then
-        Result := StringOfChar('0', 22 - Length(Result)) + Result;
-      Result := PlusMinus[aInt < 0] + Result;
-    end;
-    ctCheck: Result := '';
-  end;
-end;
-
-function wbScaledInt4ToInt(const aString: string; const aElement: IwbElement): Int64;
-var
-  f: Extended;
-begin
-  f := StrToFloat(aString);
-  f := f * 10000;
-  Result := Round(f);
-end;
-
-function wbCloudSpeedToStr(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
-begin
-  Result := '';
-  case aType of
-    ctToStr, ctToEditValue: Result := FloatToStrF((aInt - 127)/127/10, ffFixed, 99, 4);
-    ctCheck: Result := '';
-  end;
-end;
-
-function wbCloudSpeedToInt(const aString: string; const aElement: IwbElement): Int64;
-var
-  f: Extended;
-begin
-  f := StrToFloat(aString);
-  f := f*10*127 + 127;
-  Result := Min(Round(f), 254);
-end;
-
 function wbShortXYtoStr(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
 var
   x, y: SmallInt;
@@ -2132,7 +1882,7 @@ begin
   x := aInt shr 16 and $FFFF;
   Result := '';
   case aType of
-    ctToStr, ctToEditValue: Result := Format('%d, %d', [x, y]);
+    ctToStr, ctToSummary, ctToEditValue: Result := Format('%d, %d', [x, y]);
     ctCheck: Result := '';
   end;
 end;
@@ -2147,32 +1897,6 @@ begin
   PWord(@Value)^ := x;
   PWord(Cardinal(@Value) + SizeOf(SmallInt))^ := y;
   Result := Value;
-end;
-
-function wbHideFFFF(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
-begin
-  Result := '';
-  if aType = ctToSortKey then
-    Result := IntToHex64(aInt, 4)
-  else if aType = ctToStr then
-    if aInt = $FFFF then
-      Result := 'None'
-    else
-      Result := IntToStr(aInt);
-end;
-
-function wbAtxtPosition(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
-begin
-  Result := '';
-  if aType = ctToSortKey then
-    Result := IntToHex64(aInt div 17, 2) + IntToHex64(aInt mod 17, 2)
-  else if aType = ctCheck then begin
-    if (aInt < 0) or (aInt > 288) then
-      Result := '<Out of range: '+IntToStr(aInt)+'>'
-    else
-      Result := '';
-  end else if aType = ctToStr then
-    Result := IntToStr(aInt) + ' -> ' + IntToStr(aInt div 17) + ':' + IntToStr(aInt mod 17);
 end;
 
 function wbPlacedAddInfo(const aMainRecord: IwbMainRecord): string;
@@ -2197,26 +1921,29 @@ begin
   while Assigned(Container) and (Container.ElementType <> etGroupRecord) do
     Container := Container.Container;
 
-  if Assigned(Container) then begin
-    s := Trim(Container.Name);
+  if not Assigned(Container) then
+    Exit;
+
+  s := Trim(Container.Name);
     if s <> '' then begin
-      if Result <> '' then
-        Result := Result + ' ';
-      Result := Result + 'in ' + s;
+    if Result <> '' then
+      Result := Result + ' ';
 
-      // grid position of persistent reference in exterior persistent cell (interior cells are not persistent)
-      if Supports(aMainRecord.Container, IwbGroupRecord, Container) then
-        Cell := IwbGroupRecord(Container).ChildrenOf;
-      if Assigned(Cell) and Cell.IsPersistent and (Cell.Signature = 'CELL') then
+    Result := Result + 'in ' + s;
+
+    // grid position of persistent reference in exterior persistent cell (interior cells are not persistent)
+    if Supports(aMainRecord.Container, IwbGroupRecord, Container) then
+      Cell := IwbGroupRecord(Container).ChildrenOf;
+
+    if Assigned(Cell) and Cell.IsPersistent and (Cell.Signature = 'CELL') then
         if aMainRecord.GetPosition(Position) then begin
-          Grid := wbPositionToGridCell(Position);
-          Result := Result + ' at ' + IntToStr(Grid.x) + ',' + IntToStr(Grid.y);
-        end;
+        Grid := wbPositionToGridCell(Position);
+        Result := Result + ' at ' + IntToStr(Grid.x) + ',' + IntToStr(Grid.y);
+      end;
 
-      // in precombined mesh
-      if aMainRecord.HasPrecombinedMesh then
-        Result := Result + ' in ' + aMainRecord.PrecombinedMesh;
-    end;
+    // in precombined mesh
+    if aMainRecord.HasPrecombinedMesh then
+      Result := Result + ' in ' + aMainRecord.PrecombinedMesh;
   end;
 end;
 
@@ -2261,13 +1988,14 @@ begin
   while Assigned(Container) and (Container.ElementType <> etGroupRecord) do
     Container := Container.Container;
 
-  if Assigned(Container) then begin
-    s := Trim(Container.Name);
+  if not Assigned(Container) then
+    Exit;
+
+  s := Trim(Container.Name);
     if s <> '' then begin
-      if Result <> '' then
-        Result := Result + ' ';
-      Result := Result + 'in ' + s;
-    end;
+    if Result <> '' then
+      Result := Result + ' ';
+    Result := Result + 'in ' + s;
   end;
 end;
 
@@ -2291,76 +2019,32 @@ end;
 //  end;
 //end;
 
-function wbCellAddInfo(const aMainRecord: IwbMainRecord): string;
-var
-  Rec: IwbRecord;
-  Container: IwbContainer;
-  GroupRecord : IwbGroupRecord;
-  s: string;
-begin
-  Result := '';
-
-  if not aMainRecord.IsPersistent then begin
-    Rec := aMainRecord.RecordBySignature['XCLC'];
-    if Assigned(Rec) then
-      Result := 'at ' + Rec.Elements[0].Value + ',' + Rec.Elements[1].Value;
-  end;
-
-  Container := aMainRecord.Container;
-  while Assigned(Container) and not
-    (Supports(Container, IwbGroupRecord, GroupRecord) and (GroupRecord.GroupType = 1))  do
-    Container := Container.Container;
-
-  if Assigned(Container) then begin
-    s := wbFormID.ToString(GroupRecord.GroupLabel, aMainRecord);
-    if s <> '' then begin
-      if Result <> '' then
-        s := s + ' ';
-      Result := 'in ' + s + Result;
-    end;
-  end;
-end;
-
-procedure wbCTDARunOnAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  if aOldValue <> aNewValue then
-    if aNewValue <> 2 then
-      aElement.Container.ElementNativeValues['Reference'] := 0;
-end;
-
-{>>> Needs revision for Skyrim <<<}
-procedure wbPERKPRKETypeAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-var
-  Container : IwbContainerElementRef;
-//  rDATA     : IwbRecord;
-begin
-  if aOldValue <> aNewValue then
-    if Supports(aElement.Container, IwbContainerElementRef, Container) then begin
-      if Supports(Container.Container, IwbContainerElementRef, Container) then begin
-        Container.RemoveElement('DATA');
-        Container.Add('DATA', True);
-        Container.RemoveElement('Perk Conditions');
-        Container.RemoveElement('Entry Point Function Parameters');
-        if aNewValue = 2 then begin
-          Container.Add('EPFT', True);
-          Container.ElementNativeValues['DATA\Entry Point\Function'] := 2;
-        end;
-      end;
-    end;
-end;
-
 function wbNPCLevelDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
 var
   Container: IwbContainer;
   i: Int64;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   i := Container.ElementByName['Flags'].NativeValue;
   if i and $00000080 <> 0 then
+    Result := 1;
+end;
+
+function wbINFOGroupDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
+var
+  MainRecord: IwbMainRecord;
+begin
+  Result := 0;
+  if not Assigned(aElement) then
+    Exit;
+  MainRecord := aElement.GetContainingMainRecord;
+  if not Assigned(MainRecord) then
+    Exit;
+
+  if (MainRecord.Flags._Flags and $40) > 0 then
     Result := 1;
 end;
 
@@ -2375,12 +2059,12 @@ const
 
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   VarClear(ArchType);
   Element := Container.ElementByName['Archetype'];
+
   if Assigned(Element) then
     ArchType := Element.NativeValue
   else if Supports(Container, IwbDataContainer, DataContainer) and
@@ -2389,19 +2073,22 @@ begin
       ArchType := PCardinal(aBasePtr)^;
     end;
 
-  if not VarIsEmpty(ArchType) then
-    case Integer(ArchType) of
-      12: Result := 1; // Light
-      17: Result := 2; // Bound Item
-      18: Result := 3; // Summon Creature
-      25: Result := 4; // Guide
-      34: Result := 8; // Peak Mod
-      35: Result := 5; // Cloak
-      36: Result := 6; // Werewolf
-      39: Result := 7; // Enhance Weapon
-      40: Result := 4; // Spawn Hazard
-      46: Result := 6; // Vampire Lord
-    end;
+  if VarIsEmpty(ArchType) then
+    Exit;
+
+  case Integer(ArchType) of
+    12: Result := 1; // Light
+    17: Result := 2; // Bound Item
+    18: Result := 3; // Summon Creature
+    25: Result := 4; // Guide
+    34: Result := 8; // Peak Mod
+    35: Result := 5; // Cloak
+    36: Result := 6; // Werewolf
+    39: Result := 7; // Enhance Weapon
+    40: Result := 4; // Spawn Hazard
+    45: Result := 9; // Damage Type
+    46: Result := 9; // Immunity
+  end;
 end;
 
 procedure wbMGEFAssocItemAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -2409,15 +2096,16 @@ var
   Container : IwbContainer;
   Element   : IwbElement;
 begin
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
-  if (aNewValue <> 0) then begin
-    Element := Container.ElementByName['Archetype'];
-    if Assigned(Element) and (Element.NativeValue = 0) then
-        Element.NativeValue := $FF; // Signals ArchType that it should not mess with us on the next change!
-          // I assume this will alo protect Second AV Weight (The two actor values are after ArchType)
-  end;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
+
+  if not (aNewValue <> 0) then
+    Exit;
+
+  Element := Container.ElementByName['Archetype'];
+  if Assigned(Element) and (Element.NativeValue = 0) then
+      Element.NativeValue := $FF; // Signals ArchType that it should not mess with us on the next change!
+        // I assume this will alo protect Second AV Weight (The two actor values are after ArchType)
 end;
 
 procedure wbMGEFAV2WeightAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -2425,14 +2113,15 @@ var
   Container : IwbContainer;
   Element   : IwbElement;
 begin
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
-  if (aNewValue <> 0.0) then begin
-    Element := Container.ElementByName['Archetype'];
-    if Assigned(Element) and (Element.NativeValue = 0) then
-        Element.NativeValue := $FF; // Signals ArchType that it should not mess with us on the next change!
-  end;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
+
+  if not (aNewValue <> 0.0) then
+    Exit;
+
+  Element := Container.ElementByName['Archetype'];
+  if Assigned(Element) and (Element.NativeValue = 0) then
+      Element.NativeValue := $FF; // Signals ArchType that it should not mess with us on the next change!
 end;
 
 procedure wbMGEFArchtypeAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -2441,8 +2130,10 @@ var
 begin
   if VarSameValue(aOldValue, aNewValue) then
     Exit;
+
   if not Supports(aElement, IwbContainerElementRef, Container) then
     Exit;
+
   if (aNewValue < $FF) and (aOldValue < $FF) then begin
     Container.ElementNativeValues['..\Assoc. Item'] := 0;
     case Integer(aNewValue) of
@@ -2462,19 +2153,6 @@ begin
   end;
 end;
 
-function wbCTDAReferenceDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
-var
-  Container     : IwbContainer;
-begin
-  Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
-
-  if Integer(Container.ElementNativeValues['Run On']) = 2 then
-    Result := 1;
-end;
-
 function wbNAVIIslandDataDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
 var
   Container   : IwbContainer;
@@ -2483,6 +2161,8 @@ var
 begin
   Result := 0;
 
+  if not Assigned(aElement) then
+    Exit;
   Container := aElement.Container;
   while Assigned(Container) and (Container.ElementType <> etSubRecord) do
     Container := Container.Container;
@@ -2505,6 +2185,8 @@ var
 begin
   Result := 0;
 
+  if not Assigned(aElement) then
+    Exit;
   Container := aElement.Container;
   while Assigned(Container) and (Container.ElementType <> etsubRecord) do
     Container := Container.Container;
@@ -2524,9 +2206,11 @@ function wbNVNMParentDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement
 var
   Container   : IwbContainer;
   Parent      : IwbElement;
-  i           : integer;
-begin  // Could be simplified by checking if Parent Worldspace is NULL, that's what the runtime does :)
+  i           : Int64;
+begin
   Result := 0;
+  if not Assigned(aElement) then
+    Exit;
 
   Container := aElement.Container;
 
@@ -2534,9 +2218,7 @@ begin  // Could be simplified by checking if Parent Worldspace is NULL, that's w
 
   if not Assigned(Parent) then
     Exit;
-
   i := Parent.NativeValue;
-
   // is interior cell?
   if i = 0 then
     Result := 1;
@@ -2549,16 +2231,16 @@ var
   i           : int64;
 begin
   Result := 0;
+  if not Assigned(aElement) then
+    Exit;
 
   Container := aElement.Container;
 
-  Parent := Container.ElementByName['DTUnknown'];
+  Parent := Container.ElementByName['Door Type'];
 
   if not Assigned(Parent) then
     Exit;
-
   i := Parent.NativeValue;
-
   // not sure if it would be an error in the file or if it really possible
   if i <> 0 then
     Result := 1;
@@ -2569,11 +2251,14 @@ var
   SubRecord : IwbSubRecord;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
+  if not Assigned(aElement) then
+    Exit;
 
-  if Supports(aElement, IwbSubRecord, SubRecord) then
-    if SubRecord.DataSize > 0 then
-      Result := 1;
+  if not Supports(aElement, IwbSubRecord, SubRecord) then
+    Exit;
+
+  if SubRecord.DataSize > 0 then
+    Result := 1;
 end;
 
 function wbCOEDOwnerDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -2583,17 +2268,17 @@ var
   MainRecord : IwbMainRecord;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
-  LinksTo := Container.ElementByName['Owner'].LinksTo;
+  LinksTo := Container.ElementLinksTo['Owner'];
+  if not Supports(LinksTo, IwbMainRecord, MainRecord) then
+    Exit;
 
-  if Supports(LinksTo, IwbMainRecord, MainRecord) then
-    if MainRecord.Signature = 'NPC_' then
-      Result := 1
-    else if MainRecord.Signature = 'FACT' then
-      Result := 2;
+  if MainRecord.Signature = 'NPC_' then
+    Result := 1
+  else if MainRecord.Signature = 'FACT' then
+    Result := 2;
 end;
 
 function wbGMSTUnionDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -2602,17 +2287,20 @@ var
   s: string;
 begin
   Result := 1;
+  if not Assigned(aElement) then
+    Exit;
   rEDID := aElement.Container.RecordBySignature[EDID];
-  if Assigned(rEDID) then begin
-    s := rEDID.Value;
-    if Length(s) > 0 then
-      case s[1] of
-        's': Result := 0; {String} {>>> Localization Strings <<<}
-        'i': Result := 1; {intS32}
-        'f': Result := 2; {Float}
-        'b': Result := 3; {Boolean}
-      end;
-  end;
+  if not Assigned(rEDID) then
+    Exit;
+
+  s := rEDID.Value;
+  if Length(s) > 0 then
+    case s[1] of
+      's': Result := 0; {String} {>>> Localization Strings <<<}
+      'i': Result := 1; {intS32}
+      'f': Result := 2; {Float}
+      'b': Result := 3; {Boolean}
+    end;
 end;
 
 function wbFLSTLNAMIsSorted(const aContainer: IwbContainer): Boolean;
@@ -2624,13 +2312,15 @@ const
 begin
   Result := False; {>>> Should not be sorted according to Arthmoor and JustinOther <<<}
   rEDID := aContainer.RecordBySignature[EDID];
-  if Assigned(rEDID) then begin
-    s := rEDID.Value;
-    if Length(s) > Length(OrderedList) then
-      Delete(s, 1, Length(s)-Length(OrderedList));
-    if SameText(s, OrderedList) then
-      Result := False;
-  end;
+  if not Assigned(rEDID) then
+    Exit;
+
+  s := rEDID.Value;
+  if Length(s) > Length(OrderedList) then
+    Delete(s, 1, Length(s)-Length(OrderedList));
+
+  if SameText(s, OrderedList) then
+    Result := False;
 end;
 
 function wbPerkDATADecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -2639,13 +2329,17 @@ var
   eType: IwbElement;
 begin
   Result := 0;
+  if not Assigned(aElement) then
+    Exit;
   rPRKE := aElement.Container.RecordBySignature[PRKE];
-  if Assigned(rPRKE) then begin
-    eType := rPRKE.ElementByName['Type'];
-    if Assigned(eType) then begin
-      Result := eType.NativeValue;
-    end;
-  end;
+  if not Assigned(rPRKE) then
+    Exit;
+
+  eType := rPRKE.ElementByName['Type'];
+  if not Assigned(eType) then
+    Exit;
+
+  Result := eType.NativeValue;
 end;
 
 function wbEPFDDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -2655,9 +2349,12 @@ begin
   Result := 0;
   if not Assigned(aElement) then
     Exit;
+
   if not Supports(aElement.Container, IwbContainerElementRef, Container) then
     Exit;
+
   Result := Container.ElementNativeValues['EPFT'];
+
   if Result = 2 then
     case Integer(Container.ElementNativeValues['..\DATA\Entry Point\Function']) of
       5, 12, 13, 14: Result := 8;
@@ -2671,28 +2368,12 @@ begin
   Result := 0;
   if not Assigned(aElement) then
     Exit;
+
   if not Supports(aElement.Container, IwbContainerElementRef, Container) then
     Exit;
+
   if Container.ElementNativeValues['ANAM'] <> 4 then
     Result := 1;
-end;
-
-function wbEFSHFormatDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
-var
-  MainRecord: IwbMainRecord;
-begin
-  Result := 0;
-  if not Assigned(aElement) then
-    Exit;
-  if not Supports(aElement.Container, IwbMainRecord, MainRecord) then
-    Exit;
-  if MainRecord.Version < 102 then
-    Result := 1;
-end;
-
-function wbDeciderFormVersion99(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
-begin
-  Result := wbFormVerDecider(aBasePtr, aEndPtr, aElement, 99);
 end;
 
 function wbAECHDataDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -2702,18 +2383,20 @@ var
   s: string;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   Container := Container.Container;
-  if not Assigned(Container) then Exit;
+  if not Assigned(Container) then
+    Exit;
 
   rKNAM := Container.ElementBySignature['KNAM'];
-  if not Assigned(rKNAM) then Exit;
+  if not Assigned(rKNAM) then
+    Exit;
 
   s := rKNAM.EditValue;
 
+  // TODO: is using EditValue the best way to do this?
   if s = 'BSOverdrive' then
     Result := 0
   else if s = 'BSStateVariableFilter' then
@@ -2734,15 +2417,16 @@ begin
   // since deciding field FNAM comes after a value CNAM
   Exit;
 
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   Container := Container.Container;
-  if not Assigned(Container) then Exit;
+  if not Assigned(Container) then
+    Exit;
 
   rFNAM := Container.ElementBySignature['FNAM'];
-  if not Assigned(rFNAM) then Exit;
+  if not Assigned(rFNAM) then
+    Exit;
 
   i := rFNAM.NativeValue;
 
@@ -2765,7 +2449,7 @@ begin
       i := rFNAM.NativeValue;
   end;
 
-   if i and 2 <> 0 then
+  if i and 2 <> 0 then
     s := FloatToStrF(PSingle(@aInt)^, ffFixed, 99, wbFloatDigits)
   else
     s := 'rgba(' + IntToStr(aInt and $FF) + ', ' +
@@ -2774,7 +2458,7 @@ begin
                    IntToStr(aInt shr 24 and $FF) + ')';
 
   case aType of
-    ctToStr: Result := s;
+    ctToStr, ctToSummary: Result := s;
     ctToSortKey: Result := IntToHex(aInt, 8);
     ctToEditValue: Result := s;
   end;
@@ -2801,11 +2485,16 @@ begin
     finally
       Free;
     end;
-  end
-  else begin
-    try value := StrToFloat(aString) except value := 0.0 end;
-    Result := PInteger(@value)^;
+    Exit;
   end;
+
+  try
+    value := StrToFloat(aString)
+  except
+    value := 0.0
+  end;
+
+  Result := PInteger(@value)^;
 end;
 
 function wbNOTEDataDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -2815,16 +2504,16 @@ var
   i          : Integer;
 begin
   Result := 0;
-
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   Container := Container.Container;
-  if not Assigned(Container) then Exit;
+  if not Assigned(Container) then
+    Exit;
 
   rDNAM := Container.ElementBySignature['DNAM'];
-  if not Assigned(rDNAM) then Exit;
+  if not Assigned(rDNAM) then
+    Exit;
 
   i := rDNAM.NativeValue;
 
@@ -2841,41 +2530,22 @@ var
   rCNAM      : IwbElement;
 begin
   Result := 0;
-
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   Container := Container.Container;
-  if not Assigned(Container) then Exit;
+  if not Assigned(Container) then
+    Exit;
 
   rCNAM := Container.ElementBySignature['CNAM'];
-  if not Assigned(rCNAM) then Exit;
+  if not Assigned(rCNAM) then
+    Exit;
 
+  // TODO: F076 definition uses rCNAM.NativeValue = Int64($ED157AE3)
   if rCNAM.EditValue = 'AutoWeapon' then
     Result := 1;
 end;
 
-
-{>>> For VMAD <<<}
-function wbScriptObjFormatDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
-var
-  ObjFormat: Integer;
-  Container: IwbContainer;
-begin
-  Result := 0;
-
-  Container := aElement.Container;
-  while Assigned(Container) and (Container.ElementType <> etSubRecord) do
-    Container := Container.Container;
-
-  if not Assigned(Container) then Exit;
-
-  ObjFormat := Container.ElementNativeValues['Object Format'];
-
-  if ObjFormat = 1 then
-    Result := 1;
-end;
 
 {>>> For VMAD <<<}
 function wbScriptPropertyDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -2883,9 +2553,9 @@ var
   Container     : IwbContainer;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   case Integer(Container.ElementNativeValues['Type']) of
      1: Result := 1;
@@ -2900,7 +2570,8 @@ begin
     13: Result := 10;
     14: Result := 11;
     15: Result := 12;
-    17: Result := 13;
+    16: Result := 13;
+    17: Result := 14;
   end;
 end;
 
@@ -2909,9 +2580,8 @@ var
   Container     : IwbContainer;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   case Integer(Container.ElementNativeValues['Type']) of
      1: Result := 1;
@@ -2936,6 +2606,28 @@ begin
       Container.ElementByName['Value'].SetToDefault;
 end;
 
+procedure wbScriptFragmentsQuestScriptNameAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
+var
+  Container : IwbContainerElementRef;
+begin
+  if aOldValue <> aNewValue then
+    if (aOldValue = '') <> (aNewValue = '') then
+      if Supports(aElement.Container, IwbContainerElementRef, Container) then
+        Container.ElementByName['Script'].SetToDefault;
+end;
+
+procedure wbAECHTypeAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
+var
+  Container      : IwbContainerElementRef;
+  ValueContainer : IwbContainerElementRef;
+begin
+  if aOldValue <> aNewValue then
+    if Supports(aElement.Container, IwbContainerElementRef, Container) then
+      if Supports(Container.ElementByPath['DNAM\Value'], IwbContainerElementRef, ValueContainer) then
+        ValueContainer.SetToDefault;
+end;
+
+
 {>>> For VMAD <<<}
 function wbScriptFragmentsDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
 var
@@ -2943,14 +2635,18 @@ var
   MainRecord : IwbMainRecord;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
+
   while Assigned(Container) and (Container.ElementType <> etMainRecord) do
     Container := Container.Container;
-  if not Assigned(Container) then Exit;
 
+  if not Assigned(Container) then
+    Exit;
+
+  // TODO: should this assume there's a MainRecord?
   Supports(Container, IwbMainRecord, MainRecord);
+
   if MainRecord.Signature = PERK then
     Result := 1
   else if MainRecord.Signature = TERM then
@@ -2966,24 +2662,6 @@ begin
 end;
 
 {>>> For VMAD <<<}
-function wbScriptFragmentsQuestCounter(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Cardinal;
-var
-  Container     : IwbContainer;
-begin
-  Result := 0;
-  if aElement.ElementType = etValue then
-    Container := aElement.Container
-  else
-    Container := aElement as IwbContainer;
-  if not Assigned(Container) then Exit;
-  while Assigned(Container) and (Container.Name <> 'Script Fragments') do
-    Container := Container.Container;
-  if not Assigned(Container) then Exit;
-
-  Result := Cardinal(Container.ElementNativeValues['fragmentCount']);
-end;
-
-{>>> For VMAD <<<}
 function wbScriptFragmentsInfoCounter(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Cardinal;
 var
   Container     : IwbContainer;
@@ -2995,10 +2673,15 @@ begin
     Container := aElement.Container
   else
     Container := aElement as IwbContainer;
-  if not Assigned(Container) then Exit;
+
+  if not Assigned(Container) then
+    Exit;
+
   while Assigned(Container) and (Container.Name <> 'Script Fragments') do
     Container := Container.Container;
-  if not Assigned(Container) then Exit;
+
+  if not Assigned(Container) then
+    Exit;
 
   F := Container.ElementByName['Flags'].NativeValue;
   for i := 0 to 2 do begin
@@ -3006,12 +2689,13 @@ begin
       Inc(Result);
     F := F shr 1;
   end;
+
   for i := 3 to 7 do begin
     if (F and 1) = 1 then begin
       Inc(Result);
-    if Assigned(wbProgressCallback) then
-      wbProgressCallback('==='+aElement.Name+'       ['+Container.Name+':'+Container.Path+'] = unknown info VMAD flag bit '+IntToStr(i));
-  end;
+      if wbHasProgressCallback then
+        wbProgressCallback('==='+aElement.Name+'       ['+Container.Name+':'+Container.Path+'] = unknown info VMAD flag bit '+IntToStr(i));
+    end;
     F := F shr 1;
   end;
 end;
@@ -3028,10 +2712,15 @@ begin
     Container := aElement.Container
   else
     Container := aElement as IwbContainer;
-  if not Assigned(Container) then Exit;
+
+  if not Assigned(Container) then
+    Exit;
+
   while Assigned(Container) and (Container.Name <> 'Script Fragments') do
     Container := Container.Container;
-  if not Assigned(Container) then Exit;
+
+  if not Assigned(Container) then
+    Exit;
 
   F := Container.ElementByName['Flags'].NativeValue;
   for i := 0 to 2 do begin
@@ -3039,12 +2728,13 @@ begin
       Inc(Result);
     F := F shr 1;
   end;
+
   for i := 3 to 7 do begin
     if (F and 1) = 1 then begin
       Inc(Result);
-  if Assigned(wbProgressCallback) then
-      wbProgressCallback('==='+aElement.Name+'       ['+Container.Name+':'+Container.Path+'] = unknown scene VMAD flag bit '+IntToStr(i));
-  end;
+      if wbHasProgressCallback then
+        wbProgressCallback('==='+aElement.Name+'       ['+Container.Name+':'+Container.Path+'] = unknown scene VMAD flag bit '+IntToStr(i));
+    end;
     F := F shr 1;
   end;
 end;
@@ -3061,10 +2751,15 @@ begin
     Container := aElement.Container
   else
     Container := aElement as IwbContainer;
-  if not Assigned(Container) then Exit;
+
+  if not Assigned(Container) then
+    Exit;
+
   while Assigned(Container) and (Container.Name <> 'Script Fragments') do
     Container := Container.Container;
-  if not Assigned(Container) then Exit;
+
+  if not Assigned(Container) then
+    Exit;
 
   F := Container.ElementByName['Flags'].NativeValue;
   for i := 0 to 7 do begin
@@ -3080,11 +2775,10 @@ var
   Container  : IwbContainer;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
-  if Container.ElementEditValues['scriptName'] = '' then
+  if Container.ElementEditValues['ScriptName'] = '' then
     Result := 1;
 end;
 
@@ -3094,9 +2788,8 @@ var
   i: Int64;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   i := Container.ElementByName['Flags'].NativeValue;
   if i and $01 <> 0 then
@@ -3112,67 +2805,70 @@ end;
 type
   TCTDAFunctionParamType = (
     { 0} ptNone,
-    { 1} ptInteger,
-    { 2} ptFloat,
-    { 3} ptActor,              // ACHR
-    { 4} ptActorBase,          // NPC_
-    { 5} ptActorValue,         // Enum: wbActorValue
-    { 6} ptAdvanceAction,      // ?? Enum
-    { 7} ptAlias,              // index into QUST quest aliases
-    { 8} ptAlignment,          // ?? Enum
-    { 9} ptAssociationType,    // ASTP
-    {10} ptAxis,               // ?? Char
-    {11} ptCastingSource,      // ?? Enum
-    {12} ptCell,               // CELL
-    {13} ptClass,              // CLAS
-    {14} ptCrimeType,          // ?? Enum
-    {15} ptCriticalStage,      // ?? Enum
-    {16} ptEncounterZone,      // ECZN
-    {17} ptEquipType,          // ?? Enum
-    {18} ptEvent,              // Struct
-    {19} ptEventData,          // LCTN, KYWD or FLST
-    {20} ptFaction,            // FACT
-    {21} ptFormList,           // FLST
-    {22} ptFormType,           // ?? Enum
-    {23} ptFurniture,          // FURN
-    {24} ptFurnitureAnim,      // enum
-    {25} ptFurnitureEntry,     // flags
-    {26} ptGlobal,             // GLOB
-    {27} ptIdleForm,           // IDLE
-    {28} ptInventoryObject,    // ARMO, BOOK, MISC, WEAP, AMMO, KEYM, ALCH, ARMA, LIGH, LVLI, COBJ
-    {29} ptKeyword,            // KYWD
-    {30} ptLocation,           // LCTN
-    {31} ptMagicEffect,        // MGEF
-    {32} ptMagicItem,          // SPEL
-    {33} ptMiscStat,           // ?? Enum
-    {34} ptObjectReference,    // REFR, ACHR
-    {35} ptOwner,              // FACT, NPC_
-    {36} ptPackage,            // PACK
-    {37} ptPackdata,           // index into PACK package data inputs
-    {38} ptPerk,               // PERK
-    {39} ptQuest,              // QUST
-    {40} ptQuestStage,         // ?? Integer
-    {41} ptRace,               // RACE
-    {42} ptReferencableObject,
-    {43} ptRefType,            // LCRT
-    {44} ptRegion,             // REGN
-    {45} ptScene,              // SCEN
-    {46} ptSex,                // Enum: Male, Female
-    {47} ptShout,              // SHOU
-    {48} ptVariableName,       // Integer
-    {49} ptVATSValueFunction,  //
-    {50} ptVATSValueParam,
-    {51} ptVoiceType,          // VTYP
-    {52} ptWardState,          // enum
-    {53} ptWeather,            // WTHR
-    {54} ptWorldspace,         // WRLD
-    {55} ptDamageType          // DMGT
+    { 1} ptString,
+    { 2} ptInteger,
+    { 3} ptFloat,
+    { 4} ptActor,              // ACHR
+    { 5} ptActorBase,          // NPC_
+    { 6} ptActorValue,         // AVIF?
+    { 7} ptAdvanceAction,      // ?? Enum
+    { 8} ptAlias,              // index into QUST quest aliases
+    { 9} ptAlignment,          // ?? Enum
+    {10} ptAssociationType,    // ASTP
+    {11} ptAxis,               // ?? Char
+    {12} ptCastingSource,      // ?? Enum
+    {13} ptCell,               // CELL
+    {14} ptClass,              // CLAS
+    {15} ptCrimeType,          // ?? Enum
+    {16} ptCriticalStage,      // ?? Enum
+    {17} ptEncounterZone,      // ECZN
+    {18} ptEquipType,          // ?? Enum
+    {19} ptEvent,              // Struct
+    {20} ptEventData,          // LCTN, KYWD or FLST
+    {21} ptFaction,            // FACT
+    {22} ptFormList,           // FLST
+    {23} ptFormType,           // ?? Enum
+    {24} ptFurniture,          // FURN
+    {25} ptFurnitureAnim,      // enum
+    {26} ptFurnitureEntry,     // flags
+    {27} ptGlobal,             // GLOB
+    {28} ptIdleForm,           // IDLE
+    {29} ptInventoryObject,    // ARMO, BOOK, MISC, WEAP, AMMO, KEYM, ALCH, ARMA, LIGH, LVLI, COBJ
+    {30} ptKeyword,            // KYWD
+    {31} ptLocation,           // LCTN
+    {32} ptMagicEffect,        // MGEF
+    {33} ptMagicItem,          // SPEL
+    {34} ptMiscStat,           // ?? Enum
+    {35} ptObjectReference,    // REFR, ACHR
+    {36} ptOwner,              // FACT, NPC_
+    {37} ptPackage,            // PACK
+    {38} ptPackdata,           // index into PACK package data inputs
+    {39} ptPerk,               // PERK
+    {40} ptQuest,              // QUST
+    {41} ptQuestStage,         // ?? Integer
+    {42} ptRace,               // RACE
+    {43} ptReferencableObject,
+    {44} ptRefType,            // LCRT
+    {45} ptRegion,             // REGN
+    {46} ptScene,              // SCEN
+    {47} ptSex,                // Enum: Male, Female
+    {48} ptShout,              // SHOU
+    {49} ptVariableName,       // Integer
+    {50} ptVATSValueFunction,  //
+    {51} ptVATSValueParam,
+    {52} ptVoiceType,          // VTYP
+    {53} ptWardState,          // enum
+    {54} ptWeather,            // WTHR
+    {55} ptWorldspace,         // WRLD
+    {56} ptDamageType,         // DMGT
+    {57} ptFactionOpt          // FACT
   );
 
   PCTDAFunction = ^TCTDAFunction;
   TCTDAFunction = record
     Index: Integer;
     Name: string;
+    Desc: string;
     ParamType1: TCTDAFunctionParamType;
     ParamType2: TCTDAFunctionParamType;
     ParamType3: TCTDAFunctionParamType;
@@ -3180,342 +2876,308 @@ type
 
 const
   wbCTDAFunctions : array[0..478] of TCTDAFunction = (
-    (Index:   0; Name: 'GetWantBlocking'),
+    (Index:   0; Name: 'GetWantBlocking'),    //   0
     (Index:   1; Name: 'GetDistance'; ParamType1: ptObjectReference),
-    (Index:   5; Name: 'GetLocked'),
-    (Index:   6; Name: 'GetPos'; ParamType1: ptAxis),
-    (Index:   8; Name: 'GetAngle'; ParamType1: ptAxis),
-    (Index:  10; Name: 'GetStartingPos'; ParamType1: ptAxis),
-    (Index:  11; Name: 'GetStartingAngle'; ParamType1: ptAxis),
-    (Index:  12; Name: 'GetSecondsPassed'),
-    (Index:  14; Name: 'GetValue'; ParamType1: ptActorValue),
-    (Index:  18; Name: 'GetCurrentTime'),
-    (Index:  24; Name: 'GetScale'),
-    (Index:  25; Name: 'IsMoving'),
-    (Index:  26; Name: 'IsTurning'),
+    (Index:   5; Name: 'GetLocked'),    //   2
+    (Index:   6; Name: 'GetPos'; Paramtype1: ptAxis),    //   3
+    (Index:   8; Name: 'GetAngle'; Paramtype1: ptAxis),    //   4
+    (Index:  10; Name: 'GetStartingPos'; Paramtype1: ptAxis),    //   5
+    (Index:  11; Name: 'GetStartingAngle'; Paramtype1: ptAxis),    //   6
+    (Index:  12; Name: 'GetSecondsPassed'),    //   7
+    (Index:  14; Name: 'GetValue'; Paramtype1: ptActorValue),    //   8
+    (Index:  18; Name: 'GetCurrentTime'),    //   9
+    (Index:  24; Name: 'GetScale'),    //  10
+    (Index:  25; Name: 'IsMoving'),    //  11
+    (Index:  26; Name: 'IsTurning'),    //  12
     (Index:  27; Name: 'GetLineOfSight'; ParamType1: ptObjectReference),
-    // exists but no longer CTDA (Index:  31; Name: 'GetButtonPressed'),
     (Index:  32; Name: 'GetInSameCell'; ParamType1: ptObjectReference),
-    (Index:  35; Name: 'GetDisabled'),
+    (Index:  35; Name: 'GetDisabled'),    //  15
     (Index:  36; Name: 'MenuMode'; Paramtype1: ptInteger),
-    (Index:  39; Name: 'GetDisease'),
-    (Index:  41; Name: 'GetClothingValue'),
-    (Index:  42; Name: 'SameFaction'; ParamType1: ptActor),
-    (Index:  43; Name: 'SameRace'; ParamType1: ptActor),
-    (Index:  44; Name: 'SameSex'; ParamType1: ptActor),
-    (Index:  45; Name: 'GetDetected'; ParamType1: ptActor),
-    (Index:  46; Name: 'GetDead'),
+    (Index:  39; Name: 'GetDisease'),    //  17
+    (Index:  41; Name: 'GetClothingValue'),    //  18
+    (Index:  42; Name: 'SameFaction'; Paramtype1: ptActor),    //  19
+    (Index:  43; Name: 'SameRace'; Paramtype1: ptActor),    //  20
+    (Index:  44; Name: 'SameSex'; Paramtype1: ptActor),    //  21
+    (Index:  45; Name: 'GetDetected'; Paramtype1: ptActor),    //  22
+    (Index:  46; Name: 'GetDead'),    //  23
     (Index:  47; Name: 'GetItemCount'; ParamType1: ptReferencableObject),
-    (Index:  48; Name: 'GetGold'),
-    (Index:  49; Name: 'GetSleeping'),
-    (Index:  50; Name: 'GetTalkedToPC'),
-    (Index:  56; Name: 'GetQuestRunning'; ParamType1: ptQuest),
-    (Index:  58; Name: 'GetStage'; ParamType1: ptQuest),
+    (Index:  48; Name: 'GetGold'),    //  25
+    (Index:  49; Name: 'GetSleeping'),    //  26
+    (Index:  50; Name: 'GetTalkedToPC'),    //  27
+    (Index:  56; Name: 'GetQuestRunning'; Paramtype1: ptQuest),    //  28
+    (Index:  58; Name: 'GetStage'; Paramtype1: ptQuest),    //  29
     (Index:  59; Name: 'GetStageDone'; ParamType1: ptQuest; ParamType2: ptQuestStage),
-    (Index:  60; Name: 'GetFactionRankDifference'; ParamType1: ptFaction; ParamType2: ptActor),
-    (Index:  61; Name: 'GetAlarmed'),
-    (Index:  62; Name: 'IsRaining'),
-    (Index:  63; Name: 'GetAttacked'),
-    (Index:  64; Name: 'GetIsCreature'),
-    (Index:  65; Name: 'GetLockLevel'),
-    (Index:  66; Name: 'GetShouldAttack'; ParamType1: ptActor),
-    (Index:  67; Name: 'GetInCell'; ParamType1: ptCell),
-    (Index:  68; Name: 'GetIsClass'; ParamType1: ptClass),
-    (Index:  69; Name: 'GetIsRace'; ParamType1: ptRace),
-    (Index:  70; Name: 'GetIsSex'; ParamType1: ptSex),
-    (Index:  71; Name: 'GetInFaction'; ParamType1: ptFaction),
+    (Index:  60; Name: 'GetFactionRankDifference'; Paramtype1: ptFaction; Paramtype2: ptActor),    //  31
+    (Index:  61; Name: 'GetAlarmed'),    //  32
+    (Index:  62; Name: 'IsRaining'),    //  33
+    (Index:  63; Name: 'GetAttacked'),    //  34
+    (Index:  64; Name: 'GetIsCreature'),    //  35
+    (Index:  65; Name: 'GetLockLevel'),    //  36
+    (Index:  66; Name: 'GetShouldAttack'; Paramtype1: ptActor),    //  37
+    (Index:  67; Name: 'GetInCell'; Paramtype1: ptCell),    //  38
+    (Index:  68; Name: 'GetIsClass'; Paramtype1: ptClass),    //  39
+    (Index:  69; Name: 'GetIsRace'; Paramtype1: ptRace),    //  40
+    (Index:  70; Name: 'GetIsSex'; Paramtype1: ptSex),    //  41
+    (Index:  71; Name: 'GetInFaction'; Paramtype1: ptFaction),    //  42
     (Index:  72; Name: 'GetIsID'; ParamType1: ptReferencableObject),
-    (Index:  73; Name: 'GetFactionRank'; ParamType1: ptFaction),
-    (Index:  74; Name: 'GetGlobalValue'; ParamType1: ptGlobal),
-    (Index:  75; Name: 'IsSnowing'),
-    (Index:  77; Name: 'GetRandomPercent'),
+    (Index:  73; Name: 'GetFactionRank'; Paramtype1: ptFaction),    //  44
+    (Index:  74; Name: 'GetGlobalValue'; Paramtype1: ptGlobal),    //  45
+    (Index:  75; Name: 'IsSnowing'),    //  46
+    (Index:  77; Name: 'GetRandomPercent'),    //  47
     (Index:  79; Name: 'WouldBeStealing'; ParamType1: ptObjectReference),
-    (Index:  80; Name: 'GetLevel'),
-    (Index:  81; Name: 'IsRotating'),
-    // exists but no longer CTDA (Index:  83; Name: 'GetLeveledEncounterValue'; ParamType1: ptInteger),
+    (Index:  80; Name: 'GetLevel'),    //  49
+    (Index:  81; Name: 'IsRotating'),    //  50
     (Index:  84; Name: 'GetDeadCount'; ParamType1: ptActorBase),
-    (Index:  91; Name: 'GetIsAlerted'),
+    (Index:  91; Name: 'GetIsAlerted'),    //  52
     (Index:  98; Name: 'GetPlayerControlsDisabled'; Paramtype1: ptInteger; Paramtype2: ptInteger; Paramtype3: ptInteger),
     (Index:  99; Name: 'GetHeadingAngle'; ParamType1: ptObjectReference),
-    (Index: 101; Name: 'IsWeaponMagicOut'),
-    (Index: 102; Name: 'IsTorchOut'),
-    (Index: 103; Name: 'IsShieldOut'),
-    // exists but no longer CTDA (Index: 105; Name: 'IsActionRef'; ParamType1: ptObjectReference),
-    (Index: 106; Name: 'IsFacingUp'),
-    (Index: 107; Name: 'GetKnockedState'),
-    (Index: 108; Name: 'GetWeaponAnimType'),
+    (Index: 101; Name: 'IsWeaponMagicOut'),    //  55
+    (Index: 102; Name: 'IsTorchOut'),    //  56
+    (Index: 103; Name: 'IsShieldOut'),    //  57
+    (Index: 106; Name: 'IsFacingUp'),    //  58
+    (Index: 107; Name: 'GetKnockedState'),    //  59
+    (Index: 108; Name: 'GetWeaponAnimType'),    //  60
     (Index: 109; Name: 'IsWeaponSkillType'; ParamType1: ptActorValue),
-    (Index: 110; Name: 'GetCurrentAIPackage'),
-    (Index: 111; Name: 'IsWaiting'),
-    (Index: 112; Name: 'IsIdlePlaying'),
-    (Index: 116; Name: 'IsIntimidatedbyPlayer'),
-    (Index: 117; Name: 'IsPlayerInRegion'; ParamType1: ptRegion),
-    (Index: 118; Name: 'GetActorAggroRadiusViolated'),
-    // exists but no longer CTDA (Index: 119; Name: 'GetCrimeKnown'; ParamType1: ptCrimeType; ParamType2: ptActor; ParamType3: ptActor),
+    (Index: 110; Name: 'GetCurrentAIPackage'),    //  62
+    (Index: 111; Name: 'IsWaiting'),    //  63
+    (Index: 112; Name: 'IsIdlePlaying'),    //  64
+    (Index: 116; Name: 'IsIntimidatedbyPlayer'),    //  65
+    (Index: 117; Name: 'IsPlayerInRegion'; Paramtype1: ptRegion),    //  66
+    (Index: 118; Name: 'GetActorAggroRadiusViolated'),    //  67
     (Index: 122; Name: 'GetCrime'; ParamType1: ptActor; ParamType2: ptCrimeType),
-    (Index: 123; Name: 'IsGreetingPlayer'),
-    (Index: 125; Name: 'IsGuard'),
-    (Index: 127; Name: 'HasBeenEaten'),
-    (Index: 128; Name: 'GetStaminaPercentage'),
-    (Index: 129; Name: 'HasBeenRead'),
-    (Index: 130; Name: 'GetDying'),
+    (Index: 123; Name: 'IsGreetingPlayer'),    //  69
+    (Index: 125; Name: 'IsGuard'),    //  70
+    (Index: 127; Name: 'HasBeenEaten'),    //  71
+    (Index: 128; Name: 'GetStaminaPercentage'),    //  72
+    (Index: 129; Name: 'HasBeenRead'),    //  73
+    (Index: 130; Name: 'GetDying'),    //  74
     (Index: 131; Name: 'GetSceneActionPercent'; ParamType1: ptScene; ParamType2: ptInteger),
     (Index: 132; Name: 'WouldRefuseCommand'; ParamType1: ptObjectReference),
-    (Index: 133; Name: 'SameFactionAsPC'),
-    (Index: 134; Name: 'SameRaceAsPC'),
-    (Index: 135; Name: 'SameSexAsPC'),
+    (Index: 133; Name: 'SameFactionAsPC'),    //  77
+    (Index: 134; Name: 'SameRaceAsPC'),    //  78
+    (Index: 135; Name: 'SameSexAsPC'),    //  79
     (Index: 136; Name: 'GetIsReference'; ParamType1: ptObjectReference),
-    (Index: 141; Name: 'IsTalking'),
+    (Index: 141; Name: 'IsTalking'),    //  81
     (Index: 142; Name: 'GetComponentCount'; ParamType1: ptReferencableObject),
-    (Index: 143; Name: 'GetCurrentAIProcedure'),
-    (Index: 144; Name: 'GetTrespassWarningLevel'),
-    (Index: 145; Name: 'IsTrespassing'),
-    (Index: 146; Name: 'IsInMyOwnedCell'),
-    (Index: 147; Name: 'GetWindSpeed'),
-    (Index: 148; Name: 'GetCurrentWeatherPercent'),
+    (Index: 143; Name: 'GetCurrentAIProcedure'),    //  83
+    (Index: 144; Name: 'GetTrespassWarningLevel'),    //  84
+    (Index: 145; Name: 'IsTrespassing'),    //  85
+    (Index: 146; Name: 'IsInMyOwnedCell'),    //  86
+    (Index: 147; Name: 'GetWindSpeed'),    //  87
+    (Index: 148; Name: 'GetCurrentWeatherPercent'),    //  88
     (Index: 149; Name: 'GetIsCurrentWeather'; ParamType1: ptWeather),
-    (Index: 150; Name: 'IsContinuingPackagePCNear'),
-    (Index: 152; Name: 'GetIsCrimeFaction'; ParamType1: ptFaction),
-    (Index: 153; Name: 'CanHaveFlames'),
-    (Index: 154; Name: 'HasFlames'),
-    (Index: 157; Name: 'GetOpenState'),
-    (Index: 159; Name: 'GetSitting'),
-    // exists but no longer CTDA (Index: 160; Name: 'GetFurnitureMarkerID'),
-    (Index: 161; Name: 'GetIsCurrentPackage'; ParamType1: ptPackage),
+    (Index: 150; Name: 'IsContinuingPackagePCNear'),    //  90
+    (Index: 152; Name: 'GetIsCrimeFaction'; Paramtype1: ptFaction),    //  91
+    (Index: 153; Name: 'CanHaveFlames'),    //  92
+    (Index: 154; Name: 'HasFlames'),    //  93
+    (Index: 157; Name: 'GetOpenState'),    //  94
+    (Index: 159; Name: 'GetSitting'),    //  95
+    (Index: 161; Name: 'GetIsCurrentPackage'; Paramtype1: ptPackage),    //  96
     (Index: 162; Name: 'IsCurrentFurnitureRef'; ParamType1: ptObjectReference),
-    (Index: 163; Name: 'IsCurrentFurnitureObj'; ParamType1: ptFurniture),
-    // exists but no longer CTDA (Index: 167; Name: 'GetFactionReaction'; ParamType1: ptFaction; ParamType2: ptFaction),
-    (Index: 170; Name: 'GetDayOfWeek'),
-    (Index: 172; Name: 'GetTalkedToPCParam'; ParamType1: ptActor),
-    (Index: 175; Name: 'IsPCSleeping'),
-    (Index: 176; Name: 'IsPCAMurderer'),
+    (Index: 163; Name: 'IsCurrentFurnitureObj'; Paramtype1: ptFurniture),    //  98
+    (Index: 170; Name: 'GetDayOfWeek'),    //  99
+    (Index: 172; Name: 'GetTalkedToPCParam'; Paramtype1: ptActor),    // 100
+    (Index: 175; Name: 'IsPCSleeping'),    // 101
+    (Index: 176; Name: 'IsPCAMurderer'),    // 102
     (Index: 180; Name: 'HasSameEditorLocationAsRef'; ParamType1: ptObjectReference; ParamType2: ptKeyword),
     (Index: 181; Name: 'HasSameEditorLocationAsRefAlias'; ParamType1: ptAlias; ParamType2: ptKeyword),
     (Index: 182; Name: 'GetEquipped'; ParamType1: ptReferencableObject),
-    (Index: 185; Name: 'IsSwimming'),
-    // exists but no longer CTDA (Index: 186; Name: 'ScriptEffectElapsedSeconds'),
-    // exists but no longer CTDA (Index: 188; Name: 'GetPCSleepHours'),
-    (Index: 190; Name: 'GetAmountSoldStolen'),
-    (Index: 192; Name: 'GetIgnoreCrime'),
-    (Index: 193; Name: 'GetPCExpelled'; ParamType1: ptFaction),
-    (Index: 195; Name: 'GetPCFactionMurder'; ParamType1: ptFaction),
-    (Index: 197; Name: 'GetPCEnemyofFaction'; ParamType1: ptFaction),
-    (Index: 199; Name: 'GetPCFactionAttack'; ParamType1: ptFaction),
-    (Index: 203; Name: 'GetDestroyed'),
-    // exists but no longer CTDA (Index: 205; Name: 'GetActionRef'),
-    // exists but no longer CTDA (Index: 206; Name: 'GetSelf'),
-    // exists but no longer CTDA (Index: 207; Name: 'GetContainer'),
-    // exists but no longer CTDA (Index: 208; Name: 'GetForceRun'),
-    // exists but no longer CTDA (Index: 210; Name: 'GetForceSneak'),
+    (Index: 185; Name: 'IsSwimming'),    // 106
+    (Index: 190; Name: 'GetAmountSoldStolen'),    // 107
+    (Index: 192; Name: 'GetIgnoreCrime'),    // 108
+    (Index: 193; Name: 'GetPCExpelled'; Paramtype1: ptFaction),    // 109
+    (Index: 195; Name: 'GetPCFactionMurder'; Paramtype1: ptFaction),    // 110
+    (Index: 197; Name: 'GetPCEnemyofFaction'; Paramtype1: ptFaction),    // 111
+    (Index: 199; Name: 'GetPCFactionAttack'; Paramtype1: ptFaction),    // 112
+    (Index: 203; Name: 'GetDestroyed'),    // 113
     (Index: 214; Name: 'HasMagicEffect'; ParamType1: ptMagicEffect),
-    (Index: 215; Name: 'GetDefaultOpen'),
+    (Index: 215; Name: 'GetDefaultOpen'),    // 115
     (Index: 223; Name: 'IsSpellTarget'; ParamType1: ptMagicItem),
-    (Index: 224; Name: 'GetVATSMode'),
-    (Index: 225; Name: 'GetPersuasionNumber'),
-    (Index: 226; Name: 'GetVampireFeed'),
-    (Index: 227; Name: 'GetCannibal'),
-    (Index: 228; Name: 'GetIsClassDefault'; ParamType1: ptClass),
-    (Index: 229; Name: 'GetClassDefaultMatch'),
+    (Index: 224; Name: 'GetVATSMode'),    // 117
+    (Index: 225; Name: 'GetPersuasionNumber'),    // 118
+    (Index: 226; Name: 'GetVampireFeed'),    // 119
+    (Index: 227; Name: 'GetCannibal'),    // 120
+    (Index: 228; Name: 'GetIsClassDefault'; Paramtype1: ptClass),    // 121
+    (Index: 229; Name: 'GetClassDefaultMatch'),    // 122
     (Index: 230; Name: 'GetInCellParam'; ParamType1: ptCell; ParamType2: ptObjectReference),
-    (Index: 231; Name: 'GetPlayerDialogueInput'),
-    // exists but no longer CTDA (Index: 232; Name: 'GetCombatTarget'),
-    // exists but no longer CTDA (Index: 233; Name: 'GetPackageTarget'),
-    (Index: 235; Name: 'GetVatsTargetHeight'),
-    (Index: 237; Name: 'GetIsGhost'),
-    (Index: 242; Name: 'GetUnconscious'),
-    (Index: 244; Name: 'GetRestrained'),
+    (Index: 231; Name: 'GetPlayerDialogueInput'),    // 124
+    (Index: 235; Name: 'GetVatsTargetHeight'),    // 125
+    (Index: 237; Name: 'GetIsGhost'),    // 126
+    (Index: 242; Name: 'GetUnconscious'),    // 127
+    (Index: 244; Name: 'GetRestrained'),    // 128
     (Index: 246; Name: 'GetIsUsedItem'; ParamType1: ptReferencableObject),
     (Index: 247; Name: 'GetIsUsedItemType'; ParamType1: ptFormType),
-    (Index: 248; Name: 'IsScenePlaying'; ParamType1: ptScene),
-    (Index: 249; Name: 'IsInDialogueWithPlayer'),
-    (Index: 250; Name: 'GetLocationCleared'; ParamType1: ptLocation),
-    (Index: 254; Name: 'GetIsPlayableRace'),
-    (Index: 255; Name: 'GetOffersServicesNow'),
-    // exists but no longer CTDA (Index: 256; Name: 'GetGameSetting'; ParamType1: ptNone),
-    (Index: 258; Name: 'HasAssociationType'; ParamType1: ptActor; ParamType2: ptAssociationType),
-    (Index: 259; Name: 'HasFamilyRelationship'; ParamType1: ptActor),
-    (Index: 261; Name: 'HasParentRelationship'; ParamType1: ptActor),
+    (Index: 248; Name: 'IsScenePlaying'; Paramtype1: ptScene),    // 131
+    (Index: 249; Name: 'IsInDialogueWithPlayer'),    // 132
+    (Index: 250; Name: 'GetLocationCleared'; Paramtype1: ptLocation),    // 133
+    (Index: 254; Name: 'GetIsPlayableRace'),    // 134
+    (Index: 255; Name: 'GetOffersServicesNow'),    // 135
+    (Index: 258; Name: 'HasAssociationType'; Paramtype1: ptActor; Paramtype2: ptAssociationType),    // 136
+    (Index: 259; Name: 'HasFamilyRelationship'; Paramtype1: ptActor),    // 137
+    (Index: 261; Name: 'HasParentRelationship'; Paramtype1: ptActor),    // 138
     (Index: 262; Name: 'IsWarningAbout'; ParamType1: ptFormList),
-    (Index: 263; Name: 'IsWeaponOut'),
+    (Index: 263; Name: 'IsWeaponOut'),    // 140
     (Index: 264; Name: 'HasSpell'; ParamType1: ptMagicItem),
-    (Index: 265; Name: 'IsTimePassing'),
-    (Index: 266; Name: 'IsPleasant'),
-    (Index: 267; Name: 'IsCloudy'),
-    (Index: 274; Name: 'IsSmallBump'),
-    // exists but no longer CTDA (Index: 275; Name: 'GetParentRef'),
+    (Index: 265; Name: 'IsTimePassing'),    // 142
+    (Index: 266; Name: 'IsPleasant'),    // 143
+    (Index: 267; Name: 'IsCloudy'),    // 144
+    (Index: 274; Name: 'IsSmallBump'),    // 145
     (Index: 277; Name: 'GetBaseValue'; ParamType1: ptActorValue),
     (Index: 278; Name: 'IsOwner'; ParamType1: ptOwner),
     (Index: 280; Name: 'IsCellOwner'; ParamType1: ptCell; ParamType2: ptOwner),
-    (Index: 282; Name: 'IsHorseStolen'),
-    (Index: 285; Name: 'IsLeftUp'),
-    (Index: 286; Name: 'IsSneaking'),
-    (Index: 287; Name: 'IsRunning'),
-    (Index: 288; Name: 'GetFriendHit'),
+    (Index: 282; Name: 'IsHorseStolen'),    // 149
+    (Index: 285; Name: 'IsLeftUp'),    // 150
+    (Index: 286; Name: 'IsSneaking'),    // 151
+    (Index: 287; Name: 'IsRunning'),    // 152
+    (Index: 288; Name: 'GetFriendHit'),    // 153
     (Index: 289; Name: 'IsInCombat'; ParamType1: ptInteger),
-    // exists but no longer CTDA (Index: 296; Name: 'IsAnimPlaying'; ParamType1: ptReferencableObject),
-    (Index: 300; Name: 'IsInInterior'),
-    // exists but no longer CTDA (Index: 303; Name: 'IsActorsAIOff'),
-    (Index: 304; Name: 'IsWaterObject'),
-    (Index: 305; Name: 'GetPlayerAction'),
-    (Index: 306; Name: 'IsActorUsingATorch'),
-    (Index: 309; Name: 'IsXBox'),
-    (Index: 310; Name: 'GetInWorldspace'; ParamType1: ptWorldspace),
+    (Index: 300; Name: 'IsInInterior'),    // 155
+    (Index: 304; Name: 'IsWaterObject'),    // 156
+    (Index: 305; Name: 'GetPlayerAction'),    // 157
+    (Index: 306; Name: 'IsActorUsingATorch'),    // 158
+    (Index: 309; Name: 'IsXBox'),    // 159
+    (Index: 310; Name: 'GetInWorldspace'; Paramtype1: ptWorldSpace),    // 160
     (Index: 312; Name: 'GetPCMiscStat'; ParamType1: ptMiscStat),
-    (Index: 313; Name: 'GetPairedAnimation'),
-    (Index: 314; Name: 'IsActorAVictim'),
-    (Index: 315; Name: 'GetTotalPersuasionNumber'),
-    (Index: 318; Name: 'GetIdleDoneOnce'),
-    (Index: 320; Name: 'GetNoRumors'),
-    (Index: 323; Name: 'GetCombatState'),
+    (Index: 313; Name: 'GetPairedAnimation'),    // 162
+    (Index: 314; Name: 'IsActorAVictim'),    // 163
+    (Index: 315; Name: 'GetTotalPersuasionNumber'),    // 164
+    (Index: 318; Name: 'GetIdleDoneOnce'),    // 165
+    (Index: 320; Name: 'GetNoRumors'),    // 166
+    (Index: 323; Name: 'GetCombatState'),    // 167
     (Index: 325; Name: 'GetWithinPackageLocation'; ParamType1: ptPackdata),
-    (Index: 327; Name: 'IsRidingMount'),
-    (Index: 329; Name: 'IsFleeing'),
-    (Index: 332; Name: 'IsInDangerousWater'),
-    (Index: 338; Name: 'GetIgnoreFriendlyHits'),
-    (Index: 339; Name: 'IsPlayersLastRiddenMount'),
-    // exists but no longer CTDA (Index: 344; Name: 'ReleaseWeatherOverride'),
-    // exists but no longer CTDA (Index: 348; Name: 'SendTrespassAlarm'; ParamType1: ptActor),
-    (Index: 353; Name: 'IsActor'),
-    (Index: 354; Name: 'IsEssential'),
-    (Index: 358; Name: 'IsPlayerMovingIntoNewSpace'),
-    (Index: 359; Name: 'GetInCurrentLocation'; ParamType1: ptLocation),
+    (Index: 327; Name: 'IsRidingMount'),    // 169
+    (Index: 329; Name: 'IsFleeing'),    // 170
+    (Index: 332; Name: 'IsInDangerousWater'),    // 171
+    (Index: 338; Name: 'GetIgnoreFriendlyHits'),    // 172
+    (Index: 339; Name: 'IsPlayersLastRiddenMount'),    // 173
+    (Index: 353; Name: 'IsActor'),    // 174
+    (Index: 354; Name: 'IsEssential'),    // 175
+    (Index: 358; Name: 'IsPlayerMovingIntoNewSpace'),    // 176
+    (Index: 359; Name: 'GetInCurrentLocation'; Paramtype1: ptLocation),    // 177
     (Index: 360; Name: 'GetInCurrentLocationAlias'; ParamType1: ptAlias),
-    (Index: 361; Name: 'GetTimeDead'),
-    (Index: 362; Name: 'HasLinkedRef'; ParamType1: ptKeyword),
-    // exists but no longer CTDA (Index: 363; Name: 'GetLinkedRef'; ParamType1: ptKeyword),
-    (Index: 365; Name: 'IsChild'),
-    (Index: 366; Name: 'GetStolenItemValueNoCrime'; ParamType1: ptFaction),
-    (Index: 367; Name: 'GetLastPlayerAction'),
-    (Index: 368; Name: 'IsPlayerActionActive'; ParamType1: ptInteger),
-    (Index: 370; Name: 'IsTalkingActivatorActor'; ParamType1: ptActor),
+    (Index: 361; Name: 'GetTimeDead'),    // 179
+    (Index: 362; Name: 'HasLinkedRef'; Paramtype1: ptKeyword),    // 180
+    (Index: 365; Name: 'IsChild'),    // 181
+    (Index: 366; Name: 'GetStolenItemValueNoCrime'; Paramtype1: ptFaction),    // 182
+    (Index: 367; Name: 'GetLastPlayerAction'),    // 183
+    (Index: 368; Name: 'IsPlayerActionActive'; Paramtype1: ptInteger),    // 184
+    (Index: 370; Name: 'IsTalkingActivatorActor'; Paramtype1: ptActor),    // 185
     (Index: 372; Name: 'IsInList'; ParamType1: ptFormList),
-    (Index: 373; Name: 'GetStolenItemValue'; ParamType1: ptFaction),
-    (Index: 375; Name: 'GetCrimeGoldViolent'; ParamType1: ptFaction),
-    (Index: 376; Name: 'GetCrimeGoldNonviolent'; ParamType1: ptFaction),
-    (Index: 378; Name: 'IsOwnedBy'; ParamType1: ptActor),
-    (Index: 380; Name: 'GetCommandDistance'),
-    (Index: 381; Name: 'GetCommandLocationDistance'),
-    // exists but no longer CTDA (Index: 387; Name: 'GetObjectiveFailed'; ParamType1: ptQuest; ParamType2: ptInteger),
-    (Index: 390; Name: 'GetHitLocation'),
-    (Index: 391; Name: 'IsPC1stPerson'),
-    (Index: 396; Name: 'GetCauseofDeath'),
-    (Index: 397; Name: 'IsLimbGone'; ParamType1: ptInteger),
+    (Index: 373; Name: 'GetStolenItemValue'; Paramtype1: ptFaction),    // 187
+    (Index: 375; Name: 'GetCrimeGoldViolent'; ParamType1: ptFactionOpt),
+    (Index: 376; Name: 'GetCrimeGoldNonviolent'; ParamType1: ptFactionOpt),
+    (Index: 378; Name: 'IsOwnedBy'; Paramtype1: ptActor),    // 190
+    (Index: 380; Name: 'GetCommandDistance'),    // 191
+    (Index: 381; Name: 'GetCommandLocationDistance'),    // 192
+    (Index: 390; Name: 'GetHitLocation'),    // 193
+    (Index: 391; Name: 'IsPC1stPerson'),    // 194
+    (Index: 396; Name: 'GetCauseofDeath'),    // 195
+    (Index: 397; Name: 'IsLimbGone'; Paramtype1: ptInteger),    // 196
     (Index: 398; Name: 'IsWeaponInList'; ParamType1: ptFormList),
-    (Index: 402; Name: 'IsBribedbyPlayer'),
-    (Index: 403; Name: 'GetRelationshipRank'; ParamType1: ptActor),
+    (Index: 402; Name: 'IsBribedbyPlayer'),    // 198
+    (Index: 403; Name: 'GetRelationshipRank'; Paramtype1: ptActor),    // 199
     (Index: 407; Name: 'GetVATSValue'; ParamType1: ptInteger; ParamType2: ptInteger),
-    (Index: 408; Name: 'IsKiller'; ParamType1: ptActor),
+    (Index: 408; Name: 'IsKiller'; Paramtype1: ptActor),    // 201
     (Index: 409; Name: 'IsKillerObject'; ParamType1: ptFormList),
-    (Index: 410; Name: 'GetFactionCombatReaction'; ParamType1: ptFaction; ParamType2: ptFaction),
+    (Index: 410; Name: 'GetFactionCombatReaction'; Paramtype1: ptFaction; Paramtype2: ptFaction),    // 203
     (Index: 414; Name: 'Exists'; ParamType1: ptObjectReference),
-    (Index: 415; Name: 'GetGroupMemberCount'),
-    (Index: 416; Name: 'GetGroupTargetCount'),
-    // exists but no longer CTDA (Index: 419; Name: 'GetObjectiveCompleted'; ParamType1: ptQuest; ParamType2: ptInteger),
-    // exists but no longer CTDA (Index: 420; Name: 'GetObjectiveDisplayed'; ParamType1: ptQuest; ParamType2: ptInteger),
-    // exists but no longer CTDA (Index: 425; Name: 'GetIsFormType'),
-    (Index: 426; Name: 'GetIsVoiceType'; ParamType1: ptVoiceType),
-    (Index: 427; Name: 'GetPlantedExplosive'),
-    (Index: 429; Name: 'IsScenePackageRunning'),
-    (Index: 430; Name: 'GetHealthPercentage'),
+    (Index: 415; Name: 'GetGroupMemberCount'),    // 205
+    (Index: 416; Name: 'GetGroupTargetCount'),    // 206
+    (Index: 426; Name: 'GetIsVoiceType'; Paramtype1: ptVoiceType),    // 207
+    (Index: 427; Name: 'GetPlantedExplosive'),    // 208
+    (Index: 429; Name: 'IsScenePackageRunning'),    // 209
+    (Index: 430; Name: 'GetHealthPercentage'),    // 210
     (Index: 432; Name: 'GetIsObjectType'; ParamType1: ptFormType),
-    (Index: 434; Name: 'PlayerVisualDetection'),
-    (Index: 435; Name: 'PlayerAudioDetection'),
-    (Index: 437; Name: 'GetIsCreatureType'; ParamType1: ptInteger),
+    (Index: 434; Name: 'PlayerVisualDetection'),    // 212
+    (Index: 435; Name: 'PlayerAudioDetection'),    // 213
+    (Index: 437; Name: 'GetIsCreatureType'; Paramtype1: ptInteger),    // 214
     (Index: 438; Name: 'HasKey'; ParamType1: ptObjectReference),
     (Index: 439; Name: 'IsFurnitureEntryType'; ParamType1: ptReferencableObject),
     (Index: 444; Name: 'GetInCurrentLocationFormList'; ParamType1: ptFormList),
-    (Index: 445; Name: 'GetInZone'; ParamType1: ptEncounterZone),
-    (Index: 446; Name: 'GetVelocity'; ParamType1: ptAxis),
-    (Index: 447; Name: 'GetGraphVariableFloat'),
-    (Index: 448; Name: 'HasPerk'; ParamType1: ptPerk),
-    (Index: 449; Name: 'GetFactionRelation'; ParamType1: ptActor),
+    (Index: 445; Name: 'GetInZone'; Paramtype1: ptEncounterZone),    // 218
+    (Index: 446; Name: 'GetVelocity'; Paramtype1: ptAxis),    // 219
+    (Index: 447; Name: 'GetGraphVariableFloat'; Paramtype1: ptString),    // 220
+    (Index: 448; Name: 'HasPerk'; Paramtype1: ptPerk),    // 221
+    (Index: 449; Name: 'GetFactionRelation'; Paramtype1: ptActor),    // 222
     (Index: 450; Name: 'IsLastIdlePlayed'; ParamType1: ptIdleForm),
-    (Index: 453; Name: 'GetPlayerTeammate'),
-    (Index: 454; Name: 'GetPlayerTeammateCount'),
-    (Index: 458; Name: 'GetActorCrimePlayerEnemy'),
-    (Index: 459; Name: 'GetCrimeGold'; ParamType1: ptFaction),
-    // exists but no longer CTDA (Index: 462; Name: 'GetPlayerGrabbedRef'),
+    (Index: 453; Name: 'GetPlayerTeammate'),    // 224
+    (Index: 454; Name: 'GetPlayerTeammateCount'),    // 225
+    (Index: 458; Name: 'GetActorCrimePlayerEnemy'),    // 226
+    (Index: 459; Name: 'GetCrimeGold'; ParamType1: ptFactionOpt),
     (Index: 463; Name: 'IsPlayerGrabbedRef'; ParamType1: ptObjectReference),
-    (Index: 465; Name: 'GetKeywordItemCount'; ParamType1: ptKeyword),
-    // exists but no longer CTDA (Index: 467; Name: 'GetBroadcastState'),
-    (Index: 470; Name: 'GetDestructionStage'),
-    (Index: 473; Name: 'GetIsAlignment'; ParamType1: ptAlignment),
-    (Index: 476; Name: 'IsProtected'),
-    (Index: 477; Name: 'GetThreatRatio'; ParamType1: ptActor),
-    (Index: 479; Name: 'GetIsUsedItemEquipType'; ParamType1: ptEquipType),
-    // exists but no longer CTDA (Index: 480; Name: 'GetPlayerName'),
-    (Index: 483; Name: 'GetPlayerActivated'),
-    (Index: 485; Name: 'GetFullyEnabledActorsInHigh'),
-    (Index: 487; Name: 'IsCarryable'),
-    (Index: 488; Name: 'GetConcussed'),
-    // exists but no longer CTDA (Index: 489; Name: 'SetZoneRespawns'; ParamType1: ptEncounterZone; ParamType2: ptInteger),
-    // exists but no longer CTDA (Index: 490; Name: 'SetVATSTarget'; ParamType1: ptInteger),
-    (Index: 491; Name: 'GetMapMarkerVisible'),
+    (Index: 465; Name: 'GetKeywordItemCount'; Paramtype1: ptKeyword),    // 229
+    (Index: 470; Name: 'GetDestructionStage'),    // 230
+    (Index: 473; Name: 'GetIsAlignment'; Paramtype1: ptAlignment),    // 231
+    (Index: 476; Name: 'IsProtected'),    // 232
+    (Index: 477; Name: 'GetThreatRatio'; Paramtype1: ptActor),    // 233
+    (Index: 479; Name: 'GetIsUsedItemEquipType'; Paramtype1: ptEquipType),    // 234
+    (Index: 483; Name: 'GetPlayerActivated'),    // 235
+    (Index: 485; Name: 'GetFullyEnabledActorsInHigh'),    // 236
+    (Index: 487; Name: 'IsCarryable'),    // 237
+    (Index: 488; Name: 'GetConcussed'),    // 238
+    (Index: 491; Name: 'GetMapMarkerVisible'),    // 239
     (Index: 493; Name: 'PlayerKnows'; ParamType1: ptReferencableObject),
     (Index: 494; Name: 'GetPermanentValue'; ParamType1: ptActorValue),
-    (Index: 495; Name: 'GetKillingBlowLimb'),
+    (Index: 495; Name: 'GetKillingBlowLimb'),    // 242
     (Index: 497; Name: 'CanPayCrimeGold'; ParamType1: ptFaction),
-    (Index: 499; Name: 'GetDaysInJail'),
-    (Index: 500; Name: 'EPAlchemyGetMakingPoison'),
-    (Index: 501; Name: 'EPAlchemyEffectHasKeyword'; ParamType1: ptKeyword),
-    (Index: 503; Name: 'GetAllowWorldInteractions'),
+    (Index: 499; Name: 'GetDaysInJail'),    // 244
+    (Index: 500; Name: 'EPAlchemyGetMakingPoison'),    // 245
+    (Index: 501; Name: 'EPAlchemyEffectHasKeyword'; Paramtype1: ptKeyword),    // 246
+    (Index: 503; Name: 'GetAllowWorldInteractions'),    // 247
     (Index: 506; Name: 'DialogueGetAv'; ParamType1: ptActorValue),
-    (Index: 507; Name: 'DialogueHasPerk'; ParamType1: ptPerk),
-    (Index: 508; Name: 'GetLastHitCritical'),
+    (Index: 507; Name: 'DialogueHasPerk'; Paramtype1: ptPerk),    // 249
+    (Index: 508; Name: 'GetLastHitCritical'),    // 250
     (Index: 510; Name: 'DialogueGetItemCount'; ParamType1: ptReferencableObject),
     (Index: 511; Name: 'LastCrippledCondition'; ParamType1: ptActorValue),
     (Index: 512; Name: 'HasSharedPowerGrid'; ParamType1: ptObjectReference),
-    (Index: 513; Name: 'IsCombatTarget'; ParamType1: ptActor),
+    (Index: 513; Name: 'IsCombatTarget'; Paramtype1: ptActor),    // 254
     (Index: 515; Name: 'GetVATSRightAreaFree'; ParamType1: ptObjectReference),
     (Index: 516; Name: 'GetVATSLeftAreaFree'; ParamType1: ptObjectReference),
     (Index: 517; Name: 'GetVATSBackAreaFree'; ParamType1: ptObjectReference),
     (Index: 518; Name: 'GetVATSFrontAreaFree'; ParamType1: ptObjectReference),
-    (Index: 519; Name: 'GetIsLockBroken'),
-    (Index: 520; Name: 'IsPS3'),
-    (Index: 521; Name: 'IsWindowsPC'),
+    (Index: 519; Name: 'GetIsLockBroken'),    // 259
+    (Index: 520; Name: 'IsPS3'),    // 260
+    (Index: 521; Name: 'IsWindowsPC'),    // 261
     (Index: 522; Name: 'GetVATSRightTargetVisible'; ParamType1: ptObjectReference),
     (Index: 523; Name: 'GetVATSLeftTargetVisible'; ParamType1: ptObjectReference),
     (Index: 524; Name: 'GetVATSBackTargetVisible'; ParamType1: ptObjectReference),
     (Index: 525; Name: 'GetVATSFrontTargetVisible'; ParamType1: ptObjectReference),
-    (Index: 528; Name: 'IsInCriticalStage'; ParamType1: ptCriticalStage),
-    (Index: 530; Name: 'GetXPForNextLevel'),
+    (Index: 528; Name: 'IsInCriticalStage'; Paramtype1: ptCriticalStage),    // 266
+    (Index: 530; Name: 'GetXPForNextLevel'),    // 267
     (Index: 533; Name: 'GetInfamy'; ParamType1: ptFaction),
     (Index: 534; Name: 'GetInfamyViolent'; ParamType1: ptFaction),
     (Index: 535; Name: 'GetInfamyNonViolent'; ParamType1: ptFaction),
-    (Index: 536; Name: 'GetTypeCommandPerforming'),
-    (Index: 543; Name: 'GetQuestCompleted'; ParamType1: ptQuest),
-    (Index: 544; Name: 'GetSpeechChallengeSuccessLevel'),
-    // exists but no longer CTDA (Index: 545; Name: 'PipBoyRadioOff'),
-    (Index: 547; Name: 'IsGoreDisabled'),
+    (Index: 536; Name: 'GetTypeCommandPerforming'),    // 271
+    (Index: 543; Name: 'GetQuestCompleted'; Paramtype1: ptQuest),    // 272
+    (Index: 544; Name: 'GetSpeechChallengeSuccessLevel'),    // 273
+    (Index: 547; Name: 'IsGoreDisabled'),    // 274
     (Index: 550; Name: 'IsSceneActionComplete'; ParamType1: ptScene; ParamType2: ptInteger),
     (Index: 552; Name: 'GetSpellUsageNum'; ParamType1: ptMagicItem),
-    (Index: 554; Name: 'GetActorsInHigh'),
-    (Index: 555; Name: 'HasLoaded3D'),
-    // exists but no longer CTDA (Index: 559; Name: 'IsImageSpaceActive'; ParamType1: ptReferencableObject),
-    (Index: 560; Name: 'HasKeyword'; ParamType1: ptKeyword),
-    (Index: 561; Name: 'HasRefType'; ParamType1: ptRefType),
-    (Index: 562; Name: 'LocationHasKeyword'; ParamType1: ptKeyword),
-    (Index: 563; Name: 'LocationHasRefType'; ParamType1: ptRefType),
-    (Index: 565; Name: 'GetIsEditorLocation'; ParamType1: ptLocation),
+    (Index: 554; Name: 'GetActorsInHigh'),    // 277
+    (Index: 555; Name: 'HasLoaded3D'),    // 278
+    (Index: 560; Name: 'HasKeyword'; Paramtype1: ptKeyword),    // 279
+    (Index: 561; Name: 'HasRefType'; Paramtype1: ptRefType),    // 280
+    (Index: 562; Name: 'LocationHasKeyword'; Paramtype1: ptKeyword),    // 281
+    (Index: 563; Name: 'LocationHasRefType'; Paramtype1: ptRefType),    // 282
+    (Index: 565; Name: 'GetIsEditorLocation'; Paramtype1: ptLocation),    // 283
     (Index: 566; Name: 'GetIsAliasRef'; ParamType1: ptAlias),
     (Index: 567; Name: 'GetIsEditorLocationAlias'; ParamType1: ptAlias),
-    (Index: 568; Name: 'IsSprinting'),
-    (Index: 569; Name: 'IsBlocking'),
+    (Index: 568; Name: 'IsSprinting'),    // 286
+    (Index: 569; Name: 'IsBlocking'),    // 287
     (Index: 570; Name: 'HasEquippedSpell'; ParamType1: ptCastingSource),
     (Index: 571; Name: 'GetCurrentCastingType'; ParamType1: ptCastingSource),
     (Index: 572; Name: 'GetCurrentDeliveryType'; ParamType1: ptCastingSource),
-    (Index: 574; Name: 'GetAttackState'),
-    // exists but no longer CTDA (Index: 575; Name: 'GetAliasedRef'; ParamType1: ptAlias),
-    (Index: 576; Name: 'GetEventData'; ParamType1: ptEvent; ParamType2: ptEventData; ParamType3: ptNone),  // fireundubh: Event Function, Event Member, Data (FO4)
+    (Index: 574; Name: 'GetAttackState'),    // 291
+    (Index: 576; Name: 'GetEventData'; ParamType1: ptEvent; ParamType2: ptEventData; ParamType3: ptString),  // fireundubh: Event Function, Event Member, Data (FO4)
     (Index: 577; Name: 'IsCloserToAThanB'; ParamType1: ptObjectReference; ParamType2: ptObjectReference),
-    (Index: 578; Name: 'LevelMinusPCLevel'),
-    (Index: 580; Name: 'IsBleedingOut'),
+    (Index: 578; Name: 'LevelMinusPCLevel'),    // 294
+    (Index: 580; Name: 'IsBleedingOut'),    // 295
     (Index: 584; Name: 'GetRelativeAngle'; ParamType1: ptObjectReference; ParamType2: ptAxis),
-    (Index: 589; Name: 'GetMovementDirection'),
-    (Index: 590; Name: 'IsInScene'),
-    (Index: 591; Name: 'GetRefTypeDeadCount'; ParamType1: ptLocation; ParamType2: ptRefType),
-    (Index: 592; Name: 'GetRefTypeAliveCount'; ParamType1: ptLocation; ParamType2: ptRefType),
-    (Index: 594; Name: 'GetIsFlying'),
+    (Index: 589; Name: 'GetMovementDirection'),    // 297
+    (Index: 590; Name: 'IsInScene'),    // 298
+    (Index: 591; Name: 'GetRefTypeDeadCount'; Paramtype1: ptLocation; Paramtype2: ptRefType),    // 299
+    (Index: 592; Name: 'GetRefTypeAliveCount'; Paramtype1: ptLocation; Paramtype2: ptRefType),    // 300
+    (Index: 594; Name: 'GetIsFlying'),    // 301
     (Index: 595; Name: 'IsCurrentSpell'; ParamType1: ptMagicItem; ParamType2: ptCastingSource),
     (Index: 596; Name: 'SpellHasKeyword'; ParamType1: ptCastingSource; ParamType2: ptKeyword),
     (Index: 597; Name: 'GetEquippedItemType'; ParamType1: ptCastingSource),
@@ -3526,174 +3188,173 @@ const
     (Index: 603; Name: 'IsInSameCurrentLocationAsRef'; ParamType1: ptObjectReference; ParamType2: ptKeyword),
     (Index: 604; Name: 'IsInSameCurrentLocationAsRefAlias'; ParamType1: ptAlias; ParamType2: ptKeyword),
     (Index: 605; Name: 'LocationAliasIsLocation'; ParamType1: ptAlias; ParamType2: ptLocation),
-    (Index: 606; Name: 'GetKeywordDataForLocation'; ParamType1: ptLocation; ParamType2: ptKeyword),
+    (Index: 606; Name: 'GetKeywordDataForLocation'; Paramtype1: ptLocation; Paramtype2: ptKeyword),    // 312
     (Index: 608; Name: 'GetKeywordDataForAlias'; ParamType1: ptAlias; ParamType2: ptKeyword),
     (Index: 610; Name: 'LocationAliasHasKeyword'; ParamType1: ptAlias; ParamType2: ptKeyword),
     (Index: 611; Name: 'IsNullPackageData'; ParamType1: ptPackdata),
     (Index: 612; Name: 'GetNumericPackageData'; ParamType1: ptPackdata),
-    (Index: 613; Name: 'IsPlayerRadioOn'),
-    (Index: 614; Name: 'GetPlayerRadioFrequency'),
-    (Index: 615; Name: 'GetHighestRelationshipRank'),
-    (Index: 616; Name: 'GetLowestRelationshipRank'),
-    (Index: 617; Name: 'HasAssociationTypeAny'; ParamType1: ptAssociationType),
-    (Index: 618; Name: 'HasFamilyRelationshipAny'),
-    (Index: 619; Name: 'GetPathingTargetOffset'; ParamType1: ptAxis),
-    (Index: 620; Name: 'GetPathingTargetAngleOffset'; ParamType1: ptAxis),
-    (Index: 621; Name: 'GetPathingTargetSpeed'),
-    (Index: 622; Name: 'GetPathingTargetSpeedAngle'; ParamType1: ptAxis),
-    (Index: 623; Name: 'GetMovementSpeed'),
+    (Index: 613; Name: 'IsPlayerRadioOn'),    // 317
+    (Index: 614; Name: 'GetPlayerRadioFrequency'),    // 318
+    (Index: 615; Name: 'GetHighestRelationshipRank'),    // 319
+    (Index: 616; Name: 'GetLowestRelationshipRank'),    // 320
+    (Index: 617; Name: 'HasAssociationTypeAny'; Paramtype1: ptAssociationType),    // 321
+    (Index: 618; Name: 'HasFamilyRelationshipAny'),    // 322
+    (Index: 619; Name: 'GetPathingTargetOffset'; Paramtype1: ptAxis),    // 323
+    (Index: 620; Name: 'GetPathingTargetAngleOffset'; Paramtype1: ptAxis),    // 324
+    (Index: 621; Name: 'GetPathingTargetSpeed'),    // 325
+    (Index: 622; Name: 'GetPathingTargetSpeedAngle'; Paramtype1: ptAxis),    // 326
+    (Index: 623; Name: 'GetMovementSpeed'),    // 327
     (Index: 624; Name: 'GetInContainer'; ParamType1: ptObjectReference),
-    (Index: 625; Name: 'IsLocationLoaded'; ParamType1: ptLocation),
+    (Index: 625; Name: 'IsLocationLoaded'; Paramtype1: ptLocation),    // 329
     (Index: 626; Name: 'IsLocationAliasLoaded'; ParamType1: ptAlias),
-    (Index: 627; Name: 'IsDualCasting'),
-    (Index: 629; Name: 'GetVMQuestVariable'; ParamType1: ptQuest; ParamType2: ptNone),
-    (Index: 630; Name: 'GetCombatAudioDetection'),
-    (Index: 631; Name: 'GetCombatVisualDetection'),
-    (Index: 632; Name: 'IsCasting'),
-    (Index: 633; Name: 'GetFlyingState'),
-    (Index: 635; Name: 'IsInFavorState'),
-    (Index: 636; Name: 'HasTwoHandedWeaponEquipped'),
+    (Index: 627; Name: 'IsDualCasting'),    // 331
+    (Index: 629; Name: 'GetVMQuestVariable'; ParamType1: ptQuest; ParamType2: ptString),
+    (Index: 630; Name: 'GetCombatAudioDetection'),    // 333
+    (Index: 631; Name: 'GetCombatVisualDetection'),    // 334
+    (Index: 632; Name: 'IsCasting'),    // 335
+    (Index: 633; Name: 'GetFlyingState'),    // 336
+    (Index: 635; Name: 'IsInFavorState'),    // 337
+    (Index: 636; Name: 'HasTwoHandedWeaponEquipped'),    // 338
     (Index: 637; Name: 'IsFurnitureExitType'; ParamType1: ptReferencableObject),
-    (Index: 638; Name: 'IsInFriendStatewithPlayer'),
+    (Index: 638; Name: 'IsInFriendStatewithPlayer'),    // 340
     (Index: 639; Name: 'GetWithinDistance'; ParamType1: ptObjectReference; ParamType2: ptFloat),
     (Index: 640; Name: 'GetValuePercent'; ParamType1: ptActorValue),
-    (Index: 641; Name: 'IsUnique'),
-    (Index: 642; Name: 'GetLastBumpDirection'),
-    (Index: 644; Name: 'GetInfoChallangeSuccess'),
-    (Index: 645; Name: 'GetIsInjured'),
-    (Index: 646; Name: 'GetIsCrashLandRequest'),
-    (Index: 647; Name: 'GetIsHastyLandRequest'),
+    (Index: 641; Name: 'IsUnique'),    // 343
+    (Index: 642; Name: 'GetLastBumpDirection'),    // 344
+    (Index: 644; Name: 'GetInfoChallangeSuccess'),    // 345
+    (Index: 645; Name: 'GetIsInjured'),    // 346
+    (Index: 646; Name: 'GetIsCrashLandRequest'),    // 347
+    (Index: 647; Name: 'GetIsHastyLandRequest'),    // 348
     (Index: 650; Name: 'IsLinkedTo'; ParamType1: ptObjectReference; ParamType2: ptKeyword),
-    (Index: 651; Name: 'GetKeywordDataForCurrentLocation'; ParamType1: ptKeyword),
+    (Index: 651; Name: 'GetKeywordDataForCurrentLocation'; Paramtype1: ptKeyword),    // 350
     (Index: 652; Name: 'GetInSharedCrimeFaction'; ParamType1: ptObjectReference),
-    // exists but no longer CTDA (Index: 653; Name: 'GetBribeAmount'),
-    (Index: 654; Name: 'GetBribeSuccess'),
-    (Index: 655; Name: 'GetIntimidateSuccess'),
-    (Index: 656; Name: 'GetArrestedState'),
-    (Index: 657; Name: 'GetArrestingActor'),
-    (Index: 659; Name: 'HasVMScript'; ParamType1: ptNone),
-    (Index: 660; Name: 'GetVMScriptVariable'; ParamType1: ptNone; ParamType2: ptNone),
+    (Index: 654; Name: 'GetBribeSuccess'),    // 352
+    (Index: 655; Name: 'GetIntimidateSuccess'),    // 353
+    (Index: 656; Name: 'GetArrestedState'),    // 354
+    (Index: 657; Name: 'GetArrestingActor'),    // 355
+    (Index: 659; Name: 'HasVMScript'; ParamType1: ptString),
+    (Index: 660; Name: 'GetVMScriptVariable'; ParamType1: ptString; ParamType2: ptString),
     (Index: 661; Name: 'GetWorkshopResourceDamage'; ParamType1: ptActorValue),
-    (Index: 664; Name: 'HasValidRumorTopic'; ParamType1: ptQuest),
-    (Index: 672; Name: 'IsAttacking'),
-    (Index: 673; Name: 'IsPowerAttacking'),
-    (Index: 674; Name: 'IsLastHostileActor'),
-    (Index: 675; Name: 'GetGraphVariableInt'; ParamType1: ptNone),
-    (Index: 678; Name: 'ShouldAttackKill'; ParamType1: ptActor),
-    (Index: 680; Name: 'GetActivationHeight'),
-    (Index: 682; Name: 'WornHasKeyword'; ParamType1: ptKeyword),
-    (Index: 683; Name: 'GetPathingCurrentSpeed'),
-    (Index: 684; Name: 'GetPathingCurrentSpeedAngle'; ParamType1: ptAxis),
+    (Index: 664; Name: 'HasValidRumorTopic'; Paramtype1: ptQuest),    // 359
+    (Index: 672; Name: 'IsAttacking'),    // 360
+    (Index: 673; Name: 'IsPowerAttacking'),    // 361
+    (Index: 674; Name: 'IsLastHostileActor'),    // 362
+    (Index: 675; Name: 'GetGraphVariableInt'; ParamType1: ptString),
+    (Index: 678; Name: 'ShouldAttackKill'; Paramtype1: ptActor),    // 364
+    (Index: 680; Name: 'GetActivationHeight'),    // 365
+    (Index: 682; Name: 'WornHasKeyword'; Paramtype1: ptKeyword),    // 366
+    (Index: 683; Name: 'GetPathingCurrentSpeed'),    // 367
+    (Index: 684; Name: 'GetPathingCurrentSpeedAngle'; Paramtype1: ptAxis),    // 368
     (Index: 691; Name: 'GetWorkshopObjectCount'; ParamType1: ptReferencableObject),
-    (Index: 693; Name: 'EPMagic_SpellHasKeyword'; ParamType1: ptKeyword),
-    (Index: 694; Name: 'GetNoBleedoutRecovery'),
+    (Index: 693; Name: 'EPMagic_SpellHasKeyword'; Paramtype1: ptKeyword),    // 370
+    (Index: 694; Name: 'GetNoBleedoutRecovery'),    // 371
     (Index: 696; Name: 'EPMagic_SpellHasSkill'; ParamType1: ptActorValue),
-    (Index: 697; Name: 'IsAttackType'; ParamType1: ptKeyword),
-    (Index: 698; Name: 'IsAllowedToFly'),
-    (Index: 699; Name: 'HasMagicEffectKeyword'; ParamType1: ptKeyword),
-    (Index: 700; Name: 'IsCommandedActor'),
-    (Index: 701; Name: 'IsStaggered'),
-    (Index: 702; Name: 'IsRecoiling'),
-    (Index: 703; Name: 'HasScopeWeaponEquipped'),
-    (Index: 704; Name: 'IsPathing'),
-    (Index: 705; Name: 'GetShouldHelp'; ParamType1: ptActor),
+    (Index: 697; Name: 'IsAttackType'; Paramtype1: ptKeyword),    // 373
+    (Index: 698; Name: 'IsAllowedToFly'),    // 374
+    (Index: 699; Name: 'HasMagicEffectKeyword'; Paramtype1: ptKeyword),    // 375
+    (Index: 700; Name: 'IsCommandedActor'),    // 376
+    (Index: 701; Name: 'IsStaggered'),    // 377
+    (Index: 702; Name: 'IsRecoiling'),    // 378
+    (Index: 703; Name: 'HasScopeWeaponEquipped'),    // 379
+    (Index: 704; Name: 'IsPathing'),    // 380
+    (Index: 705; Name: 'GetShouldHelp'; Paramtype1: ptActor),    // 381
     (Index: 706; Name: 'HasBoundWeaponEquipped'; ParamType1: ptCastingSource),
-    (Index: 707; Name: 'GetCombatTargetHasKeyword'; ParamType1: ptKeyword),
-    (Index: 709; Name: 'GetCombatGroupMemberCount'),
-    (Index: 710; Name: 'IsIgnoringCombat'),
-    (Index: 711; Name: 'GetLightLevel'),
-    (Index: 713; Name: 'SpellHasCastingPerk'; ParamType1: ptPerk),
-    (Index: 714; Name: 'IsBeingRidden'),
-    (Index: 715; Name: 'IsUndead'),
-    (Index: 716; Name: 'GetRealHoursPassed'),
-    (Index: 718; Name: 'IsUnlockedDoor'),
-    (Index: 719; Name: 'IsHostileToActor'; ParamType1: ptActor),
+    (Index: 707; Name: 'GetCombatTargetHasKeyword'; Paramtype1: ptKeyword),    // 383
+    (Index: 709; Name: 'GetCombatGroupMemberCount'),    // 384
+    (Index: 710; Name: 'IsIgnoringCombat'),    // 385
+    (Index: 711; Name: 'GetLightLevel'),    // 386
+    (Index: 713; Name: 'SpellHasCastingPerk'; Paramtype1: ptPerk),    // 387
+    (Index: 714; Name: 'IsBeingRidden'),    // 388
+    (Index: 715; Name: 'IsUndead'),    // 389
+    (Index: 716; Name: 'GetRealHoursPassed'),    // 390
+    (Index: 718; Name: 'IsUnlockedDoor'),    // 391
+    (Index: 719; Name: 'IsHostileToActor'; Paramtype1: ptActor),    // 392
     (Index: 720; Name: 'GetTargetHeight'; ParamType1: ptObjectReference),
-    (Index: 721; Name: 'IsPoison'),
-    (Index: 722; Name: 'WornApparelHasKeywordCount'; ParamType1: ptKeyword),
-    (Index: 723; Name: 'GetItemHealthPercent'),
-    (Index: 724; Name: 'EffectWasDualCast'),
-    (Index: 725; Name: 'GetKnockStateEnum'),
-    (Index: 726; Name: 'DoesNotExist'),
-    (Index: 728; Name: 'GetPlayerWalkAwayFromDialogueScene'),
-    (Index: 729; Name: 'GetActorStance'),
-    (Index: 734; Name: 'CanProduceForWorkshop'),
-    (Index: 735; Name: 'CanFlyHere'),
+    (Index: 721; Name: 'IsPoison'),    // 394
+    (Index: 722; Name: 'WornApparelHasKeywordCount'; Paramtype1: ptKeyword),    // 395
+    (Index: 723; Name: 'GetItemHealthPercent'),    // 396
+    (Index: 724; Name: 'EffectWasDualCast'),    // 397
+    (Index: 725; Name: 'GetKnockStateEnum'),    // 398
+    (Index: 726; Name: 'DoesNotExist'),    // 399
+    (Index: 728; Name: 'GetPlayerWalkAwayFromDialogueScene'),    // 400
+    (Index: 729; Name: 'GetActorStance'),    // 401
+    (Index: 734; Name: 'CanProduceForWorkshop'),    // 402
+    (Index: 735; Name: 'CanFlyHere'),    // 403
     (Index: 736; Name: 'EPIsDamageType'; ParamType1: ptDamageType),
-    (Index: 738; Name: 'GetActorGunState'),
-    (Index: 739; Name: 'GetVoiceLineLength'),
-    (Index: 741; Name: 'ObjectTemplateItem_HasKeyword'; ParamType1: ptKeyword),
-    (Index: 742; Name: 'ObjectTemplateItem_HasUniqueKeyword'; ParamType1: ptKeyword),
-    (Index: 743; Name: 'ObjectTemplateItem_GetLevel'),
+    (Index: 738; Name: 'GetActorGunState'),    // 405
+    (Index: 739; Name: 'GetVoiceLineLength'),    // 406
+    (Index: 741; Name: 'ObjectTemplateItem_HasKeyword'; Paramtype1: ptKeyword),    // 407
+    (Index: 742; Name: 'ObjectTemplateItem_HasUniqueKeyword'; Paramtype1: ptKeyword),    // 408
+    (Index: 743; Name: 'ObjectTemplateItem_GetLevel'),    // 409
     (Index: 744; Name: 'MovementIdleMatches'; ParamType1: ptInteger; ParamType2: ptInteger), // TODO: determine correct param types (2)
-    (Index: 745; Name: 'GetActionData'),
-    (Index: 746; Name: 'GetActionDataShort'; ParamType1: ptInteger),
-    (Index: 747; Name: 'GetActionDataByte'; ParamType1: ptInteger),
-    (Index: 748; Name: 'GetActionDataFlag'; ParamType1: ptInteger),
-    (Index: 749; Name: 'ModdedItemHasKeyword'; ParamType1: ptKeyword),
-    (Index: 750; Name: 'GetAngryWithPlayer'),
-    (Index: 751; Name: 'IsCameraUnderWater'),
+    (Index: 745; Name: 'GetActionData'),    // 411
+    (Index: 746; Name: 'GetActionDataShort'; Paramtype1: ptInteger),    // 412
+    (Index: 747; Name: 'GetActionDataByte'; Paramtype1: ptInteger),    // 413
+    (Index: 748; Name: 'GetActionDataFlag'; Paramtype1: ptInteger),    // 414
+    (Index: 749; Name: 'ModdedItemHasKeyword'; Paramtype1: ptKeyword),    // 415
+    (Index: 750; Name: 'GetAngryWithPlayer'),    // 416
+    (Index: 751; Name: 'IsCameraUnderWater'),    // 417
     (Index: 753; Name: 'IsActorRefOwner'; ParamType1: ptActor),
     (Index: 754; Name: 'HasActorRefOwner'; ParamType1: ptActor),
-    (Index: 756; Name: 'GetLoadedAmmoCount'),
-    (Index: 757; Name: 'IsTimeSpanSunrise'),
-    (Index: 758; Name: 'IsTimeSpanMorning'),
-    (Index: 759; Name: 'IsTimeSpanAfternoon'),
-    (Index: 760; Name: 'IsTimeSpanEvening'),
-    (Index: 761; Name: 'IsTimeSpanSunset'),
-    (Index: 762; Name: 'IsTimeSpanNight'),
-    (Index: 763; Name: 'IsTimeSpanMidnight'),
-    (Index: 764; Name: 'IsTimeSpanAnyDay'),
-    (Index: 765; Name: 'IsTimeSpanAnyNight'),
-    (Index: 766; Name: 'CurrentFurnitureHasKeyword'; ParamType1: ptKeyword),
-    (Index: 767; Name: 'GetWeaponEquipIndex'),
-    (Index: 769; Name: 'IsOverEncumbered'),
-    (Index: 770; Name: 'IsPackageRequestingBlockedIdles'),
-    (Index: 771; Name: 'GetActionDataInt'),
+    (Index: 756; Name: 'GetLoadedAmmoCount'),    // 420
+    (Index: 757; Name: 'IsTimeSpanSunrise'),    // 421
+    (Index: 758; Name: 'IsTimeSpanMorning'),    // 422
+    (Index: 759; Name: 'IsTimeSpanAfternoon'),    // 423
+    (Index: 760; Name: 'IsTimeSpanEvening'),    // 424
+    (Index: 761; Name: 'IsTimeSpanSunset'),    // 425
+    (Index: 762; Name: 'IsTimeSpanNight'),    // 426
+    (Index: 763; Name: 'IsTimeSpanMidnight'),    // 427
+    (Index: 764; Name: 'IsTimeSpanAnyDay'),    // 428
+    (Index: 765; Name: 'IsTimeSpanAnyNight'),    // 429
+    (Index: 766; Name: 'CurrentFurnitureHasKeyword'; Paramtype1: ptKeyword),    // 430
+    (Index: 767; Name: 'GetWeaponEquipIndex'),    // 431
+    (Index: 769; Name: 'IsOverEncumbered'),    // 432
+    (Index: 770; Name: 'IsPackageRequestingBlockedIdles'),    // 433
+    (Index: 771; Name: 'GetActionDataInt'),    // 434
     (Index: 772; Name: 'GetVATSRightMinusLeftAreaFree'; ParamType1: ptObjectReference),
     (Index: 773; Name: 'GetInIronSights'; ParamType1: ptObjectReference),
-    (Index: 774; Name: 'GetActorStaggerDirection'),
-    (Index: 775; Name: 'GetActorStaggerMagnitude'),
-    (Index: 776; Name: 'WornCoversBipedSlot'; ParamType1: ptInteger),
-    (Index: 777; Name: 'GetInventoryValue'),
-    (Index: 778; Name: 'IsPlayerInConversation'),
-    (Index: 779; Name: 'IsInDialogueCamera'),
-    (Index: 780; Name: 'IsMyDialogueTargetPlayer'),
-    (Index: 781; Name: 'IsMyDialogueTargetActor'),
-    (Index: 782; Name: 'GetMyDialogueTargetDistance'),
-    (Index: 783; Name: 'IsSeatOccupied'; ParamType1: ptKeyword),
-    (Index: 784; Name: 'IsPlayerRiding'),
-    (Index: 785; Name: 'IsTryingEventCamera'),
-    (Index: 786; Name: 'UseLeftSideCamera'),
-    (Index: 787; Name: 'GetNoteType'),
-    (Index: 788; Name: 'LocationHasPlayerOwnedWorkshop'),
-    (Index: 789; Name: 'IsStartingAction'),
-    (Index: 790; Name: 'IsMidAction'),
-    (Index: 791; Name: 'IsWeaponChargeAttack'),
-    (Index: 792; Name: 'IsInWorkshopMode'),
-    (Index: 793; Name: 'IsWeaponChargingHoldAttack'),
-    (Index: 794; Name: 'IsEncounterAbovePlayerLevel'),
-    (Index: 795; Name: 'IsMeleeAttacking'),
-    (Index: 796; Name: 'GetVATSQueuedTargetsUnique'),
-    (Index: 797; Name: 'GetCurrentLocationCleared'),
-    (Index: 798; Name: 'IsPowered'),
-    (Index: 799; Name: 'GetTransmitterDistance'),
-    (Index: 800; Name: 'GetCameraPlaybackTime'),
-    (Index: 801; Name: 'IsInWater'),
+    (Index: 774; Name: 'GetActorStaggerDirection'),    // 437
+    (Index: 775; Name: 'GetActorStaggerMagnitude'),    // 438
+    (Index: 776; Name: 'WornCoversBipedSlot'; Paramtype1: ptInteger),    // 439
+    (Index: 777; Name: 'GetInventoryValue'),    // 440
+    (Index: 778; Name: 'IsPlayerInConversation'),    // 441
+    (Index: 779; Name: 'IsInDialogueCamera'),    // 442
+    (Index: 780; Name: 'IsMyDialogueTargetPlayer'),    // 443
+    (Index: 781; Name: 'IsMyDialogueTargetActor'),    // 444
+    (Index: 782; Name: 'GetMyDialogueTargetDistance'),    // 445
+    (Index: 783; Name: 'IsSeatOccupied'; Paramtype1: ptKeyword),    // 446
+    (Index: 784; Name: 'IsPlayerRiding'),    // 447
+    (Index: 785; Name: 'IsTryingEventCamera'),    // 448
+    (Index: 786; Name: 'UseLeftSideCamera'),    // 449
+    (Index: 787; Name: 'GetNoteType'),    // 450
+    (Index: 788; Name: 'LocationHasPlayerOwnedWorkshop'),    // 451
+    (Index: 789; Name: 'IsStartingAction'),    // 452
+    (Index: 790; Name: 'IsMidAction'),    // 453
+    (Index: 791; Name: 'IsWeaponChargeAttack'),    // 454
+    (Index: 792; Name: 'IsInWorkshopMode'),    // 455
+    (Index: 793; Name: 'IsWeaponChargingHoldAttack'),    // 456
+    (Index: 794; Name: 'IsEncounterAbovePlayerLevel'),    // 457
+    (Index: 795; Name: 'IsMeleeAttacking'),    // 458
+    (Index: 796; Name: 'GetVATSQueuedTargetsUnique'),    // 459
+    (Index: 797; Name: 'GetCurrentLocationCleared'),    // 460
+    (Index: 798; Name: 'IsPowered'),    // 461
+    (Index: 799; Name: 'GetTransmitterDistance'),    // 462
+    (Index: 800; Name: 'GetCameraPlaybackTime'),    // 463
+    (Index: 801; Name: 'IsInWater'),    // 464
     (Index: 802; Name: 'GetWithinActivateDistance'; ParamType1: ptObjectReference),
-    (Index: 803; Name: 'IsUnderWater'),
+    (Index: 803; Name: 'IsUnderWater'),    // 466
     (Index: 804; Name: 'IsInSameSpace'; ParamType1: ptObjectReference),
-    (Index: 805; Name: 'LocationAllowsReset'),
+    (Index: 805; Name: 'LocationAllowsReset'),    // 468
     (Index: 806; Name: 'GetVATSBackRightAreaFree'; ParamType1: ptObjectReference),
     (Index: 807; Name: 'GetVATSBackLeftAreaFree'; ParamType1: ptObjectReference),
     (Index: 808; Name: 'GetVATSBackRightTargetVisible'; ParamType1: ptObjectReference),
     (Index: 809; Name: 'GetVATSBackLeftTargetVisible'; ParamType1: ptObjectReference),
     (Index: 810; Name: 'GetVATSTargetLimbVisible'; ParamType1: ptObjectReference),
-    (Index: 811; Name: 'IsPlayerListening'; ParamType1: ptFloat),
-    (Index: 812; Name: 'GetPathingRequestedQuickTurn'),
-    (Index: 813; Name: 'EPIsCalculatingBaseDamage'),
-    (Index: 814; Name: 'GetReanimating'),
-    (Index: 817; Name: 'IsInRobotWorkbench')
+    (Index: 811; Name: 'IsPlayerListening'; Paramtype1: ptFloat),    // 474
+    (Index: 812; Name: 'GetPathingRequestedQuickTurn'),    // 475
+    (Index: 813; Name: 'EPIsCalculatingBaseDamage'),    // 476
+    (Index: 814; Name: 'GetReanimating'),    // 477
+    (Index: 817; Name: 'IsInRobotWorkbench')    // 478
   );
 
 var
@@ -3727,9 +3388,8 @@ var
   Container: IwbContainer;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   // "use global" flag
   if Integer(Container.ElementByName['Type'].NativeValue) and $04 <> 0 then
@@ -3744,27 +3404,28 @@ var
   ParamType: TCTDAFunctionParamType;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   Desc := wbCTDAParamDescFromIndex(Container.ElementByName['Function'].NativeValue);
+  if not Assigned(Desc) then
+    Exit;
 
-  if Assigned(Desc) then begin
-    ParamType := Desc.ParamType1;
-    ParamFlag := Container.ElementByName['Type'].NativeValue;
-    if ParamType in [ptObjectReference, ptActor, ptPackage] then begin
-      if ParamFlag and $02 > 0 then begin
-        // except for this func when Run On = Quest Alias, then alias is param3 and package is param1
-        // [INFO:00020D3C]
-        if not ((Container.ElementByName['Run On'].NativeValue = 5) and (Desc.Name = 'GetIsCurrentPackage')) then
-          ParamType := ptAlias    {>>> 'use aliases' is set <<<}
+  ParamType := Desc.ParamType1;
+  ParamFlag := Container.ElementByName['Type'].NativeValue;
+
+  if ParamType in [ptObjectReference, ptActor, ptPackage] then begin
+    if ParamFlag and $02 > 0 then begin
+      // except for this func when Run On = Quest Alias, then alias is param3 and package is param1
+      // [INFO:00020D3C]
+      if not ((Container.ElementByName['Run On'].NativeValue = 5) and (Desc.Name = 'GetIsCurrentPackage')) then
+        ParamType := ptAlias    {>>> 'use aliases' is set <<<}
       end
       else if ParamFlag and $08 > 0 then
         ParamType := ptPackdata;  {>>> 'use packdata' is set <<<}
-    end;
-    Result := Succ(Integer(ParamType));
   end;
+
+  Result := Succ(Integer(ParamType));
 end;
 
 function wbCTDAParam2Decider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -3775,21 +3436,22 @@ var
   ParamType: TCTDAFunctionParamType;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   Desc := wbCTDAParamDescFromIndex(Container.ElementByName['Function'].NativeValue);
+  if not Assigned(Desc) then
+    Exit;
 
-  if Assigned(Desc) then begin
-    ParamType := Desc.ParamType2;
-    ParamFlag := Container.ElementByName['Type'].NativeValue;
-    if ParamType in [ptObjectReference, ptActor, ptPackage] then begin
-      if ParamFlag and $02 > 0 then ParamType := ptAlias else {>>> 'use aliases' is set <<<}
-      if ParamFlag and $08 > 0 then ParamType := ptPackdata;  {>>> 'use packdata' is set <<<}
-    end;
-    Result := Succ(Integer(ParamType));
+  ParamType := Desc.ParamType2;
+  ParamFlag := Container.ElementByName['Type'].NativeValue;
+
+  if ParamType in [ptObjectReference, ptActor, ptPackage] then begin
+    if ParamFlag and $02 > 0 then ParamType := ptAlias else {>>> 'use aliases' is set <<<}
+    if ParamFlag and $08 > 0 then ParamType := ptPackdata;  {>>> 'use packdata' is set <<<}
   end;
+
+  Result := Succ(Integer(ParamType));
 end;
 
 function wbCTDAParam2VATSValueParamDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -3797,9 +3459,8 @@ var
   Container : IwbContainer;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   Result := Container.ElementByName['Parameter #1'].NativeValue;
 end;
@@ -3811,14 +3472,14 @@ var
 begin
   Result := '';
   case aType of
-    ctToStr, ctToEditValue: begin
+    ctToStr, ctToSummary, ctToEditValue: begin
       Desc := wbCTDAParamDescFromIndex(aInt);
       if Assigned(Desc) then
         Result := Desc.Name
-      else if aType = ctToEditValue then
-        Result := IntToStr(aInt)
+      else if aType in [ctToSummary, ctToEditValue] then
+        Result := aInt.ToString
       else
-        Result := '<Unknown: '+IntToStr(aInt)+'>';
+        Result := '<Unknown: '+aInt.ToString+'>';
     end;
     ctToSortKey: Result := IntToHex(aInt, 8);
     ctCheck: begin
@@ -3826,7 +3487,7 @@ begin
       if Assigned(Desc) then
         Result := ''
       else
-        Result := '<Unknown: '+IntToStr(aInt)+'>';
+        Result := '<Unknown: '+aInt.ToString+'>';
     end;
     ctEditType:
       Result := 'ComboBox';
@@ -3857,64 +3518,8 @@ begin
         Result := Index;
         Exit;
       end;
+
   Result := StrToInt64(aString);
-end;
-
-function wbNeverShow(const aElement: IwbElement): Boolean;
-begin
-  Result := wbHideNeverShow;
-end;
-
-function GetREGNType(aElement: IwbElement): Integer;
-var
-  Container: IwbContainerElementRef;
-begin
-  Result := -1;
-  if not Assigned(aElement) then
-    Exit;
-  while aElement.Name <> 'Region Data Entry' do begin
-    aElement := aElement.Container;
-    if not Assigned(aElement) then
-      Exit;
-  end;
-  if not Supports(aElement, IwbContainerElementRef, Container) then
-    Exit;
-  Result := Container.ElementNativeValues['RDAT\Type'];
-end;
-
-function wbREGNObjectsDontShow(const aElement: IwbElement): Boolean;
-begin
-  Result := GetREGNType(aElement) <> 2;
-end;
-
-function wbREGNWeatherDontShow(const aElement: IwbElement): Boolean;
-begin
-  Result := GetREGNType(aElement) <> 3;
-end;
-
-function wbREGNMapDontShow(const aElement: IwbElement): Boolean;
-begin
-  Result := GetREGNType(aElement) <> 4;
-end;
-
-function wbREGNLandDontShow(const aElement: IwbElement): Boolean;
-begin
-  Result := GetREGNType(aElement) <> 5;
-end;
-
-function wbREGNGrassDontShow(const aElement: IwbElement): Boolean;
-begin
-  Result := GetREGNType(aElement) <> 6;
-end;
-
-function wbREGNSoundDontShow(const aElement: IwbElement): Boolean;
-begin
-  Result := GetREGNType(aElement) <> 7;
-end;
-
-function wbREGNImposterDontShow(const aElement: IwbElement): Boolean;
-begin
-  Result := GetREGNType(aElement) <> 8;
 end;
 
 function wbMESGTNAMDontShow(const aElement: IwbElement): Boolean;
@@ -3925,8 +3530,10 @@ begin
   Result := False;
   if not Supports(aElement, IwbMainRecord, MainRecord) then
     Exit;
+
   if not Supports(aElement, IwbContainerElementRef, Container) then
     Exit;
+
   if Integer(Container.ElementNativeValues['DNAM']) and 1 <> 0 then
     Result := True;
 end;
@@ -3938,8 +3545,10 @@ begin
   Result := False;
   if aElement.Name <> 'Entry Point Function Parameters' then
     Exit;
+
   if not Supports(aElement, IwbContainerElementRef, Container) then
     Exit;
+
   if not (Integer(Container.ElementNativeValues['EPFT']) in [1..3]) then
     Result := True;
 end;
@@ -3951,9 +3560,11 @@ begin
   Result := False;
   if not Assigned(aElement) then
     Exit;
+
   MainRecord := aElement.ContainingMainRecord;
   if not Assigned(MainRecord) then
     Exit;
+
   if not MainRecord.IsESM then
     Result := True;
 end;
@@ -3965,10 +3576,28 @@ begin
   Result := False;
   if aElement.Name <> 'Entry Point Function Parameters' then
     Exit;
+
   if not Supports(aElement, IwbContainerElementRef, Container) then
     Exit;
+
   if not (Integer(Container.ElementNativeValues['EPFT']) in [4]) then
     Result := True;
+end;
+
+procedure wbRemoveRNAM(const aElement: IwbElement);
+var
+  MainRecord: IwbMainRecord;
+begin
+  if not wbRemoveOffsetData then
+    Exit;
+  if not Supports(aElement, IwbMainRecord, MainRecord) then
+    Exit;
+  if wbBeginInternalEdit then try
+    if MainRecord._File.LoadOrder = 0 then
+	  MainRecord.RemoveElement('Large References');
+  finally
+    wbEndInternalEdit;
+  end;
 end;
 
 procedure wbRemoveOFST(const aElement: IwbElement);
@@ -3979,20 +3608,43 @@ begin
   if not wbRemoveOffsetData then
     Exit;
 
-  if Supports(aElement, IwbContainer, Container) then begin
-    if wbBeginInternalEdit then try
-      Container.RemoveElement(OFST);
-    finally
-      wbEndInternalEdit;
-    end else begin
-      rOFST := Container.RecordBySignature[OFST];
-      if Assigned(rOFST) then
-        Container.RemoveElement(rOFST);
-    end;
+  if not Supports(aElement, IwbContainer, Container) then
+    Exit;
+
+  if wbBeginInternalEdit then try
+    Container.RemoveElement(OFST);
+  finally
+    wbEndInternalEdit;
+  end else begin
+    rOFST := Container.RecordBySignature[OFST];
+    if Assigned(rOFST) then
+      Container.RemoveElement(rOFST);
   end;
 end;
 
-procedure wbWRLDAfterLoad(const aElement: IwbElement);
+procedure wbRemoveCLSZ(const aElement: IwbElement);
+var
+  Container: IwbContainer;
+  rCLSZ: IwbRecord;
+begin
+  if not wbRemoveOffsetData then
+    Exit;
+
+  if not Supports(aElement, IwbContainer, Container) then
+    Exit;
+
+  if wbBeginInternalEdit then try
+    Container.RemoveElement(CLSZ);
+  finally
+    wbEndInternalEdit;
+  end else begin
+    rCLSZ := Container.RecordBySignature[CLSZ];
+    if Assigned(rCLSZ) then
+      Container.RemoveElement(rCLSZ);
+  end;
+end;
+
+procedure wbFixWorldspaceBounds(const aElement: IwbElement);
   function OutOfRange(aValue: Integer; aRange: Integer = 256): Boolean;
   begin
     Result := (aValue < -aRange) or (aValue > aRange);
@@ -4001,24 +3653,10 @@ var
   MainRecord: IwbMainRecord;
   Container: IwbContainer;
 begin
-  wbRemoveOFST(aElement);
-
   if wbBeginInternalEdit then try
 
     if not Supports(aElement, IwbMainRecord, MainRecord) then
       Exit;
-
-    if MainRecord.ElementExists['Unused RNAM'] then
-      MainRecord.RemoveElement('Unused RNAM');
-
-    //if MainRecord.ElementExists['World Default Level Data'] then
-    //  MainRecord.RemoveElement('World Default Level Data');
-
-    //if MainRecord.ElementExists['MHDT'] then
-    //  MainRecord.RemoveElement('MHDT');
-
-    if MainRecord.ElementExists['CLSZ'] then
-      MainRecord.RemoveElement('CLSZ');
 
     // large values in object bounds cause stutter and performance issues in game (reported by Arthmoor)
     // CK can occasionally set them wrong, so make a warning
@@ -4035,14 +3673,20 @@ begin
   end;
 end;
 
+procedure wbWRLDAfterLoad(const aElement: IwbElement);
+begin
+  wbRemoveRNAM(aElement);
+  wbRemoveOFST(aElement);
+  wbRemoveCLSZ(aElement);
+  wbFixWorldspaceBounds(aElement);
+end;
+
 procedure wbDOBJObjectsAfterLoad(const aElement: IwbElement);
 var
   ObjectsContainer : IwbContainerElementRef;
   i                : Integer;
   ObjectContainer  : IwbContainerElementRef;
 begin
-  wbRemoveOFST(aElement);
-
   if wbBeginInternalEdit then try
 
     if not Supports(aElement, IwbContainerElementRef, ObjectsContainer) then
@@ -4066,12 +3710,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000001) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000001) <> 0;
 end;
 
 function wbActorTemplateUseStats(const aElement: IwbElement): Boolean;
@@ -4083,12 +3730,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000002) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000002) <> 0;
 end;
 
 function wbActorAutoCalcDontShow(const aElement: IwbElement): Boolean;
@@ -4100,12 +3750,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Flags'];
-    Result := (i and $00000010) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Flags'];
+  Result := (i and $00000010) <> 0;
 end;
 
 function wbActorTemplateUseStatsAutoCalc(const aElement: IwbElement): Boolean;
@@ -4122,12 +3775,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000004) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000004) <> 0;
 end;
 
 function wbActorTemplateUseActorEffectList(const aElement: IwbElement): Boolean;
@@ -4139,12 +3795,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000008) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000008) <> 0;
 end;
 
 function wbActorTemplateUseAIData(const aElement: IwbElement): Boolean;
@@ -4156,12 +3815,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000010) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000010) <> 0;
 end;
 
 function wbActorTemplateUseAIPackages(const aElement: IwbElement): Boolean;
@@ -4173,12 +3835,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000020) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000020) <> 0;
 end;
 
 function wbActorTemplateUseModelAnimation(const aElement: IwbElement): Boolean;
@@ -4190,12 +3855,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000040) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000040) <> 0;
 end;
 
 function wbActorTemplateUseBaseData(const aElement: IwbElement): Boolean;
@@ -4207,12 +3875,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000080) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000080) <> 0;
 end;
 
 function wbActorTemplateUseInventory(const aElement: IwbElement): Boolean;
@@ -4224,12 +3895,15 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000100) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000100) <> 0;
 end;
 
 function wbActorTemplateUseScript(const aElement: IwbElement): Boolean;
@@ -4241,155 +3915,184 @@ begin
   Result := False;
   Element := aElement;
   MainRecord := nil;
+
   while Assigned(Element) and not Supports(Element, IwbMainRecord, MainRecord) do
     Element := Element.Container;
-  if Assigned(MainRecord) then begin
-    i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
-    Result := (i and $00000200) <> 0;
-  end;
+
+  if not Assigned(MainRecord) then
+    Exit;
+
+  i := MainRecord.ElementNativeValues['ACBS\Template Flags'];
+  Result := (i and $00000200) <> 0;
 end;
 
 function wbActorTemplatesUseTemplate0(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 0 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 0 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate1(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 1 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 1 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate2(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 2 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 2 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate3(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 3 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 3 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate4(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 4 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 4 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate5(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 5 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 5 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate6(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 6 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 6 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate7(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 7 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 7 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate8(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 8 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 8 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate9(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 9 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 9 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate10(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 10 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 10 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate11(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 11 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 11 and 1) = 0;
 end;
 
 function wbActorTemplatesUseTemplate12(const aElement: IwbElement): Boolean;
 var
   MainRecord : IwbMainRecord;
 begin
+  Result := False;
   MainRecord := aElement.ContainingMainRecord;
-  if Assigned(MainRecord) then
-    Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 12 and 1) = 0
-  else
-    Result := False;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := (Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) shr 12 and 1) = 0;
+end;
+
+
+function wbActorTemplatesUseTemplateAny(const aElement: IwbElement): Boolean;
+var
+  MainRecord : IwbMainRecord;
+begin
+  Result := False;
+  MainRecord := aElement.ContainingMainRecord;
+
+  if not Assigned(MainRecord) then
+    Exit;
+  Result := Cardinal(MainRecord.ElementNativeValues['ACBS\Use Template Actors']) = 0;
 end;
 
 procedure wbRemoveEmptyKWDA(const aElement: IwbElement);
@@ -4398,22 +4101,14 @@ var
   MainRecord : IwbMainRecord;
 begin
   if wbBeginInternalEdit then try
-    if not Supports(aElement, IwbContainerElementRef, Container) then
+    if not wbTryGetContainerWithValidMainRecord(aElement, Container, MainRecord) then
       Exit;
 
-    if Container.ElementCount < 1 then
+    if Assigned(Container.ElementBySignature['KSIZ']) then
       Exit;
 
-    if not Supports(aElement, IwbMainRecord, MainRecord) then
-      Exit;
-
-    if MainRecord.IsDeleted then
-      Exit;
-
-    if not Assigned(Container.ElementBySignature['KSIZ']) then
-      if Assigned(Container.ElementBySignature['KWDA']) then
-        Container.ElementBySignature['KWDA'].Remove;
-
+  if Assigned(Container.ElementBySignature['KWDA']) then
+    Container.ElementBySignature['KWDA'].Remove;
   finally
     wbEndInternalEdit;
   end;
@@ -4434,12 +4129,12 @@ begin
     if not Supports(MainRecord.ElementBySignature[BODT], IwbContainerElementRef, ContainerBODT) then
       Exit;
 
-    if Supports(MainRecord.Add('BOD2', True), IwbContainerElementRef, ContainerBOD2) then begin
-       ContainerBOD2.ElementNativeValues['First Person Flags'] := ContainerBODT.ElementNativeValues['First Person Flags'];
-       ContainerBOD2.ElementNativeValues['Armor Type'] := ContainerBODT.ElementNativeValues['Armor Type'];
-       MainRecord.RemoveElement(BODT);
-    end;
+    if not Supports(MainRecord.Add('BOD2', True), IwbContainerElementRef, ContainerBOD2) then
+      Exit;
 
+    ContainerBOD2.ElementNativeValues['First Person Flags'] := ContainerBODT.ElementNativeValues['First Person Flags'];
+    ContainerBOD2.ElementNativeValues['Armor Type'] := ContainerBODT.ElementNativeValues['Armor Type'];
+    MainRecord.RemoveElement(BODT);
   finally
     wbEndInternalEdit;
   end;
@@ -4468,9 +4163,85 @@ begin
   end;}
 end;
 
+procedure wbCheckMorphKeyOrder(const aElement: IwbElement);
+var
+  Container  : IwbContainerElementRef;
+  MainRecord : IwbMainRecord;
+  Master     : IwbMainRecord;
+  MasterContainer : IwbContainerElementRef;
+  lKeys       : IwbContainerElementRef;
+  lMasterKeys : IwbContainerElementRef;
+  lValues     : IwbContainerElementRef;
+  i, j, k    : Integer;
+  NeedsSort  : Boolean;
+begin
+  if wbBeginInternalEdit then try
+    if not wbTryGetContainerWithValidMainRecord(aElement, Container, MainRecord) then
+      Exit;
+
+    Master := MainRecord.Master;
+    if not Assigned(Master) then
+      Exit;
+
+    if not Supports(Master, IwbContainerElementRef, MasterContainer) then
+      Exit;
+
+    if not Supports(Container.ElementBySignature['MSDK'], IwbContainerElementRef, lKeys) then
+      Exit;
+
+    if not Supports(MasterContainer.ElementBySignature['MSDK'], IwbContainerElementRef, lMasterKeys) then
+      Exit;
+
+    if lKeys.ElementCount < lMasterKeys.ElementCount then
+      Exit;
+
+    if not Supports(Container.ElementBySignature['MSDV'], IwbContainerElementRef, lValues) then
+      Exit;
+
+    if lKeys.ElementCount <> lValues.ElementCount then
+      Exit;
+
+    with TStringList.Create do try
+      for i := 0 to Pred(lMasterKeys.ElementCount) do
+        AddObject(lMasterKeys.Elements[i].SortKey[True], Pointer(i));
+      Sorted := True;
+
+      NeedsSort := False;
+      j := lMasterKeys.ElementCount;
+      for i := 0 to Pred(lKeys.ElementCount) do
+        if Find(lKeys.Elements[i].SortKey[True], k) then begin
+          k := Integer(Objects[k]);
+          if k <> i then
+            NeedsSort := True;
+          lKeys.Elements[i].SortOrder := k;
+          lValues.Elements[i].SortOrder := k;
+        end else begin
+          lKeys.Elements[i].SortOrder := j;
+          lValues.Elements[i].SortOrder := j;
+          Inc(j);
+        end;
+
+      if not NeedsSort then
+        Exit;
+
+      if j <> lKeys.ElementCount then
+        Exit;
+
+      lKeys.SortBySortOrder;
+      lValues.SortBySortOrder;
+    finally
+      Free;
+    end;
+  finally
+    wbEndInternalEdit;
+  end;
+end;
+
+
 procedure wbNPCAfterLoad(const aElement: IwbElement);
 begin
   wbRemoveEmptyKWDA(aElement);
+  wbCheckMorphKeyOrder(aElement);
 end;
 
 procedure wbREFRAfterLoad(const aElement: IwbElement);
@@ -4479,23 +4250,14 @@ var
   MainRecord : IwbMainRecord;
 begin
   if wbBeginInternalEdit then try
-    if not Supports(aElement, IwbContainerElementRef, Container) then
+    if not wbTryGetContainerWithValidMainRecord(aElement, Container, MainRecord) then
       Exit;
 
-    if Container.ElementCount < 1 then
+    if not Container.ElementExists['XLOC'] then
       Exit;
 
-    if not Supports(aElement, IwbMainRecord, MainRecord) then
-      Exit;
-
-    if MainRecord.IsDeleted then
-      Exit;
-
-    if Container.ElementExists['XLOC'] then begin
-      if Container.ElementNativeValues['XLOC - Lock Data\Level'] = 0 then
-        Container.ElementNativeValues['XLOC - Lock Data\Level'] := 1;
-    end;
-
+    if Container.ElementNativeValues['XLOC - Lock Data\Level'] = 0 then
+      Container.ElementNativeValues['XLOC - Lock Data\Level'] := 1;
   finally
     wbEndInternalEdit;
   end;
@@ -4523,15 +4285,16 @@ begin
       Exit;
 
     // clear IronSights flags which are randomly assigned in CK
-    if Container.ElementExists['DNAM'] then begin
-      Flags := Container.ElementNativeValues['DNAM - Data\Flags'];
-      Flags := Flags and ($FFFF xor $0040);
-      Container.ElementNativeValues['DNAM - Data\Flags'] := Flags;
-      Flags := Container.ElementNativeValues['DNAM - Data\Flags2'];
-      Flags := Flags and ($FFFFFFFF xor $0100);
-      Container.ElementNativeValues['DNAM - Data\Flags2'] := Flags;
-    end;
+    if not Container.ElementExists['DNAM'] then
+      Exit;
 
+    Flags := Container.ElementNativeValues['DNAM - Data\Flags'];
+    Flags := Flags and ($FFFF xor $0040);
+    Container.ElementNativeValues['DNAM - Data\Flags'] := Flags;
+
+    Flags := Container.ElementNativeValues['DNAM - Data\Flags2'];
+    Flags := Flags and ($FFFFFFFF xor $0100);
+    Container.ElementNativeValues['DNAM - Data\Flags2'] := Flags;
   finally
     wbEndInternalEdit;
   end;
@@ -4560,7 +4323,6 @@ begin
     Exit;
 
   DataRec := MainRecord.ElementBySignature[DATA];
-
   if not Assigned(DataRec) then
     Exit;
 
@@ -4578,9 +4340,12 @@ var
 begin
   if not Assigned(aElement) then
     Exit;
+
   Container := aElement.Container;
+
   while Assigned(Container) and not (Container.Def.DefType = dtRecord) do
     Container := Container.Container;
+
   if Assigned(Container) then
     Container.ResetConflict;
 end;
@@ -4594,16 +4359,7 @@ var
   Flags        : Byte;
 begin
   if wbBeginInternalEdit then try
-    if not Supports(aElement, IwbContainerElementRef, Container) then
-      Exit;
-
-    if Container.ElementCount < 1 then
-      Exit;
-
-    if not Supports(aElement, IwbMainRecord, MainRecord) then
-      Exit;
-
-    if MainRecord.IsDeleted then
+    if not wbTryGetContainerWithValidMainRecord(aElement, Container, MainRecord) then
       Exit;
 
     if Supports(Container.ElementBySignature['DATA'] , IwbSubRecord, DataSubRec) then begin
@@ -4644,30 +4400,22 @@ var
   HasTimeDelay : Boolean;
 begin
   if wbBeginInternalEdit then try
-    if not Supports(aElement, IwbContainerElementRef, Container) then
-      Exit;
-
-    if Container.ElementCount < 1 then
-      Exit;
-
-    if not Supports(aElement, IwbMainRecord, MainRecord) then
-      Exit;
-
-    if MainRecord.IsDeleted then
+    if not wbTryGetContainerWithValidMainRecord(aElement, Container, MainRecord) then
       Exit;
 
     IsMessageBox := (Integer(Container.ElementNativeValues['DNAM']) and 1) = 1;
     HasTimeDelay := Container.ElementExists['TNAM'];
 
-    if IsMessageBox = HasTimeDelay then
-      if IsMessageBox then
-        Container.RemoveElement('TNAM')
-      else begin
-        if not Container.ElementExists['DNAM'] then
-          Container.Add('DNAM', True);
-        Container.ElementNativeValues['DNAM'] := Integer(Container.ElementNativeValues['DNAM']) or 1;
-      end;
-
+    if not (IsMessageBox = HasTimeDelay) then
+      Exit;
+    
+  if IsMessageBox then
+      Container.RemoveElement('TNAM')
+    else begin
+      if not Container.ElementExists['DNAM'] then
+        Container.Add('DNAM', True);
+      Container.ElementNativeValues['DNAM'] := Integer(Container.ElementNativeValues['DNAM']) or 1;
+    end;
   finally
     wbEndInternalEdit;
   end;
@@ -4679,16 +4427,7 @@ var
   MainRecord   : IwbMainRecord;
 begin
   if wbBeginInternalEdit then try
-    if not Supports(aElement, IwbContainerElementRef, Container) then
-      Exit;
-
-    if Container.ElementCount < 1 then
-      Exit;
-
-    if not Supports(aElement, IwbMainRecord, MainRecord) then
-      Exit;
-
-    if MainRecord.IsDeleted then
+    if not wbTryGetContainerWithValidMainRecord(aElement, Container, MainRecord) then
       Exit;
 
     if not Container.ElementExists['FNAM'] then begin
@@ -4696,13 +4435,14 @@ begin
       Container.ElementNativeValues['FNAM'] := 1.0;
     end;
 
-    if Container.ElementExists['DATA'] then begin
+    if not Container.ElementExists['DATA'] then
+      Exit;
+
       if SameValue(Container.ElementNativeValues['DATA\Falloff Exponent'], 0.0) then
         Container.ElementNativeValues['DATA\Falloff Exponent'] := 1.0;
+
       if SameValue(Container.ElementNativeValues['DATA\FOV'], 0.0) then
         Container.ElementNativeValues['DATA\FOV'] := 90.0;
-    end;
-
   finally
     wbEndInternalEdit;
   end;
@@ -4727,15 +4467,13 @@ begin
       Exit;
 
     Element := Container.ElementByPath['..\EFID'];
-    if not Assigned(Element) then
+    if not wbTryGetMainRecord(Element, MainRecord, 'MGEF') then
       Exit;
-    if not Supports(Element.LinksTo, IwbMainRecord, MainRecord) then
-      Exit;
-    if MainRecord.Signature <> 'MGEF' then
-      Exit;
+
     ActorValue := MainRecord.ElementNativeValues['DATA - Data\Actor Value'];
     if VarIsNull(ActorValue) or VarIsClear(ActorValue) then
       Exit;
+
     if VarCompareValue(ActorValue, Container.ElementNativeValues['Actor Value']) <> vrEqual then
       Container.ElementNativeValues['Actor Value'] := ActorValue;
   finally
@@ -4750,24 +4488,28 @@ var
   NeedsFlip: Boolean;
 begin
   if wbBeginInternalEdit then try
-    if Supports(aElement, IwbContainer, Container) then begin
-      NeedsFlip := False;
-      if Container.ElementCount > 1 then begin
-        a := StrToFloat((Container.Elements[0] as IwbContainer).Elements[0].Value);
-        b := StrToFloat((Container.Elements[Pred(Container.ElementCount)] as IwbContainer).Elements[0].Value);
-        case CompareValue(a, b) of
-          EqualsValue: begin
-            a := StrToFloat((Container.Elements[0] as IwbContainer).Elements[1].Value);
-            b := StrToFloat((Container.Elements[Pred(Container.ElementCount)] as IwbContainer).Elements[1].Value);
-            NeedsFlip := CompareValue(a, b) = GreaterThanValue;
-          end;
-          GreaterThanValue:
-            NeedsFlip := True;
+    if not Supports(aElement, IwbContainer, Container) then
+      Exit;
+
+    NeedsFlip := False;
+
+    if Container.ElementCount > 1 then begin
+      a := StrToFloat((Container.Elements[0] as IwbContainer).Elements[0].Value);
+      b := StrToFloat((Container.Elements[Pred(Container.ElementCount)] as IwbContainer).Elements[0].Value);
+
+      case CompareValue(a, b) of
+        EqualsValue: begin
+          a := StrToFloat((Container.Elements[0] as IwbContainer).Elements[1].Value);
+          b := StrToFloat((Container.Elements[Pred(Container.ElementCount)] as IwbContainer).Elements[1].Value);
+          NeedsFlip := CompareValue(a, b) = GreaterThanValue;
         end;
+        GreaterThanValue:
+          NeedsFlip := True;
       end;
-      if NeedsFlip then
-        Container.ReverseElements;
     end;
+
+    if NeedsFlip then
+      Container.ReverseElements;
   finally
     wbEndInternalEdit;
   end;
@@ -4782,7 +4524,7 @@ var
 begin
   if wbBeginInternalEdit then try
     // zero entries' Chance None if Form Version < 69
-    if wbFormVerDecider(nil, nil, aElement, 69) = 1 then
+    if wbFormVersionDecider(69)(nil, nil, aElement) = 1 then
       Exit;
 
     if not Supports(aElement, IwbContainerElementRef, Container) then
@@ -4800,13 +4542,11 @@ begin
     if not Supports(MainRecord.ElementByName['Leveled List Entries'], IwbContainerElementRef, Entries) then
       Exit;
 
-
     for i := 0 to Pred(Entries.ElementCount) do begin
       if not Supports(Entries.Elements[i], IwbContainerElementRef, Container) then
         Exit;
       Container.ElementNativeValues['LVLO\Chance None'] := 0;
     end;
-
   finally
     wbEndInternalEdit;
   end;
@@ -4818,14 +4558,19 @@ var
   ctype: string;
 begin
   Result := 0;
+
+  if not Assigned(aElement) then
+    Exit;
+
   rANAM := aElement.Container.RecordBySignature[ANAM];
-  if Assigned(rANAM) then begin
-    ctype := rANAM.NativeValue;
-    if ctype = 'Bool' then Result := 1 else
-    if ctype = 'Int' then Result := 2 else
-    if ctype = 'Float' then Result := 3 else
-    if ctype = 'ObjectList' then Result := 3;
-  end;
+  if not Assigned(rANAM) then
+    Exit;
+
+  ctype := rANAM.NativeValue;
+  if ctype = 'Bool' then Result := 1 else
+  if ctype = 'Int' then Result := 2 else
+  if ctype = 'Float' then Result := 3 else
+  if ctype = 'ObjectList' then Result := 3;
 end;
 
 function wbTypeDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -4834,135 +4579,17 @@ var
   Element   : IwbElement;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   Element := Container.ElementByName['Type'];
+
   if Assigned(Element) then
     Result := Element.NativeValue
   else if wbMoreInfoForDecider then
     wbProgressCallback('"'+Container.Name+'" does not contain an element named Type');
 end;
-
-procedure wbCNTOsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('COCT - Count', aElement);
-end;
-
-procedure wbTERMCNTOsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('COCT - Holds Holotape (Count)', aElement);
-end;
-
-procedure wbContainerAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterContainerAfterSet('COCT - Count', 'Items', aElement);
-  wbCounterContainerAfterSet('KSIZ - Keyword Count', 'KWDA - Keywords', aElement);
-end;
-
-procedure wbSPLOsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('SPCT - Count', aElement);
-end;
-
-procedure wbKWDAsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('KSIZ - Keyword Count', aElement);
-end;
-
-procedure wbNPCAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterContainerAfterSet('COCT - Count', 'Items', aElement);
-  wbCounterContainerAfterSet('SPCT - Count', 'Actor Effects', aElement);
-  wbCounterContainerAfterSet('LLCT - Count', 'Leveled List Entries', aElement);
-  wbCounterContainerAfterSet('KSIZ - Keyword Count', 'KWDA - Keywords', aElement);
-  wbCounterContainerAfterSet('PRKZ - Perk Count', 'Perks', aElement);
-end;
-
-procedure wbRaceAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterContainerAfterSet('SPCT - Count', 'Actor Effects', aElement);
-  wbCounterContainerAfterSet('KSIZ - Keyword Count', 'KWDA - Keywords', aElement);
-end;
-
-procedure wbKeywordsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterContainerAfterSet('KSIZ - Keyword Count', 'KWDA - Keywords', aElement);
-end;
-
-procedure wbLVLOsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('LLCT - Count', aElement);
-end;
-
-procedure wbLLEAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterContainerAfterSet('LLCT - Count', 'Leveled List Entries', aElement);
-end;
-
-procedure wbPRKRsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('PRKZ - Perk Count', aElement);
-end;
-
-procedure wbSMQNQuestsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('QNAM - Quest Count', aElement);
-end;
-
-procedure wbCTDAsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('CITC - Condition Count', aElement);
-end;
-
-procedure wbConditionsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterContainerAfterSet('CITC - Condition Count', 'Conditions', aElement);
-end;
-
-procedure wbCounterEffectsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  // if it is really possible to have both counter effects and multiple data, this is going to be tricky.
-  wbCounterByPathAfterSet('Magic Effect Data\DATA - Data\Counter effect count', aElement);
-end;
-
-procedure wbMGEFAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbKeywordsAfterSet(aElement, aOldValue, aNewValue);
-  wbCounterContainerByPathAfterSet('Magic Effect Data\DATA - Data\Counter effect count', 'Counter Effects', aElement);
-end;
-
-procedure wbTERMDisplayItemsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('BSIZ - Count', aElement);
-end;
-
-procedure wbTERMMenuItemsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('ISIZ - Count', aElement);
-end;
-
-procedure wbSNDRRatesOfFireAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('ITMC - Count', aElement);
-end;
-
-procedure wbNPCActorSoundsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('CS2H - Count', aElement);
-end;
-
-procedure wbMorphPresetsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('MPPC - Count', aElement);
-end;
-
-procedure wbLENSAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
-begin
-  wbCounterAfterSet('LFSP - Count', aElement);
-end;
-
 
 procedure wbIDLAsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
 var
@@ -4970,14 +4597,17 @@ var
   Container       : IwbContainer;
   SelfAsContainer : IwbContainer;
 begin
-  if wbBeginInternalEdit then try
-    if not wbCounterAfterSet('IDLC - Animation Count', aElement) then
-      if Supports(aElement.Container, IwbContainer, Container) then begin
-        Element := Container.ElementByPath['IDLC'];
-        if Assigned(Element) and Supports(aElement, IwbContainer, SelfAsContainer) and
-          (Element.GetNativeValue<>SelfAsContainer.GetElementCount) then
-          Element.SetNativeValue(SelfAsContainer.GetElementCount);
-      end;
+  if wbBeginInternalEdit(True) then try
+    if wbCounterAfterSet('IDLC - Animation Count', aElement) then
+      Exit;
+
+    if not Supports(aElement.Container, IwbContainer, Container) then
+      Exit;
+
+    Element := Container.ElementByPath['IDLC'];
+    if Assigned(Element) and Supports(aElement, IwbContainer, SelfAsContainer) and
+      (Element.GetNativeValue<>SelfAsContainer.GetElementCount) then
+      Element.SetNativeValue(SelfAsContainer.GetElementCount);
   finally
     wbEndInternalEdit;
   end;
@@ -4989,47 +4619,41 @@ var
   Elems           : IwbElement;
   Container       : IwbContainer;
 begin
-  if wbBeginInternalEdit then try
-    if not wbCounterContainerAfterSet('IDLC - Animation Count', 'IDLA - Animations', aElement) then
-      if Supports(aElement, IwbContainer, Container) then begin
-        Element := Container.ElementByPath['IDLC\Animation Count'];
-        Elems   := Container.ElementByName['IDLA - Animations'];
-        if Assigned(Element) and not Assigned(Elems) then
-          if Element.GetNativeValue<>0 then
-            Element.SetNativeValue(0);
-      end;
+  if wbBeginInternalEdit(True) then try
+    if wbCounterContainerAfterSet('IDLC - Animation Count', 'IDLA - Animations', aElement) then
+      Exit;
+
+    if not Supports(aElement, IwbContainer, Container) then
+      Exit;
+
+    Element := Container.ElementByPath['IDLC\Animation Count'];
+    Elems   := Container.ElementByName['IDLA - Animations'];
+
+    if Assigned(Element) and not Assigned(Elems) then
+      if Element.GetNativeValue <> 0 then
+        Element.SetNativeValue(0);
   finally
     wbEndInternalEdit;
   end;
 end;
 
-function wbOffsetDataColsCounter(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Cardinal;
+procedure wbPackageDataInputValueTypeAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
 var
-  Container : IwbDataContainer;
-  Element   : IwbElement;
-  fResult   : Extended;
+  Container : IwbContainerElementRef;
+  Value     : IwbElement;
 begin
-  Result := 0;
-
-  if Supports(aElement.Container, IwbDataContainer, Container) and (Container.Name = 'OFST - Offset Data') and
-     Supports(Container.Container, IwbDataContainer, Container) then begin
-    Element := Container.ElementByPath['Object Bounds\NAM0 - Min\X'];
-    if Assigned(Element) then begin
-      fResult :=  Element.NativeValue;
-      if fResult >= MaxInt then
-        Result := 0
-      else
-        Result := Trunc(fResult);
-      Element := Container.ElementByPath['Object Bounds\NAM9 - Max\X'];
-      if Assigned(Element) then begin
-        fResult :=  Element.NativeValue;
-        if fResult >= MaxInt then
-          Result := 1
+  if aOldValue <> aNewValue then
+    if Supports(aElement.Container, IwbContainerElementRef, Container) then begin
+      Value := Container.ElementByPath['CNAM'];
+      if Assigned(Value) then
+        if (aNewValue = 'Bool') or (aNewValue = 'Int') or (aNewValue = 'Float') or (aNewValue = 'ObjectList') then
+          Value.SetToDefault
         else
-          Result := Trunc(fResult) - Result + 1;
-      end;
+          Value.Remove
+      else
+        if (aNewValue = 'Bool') or (aNewValue = 'Int') or (aNewValue = 'Float') or (aNewValue = 'ObjectList') then
+          Container.Add('CNAM');
     end;
-  end;
 end;
 
 procedure wbOMODpropertyAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -5052,20 +4676,18 @@ function wbOMODDataIncludeCounter(aBasePtr: Pointer; aEndPtr: Pointer; const aEl
 var
   Container       : IwbContainer;
 begin
+  Result := 0;
   if Supports(aElement.Container, IwbContainer, Container) then
-    Result := Container.ElementNativeValues['Include Count']
-  else
-    Result := 0;
+    Result := Container.ElementNativeValues['Include Count'];
 end;
 
 function wbOMODDataPropertyCounter(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Cardinal;
 var
   Container       : IwbContainer;
 begin
+  Result := 0;
   if Supports(aElement.Container, IwbContainer, Container) then
-    Result := Container.ElementNativeValues['Property Count']
-  else
-    Result := 0;
+    Result := Container.ElementNativeValues['Property Count'];
 end;
 
 function GetObjectModPropertyEnum(const aElement: IwbElement): IwbEnumDef;
@@ -5106,18 +4728,20 @@ begin
 
   PropEnum := GetObjectModPropertyEnum(aElement);
 
-  if not Assigned(PropEnum) then
+  if not Assigned(PropEnum) then begin
     case aType of
-      ctToStr, ctToSortKey, ctToEditValue: Result := IntToStr(aInt);
-    end
-  else
+      ctToStr, ctToSummary, ctToSortKey, ctToEditValue: Result := aInt.ToString;
+    end;
+    Exit;
+  end;
+
     case aType of
-      ctToStr: Result := PropEnum.ToString(aInt, aElement);
+      ctToStr, ctToSummary: Result := PropEnum.ToString(aInt, aElement, aType = ctToSummary);
       ctToSortKey: Result := PropEnum.ToSortKey(aInt, aElement);
       ctCheck: Result := PropEnum.Check(aInt, aElement);
       ctToEditValue: Result := PropEnum.ToEditValue(aInt, aElement);
       ctEditType: Result := 'ComboBox';
-      ctEditInfo: Result := PropEnum.EditInfo[aInt, aElement];
+      ctEditInfo: Result := PropEnum.EditInfo[aElement].ToCommaText;
     end;
 end;
 
@@ -5127,10 +4751,12 @@ var
 begin
   PropEnum := GetObjectModPropertyEnum(aElement);
 
-  if not Assigned(PropEnum) then
-    Result := StrToIntDef(aString, 0)
-  else
-    Result := PropEnum.FromEditValue(aString, aElement);
+  if not Assigned(PropEnum) then begin
+    Result := StrToIntDef(aString, 0);
+    Exit;
+  end;
+
+  Result := PropEnum.FromEditValue(aString, aElement);
 end;
 
 function wbOMODDataFunctionTypeDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
@@ -5139,9 +4765,9 @@ var
   ValueType      : Integer;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   ValueType := Container.ElementNativeValues['Value Type'];
 
@@ -5151,7 +4777,7 @@ begin
     2: Result := 1;
     4: Result := 3;
     5: Result := 2;
-    6: Result := 3;
+    6: Result := 0;
   end;
 end;
 
@@ -5162,9 +4788,9 @@ var
   PropName      : string;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   ValueType := Container.ElementNativeValues['Value Type'];
   PropName := Container.ElementEditValues['Property'];
@@ -5189,9 +4815,9 @@ var
   ValueType      : Integer;
 begin
   Result := 0;
-  if not Assigned(aElement) then Exit;
-  Container := GetContainerFromUnion(aElement);
-  if not Assigned(Container) then Exit;
+
+  if not wbTryGetContainerFromUnion(aElement, Container) then
+    Exit;
 
   ValueType := Container.ElementNativeValues['Value Type'];
 
@@ -5218,10 +4844,9 @@ function wbCELLCombinedMeshesCounter(aBasePtr: Pointer; aEndPtr: Pointer; const 
 var
   Container       : IwbContainer;
 begin
+  Result := 0;
   if Supports(aElement.Container, IwbContainer, Container) then
-    Result := Container.ElementNativeValues['Meshes Count']
-  else
-    Result := 0;
+    Result := Container.ElementNativeValues['Meshes Count'];
 end;
 
 procedure wbCELLCombinedMeshesAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -5233,11 +4858,10 @@ function wbCELLCombinedRefsCounter(aBasePtr: Pointer; aEndPtr: Pointer; const aE
 var
   Container       : IwbContainer;
 begin
+  Result := 0;
   // the counter is double of entries (each member of struct is counted)
   if Supports(aElement.Container, IwbContainer, Container) then
-    Result := Container.ElementNativeValues['References Count'] div 2
-  else
-    Result := 0;
+    Result := Container.ElementNativeValues['References Count'] div 2;
 end;
 
 procedure wbCELLCombinedRefsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -5247,14 +4871,19 @@ var
   SelfAsContainer : IwbContainer;
 begin
   // the counter is double of entries (each member of struct is counted)
-  if wbBeginInternalEdit then try
-    if Supports(aElement.Container, IwbContainer, Container) and
-       Supports(aElement, IwbContainer, SelfAsContainer) then begin
-      Element := Container.ElementByName['References Count'];
-      if Assigned(Element) then try
-        if (Element.GetNativeValue <> (SelfAsContainer.GetElementCount * 2)) then
-          Element.SetNativeValue(SelfAsContainer.GetElementCount * 2);
-      except end;
+  if wbBeginInternalEdit(True) then try
+    if not Supports(aElement.Container, IwbContainer, Container) then
+      Exit;
+
+    if not Supports(aElement, IwbContainer, SelfAsContainer) then
+      Exit;
+
+    Element := Container.ElementByName['References Count'];
+    if Assigned(Element) then try
+      if (Element.GetNativeValue <> (SelfAsContainer.GetElementCount * 2)) then
+        Element.SetNativeValue(SelfAsContainer.GetElementCount * 2);
+    except
+      // TODO: yikes, suppressing exceptions?
     end;
   finally
     wbEndInternalEdit;
@@ -5269,7 +4898,7 @@ begin
   Result := IntToHex(aInt, 8);
 
   case aType of
-    ctToStr, ctToEditValue: begin
+    ctToStr, ctToSummary, ctToEditValue: begin
       Cell := aElement.ContainingMainRecord;
       if not Assigned(Cell) then
         Exit;
@@ -5279,7 +4908,7 @@ begin
       if Assigned(Cell._File) and (Cell._File.LoadOrder > 0) then
         MasterFolder := Cell._File.FileName + '\';
 
-      Result := 'Precombined\' + MasterFolder + IntToHex(Cell.FormID and $00FFFFFF, 8) + '_' + Result + '_OC.nif';
+      Result := 'Precombined\' + MasterFolder + Cell.FormID.ChangeFileID(TwbFileID.CreateFull(0)).ToString(False) + '_' + Result + '_OC.nif';
     end;
     ctCheck: Result := '';
   end;
@@ -5287,21 +4916,27 @@ end;
 
 function wbCombinedMeshIDToInt(const aString: string; const aElement: IwbElement): Int64;
 var
-  s: string;
+  s, f: string;
   i: Integer;
 begin
   Result := 0;
-  // hex number between first and second underscore
-  i := Pos('_', aString);
-  if i <> 0 then begin
-    s := Copy(aString, i + 1, Length(aString) - i);
-    i := Pos('_', s);
-    if i <> 0 then begin
-      s := Copy(s, 1, i - 1);
-      if Length(s) = 8 then try
-        Result := StrToInt64('$' + s);
-      except end;
-    end;
+
+  // hex number between first and second underscore in the file name
+  f := ExtractFileName(aString);
+  i := Pos('_', f);
+  if not (i <> 0) then
+    Exit;
+
+  s := Copy(f, i + 1, Length(f) - i);
+  i := Pos('_', s);
+  if not (i <> 0) then
+    Exit;
+
+  s := Copy(s, 1, i - 1);
+  if Length(s) = 8 then try
+    Result := StrToInt64('$' + s);
+  except
+    // TODO: yikes, suppressing exceptions?
   end;
 end;
 
@@ -5312,19 +4947,11 @@ var
 begin
   Result := 0;
 
-  if not Assigned(aElement) then
-    Exit;
-
-  MainRecord := aElement.ContainingMainRecord;
-
-  if not Assigned(MainRecord) then
+  if not wbTryGetContainingMainRecord(aElement, MainRecord) then
     Exit;
 
   NameRec := MainRecord.ElementBySignature[NAME];
-  if not Assigned(NameRec) then
-    Exit;
-
-  if not Supports(NameRec.LinksTo, IwbMainRecord, MainRecord) then
+  if not wbTryGetMainRecord(NameRec, MainRecord) then
     Exit;
 
   if (MainRecord.Signature = ACTI) or
@@ -5361,99 +4988,12 @@ begin
     Result := 7;
 end;
 
-function wbByteColors(const aName: string = 'Color'): IwbStructDef;
-begin
-  Result := wbStruct(aName, [
-    wbInteger('Red', itU8),
-    wbInteger('Green', itU8),
-    wbInteger('Blue', itU8),
-    wbByteArray('Unused', 1)
-  ]);
-end;
-
-function wbFloatColors(const aName: string = 'Color'): IwbStructDef;
-begin
-  Result := wbStruct(aName, [
-    wbFloat('Red', cpNormal, True, 255, 0),
-    wbFloat('Green', cpNormal, True, 255, 0),
-    wbFloat('Blue', cpNormal, True, 255, 0)
-  ]);
-end;
-
-function wbWeatherColors(const aName: string): IwbStructDef;
-begin
-  Result := wbStruct(aName, [
-    wbByteColors('Sunrise'),
-    wbByteColors('Day'),
-    wbByteColors('Sunset'),
-    wbByteColors('Night'),
-    wbByteColors('EarlySunrise'),
-    wbByteColors('LateSunrise'),
-    wbByteColors('EarlySunset'),
-    wbByteColors('LateSunset')
-  ], cpNormal, True, nil, 4);
-end;
-
-function wbAmbientColors(const aSignature: TwbSignature; const aName: string = 'Directional Ambient Lighting Colors'): IwbSubRecordDef; overload;
-begin
-  Result := wbStruct(aSignature, aName, [
-    wbStruct('Directional', [
-      wbByteColors('X+'),
-      wbByteColors('X-'),
-      wbByteColors('Y+'),
-      wbByteColors('Y-'),
-      wbByteColors('Z+'),
-      wbByteColors('Z-')
-    ]),
-    wbByteColors('Specular'),
-    wbFloat('Scale')
-  ])
-end;
-
-function wbAmbientColors(const aName: string = 'Directional Ambient Lighting Colors'): IwbStructDef; overload;
-begin
-  Result := wbStruct(aName, [
-    wbStruct('Directional', [
-      wbByteColors('X+'),
-      wbByteColors('X-'),
-      wbByteColors('Y+'),
-      wbByteColors('Y-'),
-      wbByteColors('Z+'),
-      wbByteColors('Z-')
-    ]),
-    wbByteColors('Specular'),
-    wbFloat('Scale', cpIgnore)
-  ]);
-end;
-
 function wbIntToHexStr(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
 begin
   case aType of
-    ctToStr, ctToSortKey, ctToEditValue: Result := IntToHex(aInt, 8);
+    ctToStr, ctToSummary, ctToSortKey, ctToEditValue: Result := IntToHex(aInt, 8);
   else
     Result := '';
-  end;
-end;
-
-function wbStrToInt(const aString: string; const aElement: IwbElement): Int64;
-var
-  s: string;
-  i: integer;
-begin
-  // ignore anything after space or :
-  i := Pos(' ', aString);
-  if i = 0 then
-    i := Pos(':', aString);
-
-  if i <> 0 then
-    s := Copy(aString, 1, i - 1)
-  else
-    s := aString;
-
-  try
-    Result := StrToInt64(s)
-  except
-    Result := 0;
   end;
 end;
 
@@ -5528,7 +5068,7 @@ var
 begin
   // defaults
   case aType of
-    ctToStr, ctToEditValue: Result := IntToHex64(aInt, 8);
+    ctToStr, ctToSummary, ctToEditValue: Result := IntToHex64(aInt, 8);
     ctToSortKey: begin
       Result := IntToHex64(aInt, 8);
       Exit;
@@ -5634,11 +5174,14 @@ begin
       end;
 
   case aType of
-    ctToStr: begin
+    ctToStr, ctToSummary: begin
       if EntryName <> '' then
         Result := IntToHex64(aInt, 8) + ' ' + EntryName
-      else
-        Result := IntToHex64(aInt, 8) + ' <Morph index not found in ' + Race.Name + '>';
+      else begin
+        Result := IntToHex64(aInt, 8);
+        if aType = ctToStr then
+          Result := Result  + ' <Morph index not found in ' + Race.Name + '>';
+      end;
     end;
     ctCheck: begin
       if EntryName = '' then
@@ -5658,10 +5201,7 @@ begin
   end;
 end;
 
-
-
 function wbFaceMorphToStr(aInt: Int64; const aElement: IwbElement; aType: TwbCallbackType): string;
-
   function GetCached(const aRaceID: string; aFemale: boolean): PFaceGenFeature;
   var
     i: integer;
@@ -5687,7 +5227,7 @@ var
 begin
   // defaults
   case aType of
-    ctToStr, ctToEditValue: Result := IntToHex64(aInt, 8);
+    ctToStr, ctToSummary, ctToEditValue: Result := IntToHex64(aInt, 8);
     ctToSortKey: begin
       Result := IntToHex64(aInt, 8);
       Exit;
@@ -5761,11 +5301,14 @@ begin
       end;
 
   case aType of
-    ctToStr: begin
+    ctToStr, ctToSummary: begin
       if EntryName <> '' then
         Result := IntToHex64(aInt, 8) + ' ' + EntryName
-      else
-        Result := IntToHex64(aInt, 8) + ' <Face morph index not found in ' + Race.Name + '>';
+      else begin
+        Result := IntToHex64(aInt, 8);
+        if aType = ctToStr then
+          Result := Result + ' <Face morph index not found in ' + Race.Name + '>';
+      end;
     end;
     ctCheck: begin
       if EntryName = '' then
@@ -5814,12 +5357,12 @@ var
 begin
   // defaults
   case aType of
-    ctToStr, ctToEditValue: Result := IntToStr(aInt);
+    ctToStr, ctToSummary, ctToEditValue: Result := aInt.ToString;
     ctToSortKey: begin
       Result := IntToHex64(aInt, 8);
       Exit;
     end;
-    ctCheck: Result := '<Warning: Could not resolve tint layer index ' + IntToStr(aInt) + '>';
+    ctCheck: Result := '<Warning: Could not resolve tint layer index ' + aInt.ToString + '>';
     ctEditType: Result := '';
     ctEditInfo: Result := '';
   end;
@@ -5849,7 +5392,6 @@ begin
     slList := TStringList.Create;
 
     for i := 0 to 1 do begin
-
       Female2 := i = 1;
       SetLength(TintLayers, Succ(Length(TintLayers)));
       Cache := @TintLayers[Pred(Length(TintLayers))];
@@ -5867,16 +5409,21 @@ begin
       slList.Clear;
 
       // iterate over tint groups
-      for j := 0 to Pred(Container.ElementCount) do
-        if Supports(Container.Elements[j], IwbContainerElementRef, Entry) then
-          // iterate over tint group options
-          if Supports(Entry.ElementByName['Options'], IwbContainerElementRef, Container2) then
-            for k := 0 to Pred(Container2.ElementCount) do
-              if Supports(Container2.Elements[k], IwbContainerElementRef, Entry2) then
-                slList.AddObject(
-                  Entry.ElementEditValues['TTGP'] + ' - ' + Entry2.ElementEditValues['TTGP'],
-                  TObject(Cardinal(Entry2.ElementNativeValues['TETI\Index']))
-                );
+      for j := 0 to Pred(Container.ElementCount) do begin
+        if not Supports(Container.Elements[j], IwbContainerElementRef, Entry) then
+          Continue;
+
+        // iterate over tint group options
+        if not Supports(Entry.ElementByName['Options'], IwbContainerElementRef, Container2) then
+          Continue;
+
+        for k := 0 to Pred(Container2.ElementCount) do
+          if Supports(Container2.Elements[k], IwbContainerElementRef, Entry2) then
+            slList.AddObject(
+              Entry.ElementEditValues['TTGP'] + ' - ' + Entry2.ElementEditValues['TTGP'],
+              TObject(Cardinal(Entry2.ElementNativeValues['TETI\Index']))
+            );
+      end;
 
       SetLength(Cache.Entries, slList.Count);
 
@@ -5904,15 +5451,18 @@ begin
       end;
 
   case aType of
-    ctToStr: begin
+    ctToStr, ctToSummary: begin
       if EntryName <> '' then
-        Result := IntToStr(aInt) + ' ' + EntryName
-      else
-        Result := IntToStr(aInt) + ' <Tint layer index not found in ' + Race.Name + '>';
+        Result := aInt.ToString + ' ' + EntryName
+      else begin
+        Result := aInt.ToString;
+        if aType = ctToStr then
+          Result := Result + ' <Tint layer index not found in ' + Race.Name + '>';
+      end;
     end;
     ctCheck: begin
       if EntryName = '' then
-        Result := '<Tint layer index ' + IntToStr(aInt) + ' not found in ' + Race.Name + '>'
+        Result := '<Tint layer index ' + aInt.ToString + ' not found in ' + Race.Name + '>'
       else
         Result := '';
     end;
@@ -5928,15 +5478,224 @@ begin
   end;
 end;
 
-
-var
-  wbRecordFlagsFlags : IwbFlagsDef;
-
-procedure DefineFO4a;
-
+// Do this terribleness because fallout4.esm has some junk values
+procedure wbSCENBehaviorEnumAfterLoad(const aElement: IwbElement);
 begin
+  if wbBeginInternalEdit then try
+    if aElement.GetNativeValue > $00000003 then
+      aElement.SetNativeValue($00000003)
+  finally
+    wbEndInternalEdit;
+  end;
+end;
+
+function wbTintTemplateGroups(const aName: string): IwbSubRecordArrayDef;
+  var
+    wbTintTemplateGroup: IwbSubRecordStructDef;
+    wbTintTemplateOption: IwbSubRecordStructDef;
+  begin
+    wbTintTemplateOption :=
+      wbRStruct('Option', [
+        wbStruct(TETI, 'Index', [
+          wbInteger('Slot', itU16, wbEnum([
+            'Forehead Mask',
+            'Eyes Mask',
+            'Nose Mask',
+            'Ears Mask',
+            'Cheeks Mask',
+            'Mouth Mask',
+            'Neck Mask',
+            'Lip Color',
+            'Cheek Color',
+            'Eyeliner',
+            'Eye Socket Upper',
+            'Eye Socket Lower',
+            'Skin Tone',
+            'Paint',
+            'Laugh Lines',
+            'Cheek Color Lower',
+            'Nose',
+            'Chin',
+            'Neck',
+            'Forehead',
+            'Dirt',
+            'Scars',
+            'Face Detail',
+            'Brows',
+            'Wrinkles',
+            'Beards'
+          ])),
+          wbInteger('Index', itU16)
+        ]),
+        wbLString(TTGP, 'Name', 0, cpTranslate),
+        wbInteger(TTEF, 'Flags', itU16, wbFlags([
+          'On/Off only',
+          'Chargen Detail',
+          'Takes Skin Tone'
+        ])),
+        wbCTDAs,
+        wbRArray('Textures', wbString(TTET, 'Texture')),
+        wbInteger(TTEB, 'Blend Operation', itU32, wbBlendOperationEnum),
+        wbArray(TTEC, 'Template Colors', wbStruct('Template Color', [
+          wbFormIDCk('Color', [CLFM]),
+          wbFloat('Alpha'),
+          wbInteger('Template Index', itU16),
+          wbInteger('Blend Operation', itU32, wbBlendOperationEnum)
+        ])),
+        wbFloat(TTED, 'Default')
+      ], []);
+
+    wbTintTemplateGroup :=
+      wbRStruct('Group', [
+        wbLString(TTGP, 'Group Name', 0, cpTranslate),
+        wbRArray('Options', wbTintTemplateOption),
+        wbInteger(TTGE, 'Category Index', itU32)
+      ], []);
+
+    Result := wbRArray(aName, wbTintTemplateGroup);
+  end;
+
+  function wbMorphGroups(const aName: string): IwbSubRecordArrayDef;
+  begin
+    Result :=
+      wbRArray(aName,
+        wbRStruct('Morph Group', [
+          wbString(MPGN, 'Name'),
+          wbInteger(MPPC, 'Count', itU32, nil, cpBenign),
+          wbRArray('Morph Presets',
+            wbRStruct('Morph Preset', [
+              wbInteger(MPPI, 'Index', itU32, wbIntToHexStr, wbHexStrToInt),
+              wbLString(MPPN, 'Name', 0, cpTranslate),
+              wbString(MPPM, 'Morph'),
+              wbFormIDCk(MPPT, 'Texture', [TXST]),
+              wbInteger(MPPF, 'Playable', itU8, wbBoolEnum)
+            ], []),
+            cpNormal, False, nil, wbMorphPresetsAfterSet
+          ),
+          wbInteger(MPPK, 'Mask', itU16, wbEnum ([], [                                                       //Maps to Faceregion tint groups (male and female)
+
+        //Male
+        1171, 'Male Forehead Mask',
+        1172, 'Male Eyes Mask',
+        1173, 'Male Nose Mask',
+        1174, 'Male Ears Mask',
+        1175, 'Male Cheeks Mask',
+        1176, 'Male Mouth Mask',
+        1177, 'Male Neck Mask',
+        //Female
+        1221, 'Female Forehead Mask',
+        1222, 'Female Eyes Mask',
+        1223, 'Female Nose Mask',
+        1224, 'Female Ears Mask',
+        1225, 'Female Cheeks Mask',
+        1226, 'Female Mouth Mask',
+        1227, 'Female Neck Mask',
+        65535, 'None'
+      ])),
+          wbArray(MPGS, 'Morph Group Sliders', wbInteger('Index', itU32, wbIntToHexStr, wbHexStrToInt))
+        ], [])
+      );
+  end;
+
+  function wbFaceMorphs(const aName: string): IwbSubRecordArrayDef;
+  begin
+    Result :=
+      wbRArray(aName,
+        wbRStruct('Face Morph', [
+          wbInteger(FMRI, 'Index', itU32, wbIntToHexStr, wbHexStrToInt),
+          wbLString(FMRN, 'Name')
+        ], [])
+      );
+  end;
+
+function CombineVarRecs(const a, b : array of const)
+                                   : TVarRecs;
+begin
+  SetLength(Result, Length(a) + Length(b));
+  if Length(a) > 0 then
+    Move(a[0], Result[0], SizeOf(TVarRec) * Length(a));
+  if Length(b) > 0 then
+    Move(b[0], Result[Length(a)], SizeOf(TVarRec) * Length(b));
+end;
+
+function MakeVarRecs(const a : array of const)
+                             : TVarRecs;
+begin
+  SetLength(Result, Length(a));
+  if Length(a) > 0 then
+    Move(a[0], Result[0], SizeOf(TVarRec) * Length(a));
+end;
+
+
+  procedure ReferenceRecord(aSignature: TwbSignature; const aName: string);
+  begin
+    wbRefRecord(aSignature, aName,
+      wbFlags(wbRecordFlagsFlags, wbFlagsList([
+        {0x00000080}  7, 'Turn Off Fire',
+        {0x00000400} 10, 'Persistent',
+        {0x00000800} 11, 'Initially Disabled',
+        {0x10000000} 28, 'Reflected By Auto Water',
+        {0x20000000} 29, 'Don''t Havok Settle',
+        {0x40000000} 30, 'No Respawn'
+      ], True, True)), [
+      wbEDID,
+      wbVMAD,
+      wbFormIDCk(NAME, 'Projectile', [PROJ, HAZD]),
+      wbFormIDCk(XEZN, 'Encounter Zone', [ECZN]),
+      wbFloat(XHTW, 'Head-Tracking Weight'),
+      wbFloat(XFVC, 'Favor Cost'),
+      wbRArrayS('Reflected/Refracted By',
+        wbStructSK(XPWR, [0], 'Water', [
+          wbFormIDCk('Reference', [REFR]),
+          wbInteger('Type', itU32, wbFlags([
+            'Reflection',
+            'Refraction'
+          ]))
+        ], cpNormal, False, nil, 1)
+      ),
+      wbRArrayS('Linked References', wbStructSK(XLKR, [0], 'Linked Reference', [
+        wbFormIDCk('Keyword/Ref', [KYWD, PLYR, ACHR, REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA, NULL]),
+        wbFormIDCk('Ref', sigReferences)
+      ], cpNormal, False, nil, 1)),
+      wbRStruct('Activate Parents', [
+        wbInteger(XAPD, 'Flags', itU8, wbFlags([
+          'Parent Activate Only'
+        ], True)),
+        wbRArrayS('Activate Parent Refs',
+          wbStructSK(XAPR, [0], 'Activate Parent Ref', [
+            wbFormIDCk('Reference', sigReferences),
+            wbFloat('Delay')
+          ])
+        )
+      ], []),
+
+      wbFormIDCk(XASP, 'Unknown', [REFR]),
+      wbUnknown(XATP),
+      wbInteger(XAMC, 'Ammo Count', itU32),
+      wbEmpty(XLKT, 'Linked Ref Transient'),
+      wbFormIDCk(XLYR, 'Layer', [LAYR]),
+      wbFormIDCk(XMSP, 'Material Swap', [MSWP]),
+      wbFormIDCk(XRFG, 'Reference Group', [RFGP]),
+      wbUnknown(XCVR),
+      wbXESP,
+      wbXOWN,
+      wbXRNK,
+      wbFormIDCk(XEMI, 'Emittance', [LIGH, REGN]),
+      wbFormIDCk(XMBR, 'MultiBound Reference', [REFR]),
+      wbEmpty(XIS2, 'Ignored by Sandbox'),
+      wbArray(XLRT, 'Location Ref Type', wbFormIDCk('Ref', [LCRT, NULL])),
+      wbFormIDCk(XLRL, 'Location Reference', [LCRT, LCTN, NULL], False, cpBenignIfAdded),
+      wbXSCL,
+      wbXLOD,
+      wbDataPosRot,
+      wbString(MNAM, 'Comments')
+    ], True, wbPlacedAddInfo);
+  end;
+
+procedure DefineFO4;
+begin
+  DefineCommon;
   wbNull := wbByteArray('Unused', -255);
-  wbBoolEnum := wbEnum(['False', 'True']);
   wbLLCT := wbInteger(LLCT, 'Count', itU8, nil, cpBenign);
   wbCITC := wbInteger(CITC, 'Condition Count', itU32, nil, cpBenign);
   wbCITCReq := wbInteger(CITC, 'Condition Count', itU32, nil, cpBenign, True);
@@ -5975,7 +5734,7 @@ begin
         wbInteger('Count', itS32)
       ]),
       wbCOED
-    ], []);
+    ], []).SetToStr(wbItemToStr).IncludeFlag(dfCollapsed, wbCollapseItems);
   wbCOCT := wbInteger(COCT, 'Count', itU32, nil, cpBenign);
   wbCNTOs := wbRArrayS('Items', wbCNTO, cpNormal, False, nil, wbCNTOsAfterSet);
 
@@ -6056,15 +5815,10 @@ begin
 
   wbBOD2 := wbStruct(BOD2, 'Biped Body Template', [
     wbFirstPersonFlagsU32
-  ], cpNormal, False);
-
-  wbMDOB := wbFormID(MDOB, 'Menu Display Object', cpNormal, False);
-  wbCNAM := wbStruct(CNAM, 'Color', [
-    wbInteger('Red', itU8),
-    wbInteger('Green', itU8),
-    wbInteger('Blue', itU8),
-    wbByteArray('Unknown', 1)
-  ]);
+  ], cpNormal, False)
+  .SetSummaryKeyOnValue([0])
+  .SetSummaryPrefixSuffixOnValue(0, '(', ')')
+  .IncludeFlagOnValue(dfSummaryMembersNoName);
 
   wbDODT := wbStruct(DODT, 'Decal Data', [
     wbFloat('Min Width'),
@@ -6081,136 +5835,32 @@ begin
       {0x01} 'POM Shadows',
       {0x02} 'Alpha - Blending',
       {0x04} 'Alpha - Testing',
-      {0x08} 'No Subtextures'
+      {0x08} 'No Subtextures',
+      {0x10} 'Multiplicative Blending'
     ], True)),
     wbInteger('Alpha Threshold?', itU16),
     wbByteColors('Color')
   ]);
 
-//  wbRecordFlagsFlags := wbFlags([
-//    {>>> 0x00000000 ACTI: Collision Geometry (default) <<<}
-//    {0x00000001}'ESM',
-//    {0x00000002}'Unknown 2',
-//    {>>> 0x00000004 ARMO: Not playable <<<}
-//    {0x00000004}'NotPlayable',
-//    {0x00000008}'Unknown 4',
-//    {0x00000010}'Unknown 5',
-//    {0x00000020}'Deleted',
-//    {>>> 0x00000040 ACTI: Has Tree LOD <<<}
-//    {>>> 0x00000040 REGN: Border Region <<<}
-//    {>>> 0x00000040 STAT: Has Tree LOD <<<}
-//    {>>> 0x00000040 REFR: Hidden From Local Map <<<}
-//    {0x00000040}'Constant HiddenFromLocalMap BorderRegion HasTreeLOD',
-//    {>>> 0x00000080 TES4: Localized <<<}
-//    {>>> 0x00000080 PHZD: Turn Off Fire <<<}
-//    {>>> 0x00000080 SHOU: Treat Spells as Powers <<<}
-//    {>>> 0x00000080 STAT: Add-on LOD Object <<<}
-//    {0x00000080}'Localized IsPerch AddOnLODObject TurnOffFire TreatSpellsAsPowers',
-//    {>>> 0x00000100 ACTI: Must Update Anims <<<}
-//    {>>> 0x00000100 REFR: Inaccessible <<<}
-//    {>>> 0x00000100 REFR for LIGH: Doesn't light water <<<}
-//    {0x00000100}'MustUpdateAnims Inaccessible DoesntLightWater',
-//    {>>> 0x00000200 ACTI: Local Map - Turns Flag Off, therefore it is Hidden <<<}
-//    {>>> 0x00000200 REFR: MotionBlurCastsShadows <<<}
-//    {0x00000200}'HiddenFromLocalMap StartsDead MotionBlurCastsShadows',
-//    {>>> 0x00000400 LSCR: Displays in Main Menu <<<}
-//    {0x00000400}'PersistentReference QuestItem DisplaysInMainMenu',
-//    {0x00000800}'InitiallyDisabled',
-//    {0x00001000}'Ignored',
-//    {0x00002000}'ActorChanged',
-//    {0x00004000}'Unknown 15',
-//    {>>> 0x00008000 STAT: Has Distant LOD <<<}
-//    {0x00008000}'VWD',
-//    {>>> 0x00010000 ACTI: Random Animation Start <<<}
-//    {>>> 0x00010000 REFR light: Never fades <<<}
-//    {0x00010000}'RandomAnimationStart NeverFades',
-//    {>>> 0x00020000 ACTI: Dangerous <<<}
-//    {>>> 0x00020000 REFR light: Doesn't light landscape <<<}
-//    {>>> 0x00020000 SLGM: Can hold NPC's soul <<<}
-//    {>>> 0x00020000 STAT: Use High-Detail LOD Texture <<<}
-//    {0x00020000}'Dangerous OffLimits DoesntLightLandscape HighDetailLOD CanHoldNPC',
-//    {0x00040000}'Compressed',
-//    {>>> 0x00080000 STAT: Has Currents <<<}
-//    {0x00080000}'CantWait HasCurrents',
-//    {>>> 0x00100000 ACTI: Ignore Object Interaction <<<}
-//    {0x00100000}'IgnoreObjectInteraction',
-//    {0x00200000}'(Used in Memory Changed Form)',
-//    {0x00400000}'Unknown 23',
-//    {>>> 0x00800000 ACTI: Is Marker <<<}
-//    {0x00800000}'IsMarker',
-//    {0x01000000}'Unknown 25',
-//    {>>> 0x02000000 ACTI: Obstacle <<<}
-//    {>>> 0x02000000 REFR: No AI Acquire <<<}
-//    {0x02000000}'Obstacle NoAIAcquire',
-//    {>>> 0x04000000 ACTI: Filter <<<}
-//    {0x04000000}'NavMeshFilter',
-//    {>>> 0x08000000 ACTI: Bounding Box <<<}
-//    {0x08000000}'NavMeshBoundingBox',
-//    {>>> 0x10000000 STAT: Show in World Map <<<}
-//    {0x10000000}'MustExitToTalk ShowInWorldMap',
-//    {>>> 0x20000000 ACTI: Child Can Use <<<}
-//    {>>> 0x20000000 REFR: Don't Havok Settle <<<}
-//    {0x20000000}'ChildCanUse DontHavokSettle',
-//    {>>> 0x40000000 ACTI: GROUND <<<}
-//    {>>> 0x40000000 REFR: NoRespawn <<<}
-//    {0x40000000}'NavMeshGround NoRespawn',
-//    {>>> 0x80000000 REFR: MultiBound <<<}
-//    {0x80000000}'MultiBound'
-//  ], [18]);
-
-  wbRecordFlagsFlags := wbFlags(wbRecordFlagsFlags, [
-    {0x00000001} { 0} 'Unknown 0',
-    {0x00000002} { 1} 'Unknown 1',
-    {0x00000004} { 2} 'Unknown 2',
-    {0x00000008} { 3} 'Unknown 3',
-    {0x00000010} { 4} 'Unknown 4',
-    {0x00000020} { 4} 'Unknown 5',
-    {0x00000040} { 6} 'Unknown 6',
-    {0x00000080} { 7} 'Unknown 7',
-    {0x00000100} { 8} 'Unknown 8',
-    {0x00000200} { 9} 'Unknown 9',
-    {0x00000400} {10} 'Unknown 10',
-    {0x00000800} {11} 'Unknown 11',
-    {0x00001000} {12} 'Unknown 12',
-    {0x00002000} {13} 'Unknown 13',
-    {0x00004000} {14} 'Unknown 14',
-    {0x00008000} {15} 'Unknown 15',
-    {0x00010000} {16} 'Unknown 16',
-    {0x00020000} {17} 'Unknown 17',
-    {0x00040000} {18} 'Unknown 18',
-    {0x00080000} {19} 'Unknown 19',
-    {0x00100000} {20} 'Unknown 20',
-    {0x00200000} {21} 'Unknown 21',
-    {0x00400000} {22} 'Unknown 22',
-    {0x00800000} {23} 'Unknown 23',
-    {0x01000000} {24} 'Unknown 24',
-    {0x02000000} {25} 'Unknown 25',
-    {0x04000000} {26} 'Unknown 26',
-    {0x08000000} {27} 'Unknown 27',
-    {0x10000000} {28} 'Unknown 28',
-    {0x20000000} {29} 'Unknown 29',
-    {0x40000000} {30} 'Unknown 30',
-    {0x80000000} {31} 'Unknown 31'
-  ]);
-
   wbRecordFlags := wbInteger('Record Flags', itU32, wbFlags(wbRecordFlagsFlags, wbFlagsList([])));
 
-  wbMainRecordHeader := wbStruct('Record Header', [
-    wbString('Signature', 4, cpCritical),
-    wbInteger('Data Size', itU32, nil, cpIgnore),
-    wbRecordFlags,
-    wbFormID('FormID', cpFormID),
-    wbByteArray('Version Control Info 1', 4, cpIgnore),
-    wbInteger('Form Version', itU16, nil, cpIgnore),
-    wbByteArray('Version Control Info 2', 2, cpIgnore)
-  ]);
+  wbMainRecordHeader := wbRecordHeader(wbRecordFlags);
 
   wbSizeOfMainRecordStruct := 24;
 
   wbIgnoreRecords.Add(XXXX);
 
-  wbXRGD := wbByteArray(XRGD, 'Ragdoll Data');
-  wbXRGB := wbByteArray(XRGB, 'Ragdoll Biped Data');
+  wbXRGD := wbArray(XRGD, 'Ragdoll Data', wbStruct('Ragdoll Data', [
+    wbInteger('Bone Id', itU8),
+    wbByteArray('Unknown/Unused', 3),
+    wbPosRot
+  ]));
+
+  wbXRGB := wbStruct(XRGB, 'Ragdoll Biped Rotation', [
+    wbFloat('X'),
+    wbFloat('Y'),
+    wbFloat('Z')
+  ]);
 
   wbMusicEnum := wbEnum(['Default', 'Public', 'Dungeon']);
   wbSoundLevelEnum := wbEnum([
@@ -6378,7 +6028,8 @@ begin
    {153} 'Mod VATS Blitz Dmg Bonus Dist',
    {154} 'Mod Bash Critical Chance',
    {155} 'VATS Apply Paralyzing Palm Spell',
-   {156} 'Null Function'
+   {156} 'Mod Fatigue for Fatigue AP Max',
+   {157} 'Set Fatigue to AP Mult'
   ]);
 
   wbEquipType := wbFlags([
@@ -6442,15 +6093,28 @@ begin
 
   // Event member names and availability are different depending on event type
   // Using generic names for the last 3 of them: Form, Value1, Value2
+  // Event member names and availability are different depending on event type
+  // Using generic names for the last 3 of them: Form, Value1, Value2
   wbEventMemberEnum := wbEnum([], [
     $0000, 'None',
-    $314F, 'CreatedObject',
-    $314C, '(Old)Location',
-    $324C, '(New)Location',
-    $314B, 'Keyword',
-    $3146, 'Form',
-    $3156, 'Value1',
-    $3256, 'Value2'
+    $3146, 'Form',          { F1: ObjectForm, SpellForm, Infection, pCrimeGroup, Weapon Aimed, Voice Power }
+    $3147, 'Global',        { G1: GlobalValue }
+    $3149, 'Identifier',    { I1: QuestID }
+    $314B, 'Keyword1',      { K1: GameModeKeyword, Keyword }
+    $324B, 'Keyword2',      { K2: (Exists but unused) }
+    $334B, 'Keyword3',      { K3: (Exists but unused) }
+    $314C, '(Old)Location',  { L1: Location, Old Location, BenchLocation }
+    $324C, '(New)Location',  { L2: New Location }
+    $314F, 'CreatedObject', { O1: CreatedObject }
+    $3150, 'Player1',       { P1: Player, Victim }
+    $3250, 'Player2',       { P2: Criminal }
+    $3251, 'Quest1',        { Q1: Quest }
+    $3152, 'Reference1',    { R1: Victim, OwnerRef, ArrestingGuard, ActorSeesObject, Actor, CastingActor, Workbench, Actor 1, Actor , Computer, Transmitting Actor, Actor in Ironsights, hGuard, hCriminal, RootObject, NPC 1, Ref 1, OwningActor }
+    $3252, 'Reference2',    { R2: Attacker, Killer, Mine, OriginalContainer, Criminal, Object, SpellTarget, Actor 2, Dead Actor, hGuard, Lock Object, NPC 2, ItemRef, Ref 2, Trespasser }
+    $3352, 'Reference3',    { R3: Workshop, Player }
+    $3156, 'Value1',        { V1: Crime, Crime Status, AquireType, iCrimeType, iCommanded, iBountyAmount, Gold Value, Success, New Level, Crime Gold, Is Crime, Connected, Old Relationship, RemoveType, Value 1 }
+    $3256, 'Value2',        { V2: Relationship Rank to Killer Before Death, ItemValue, iBountyReason, New Relationship, Value 2, Days Jail }
+    $7FFFFFFF, 'All'
   ]);
 
   wbWeaponAnimTypeEnum := wbEnum([
@@ -6482,31 +6146,20 @@ begin
     'No dismember/explode'
   ]);
 
-  wbEDID := wbString(EDID, 'Editor ID', 0, cpNormal); // not cpBenign according to Arthmoor
+  wbActorBehaviorEnum := wbEnum([
+    'Set All Normal',
+    'Set All Pause',
+    'Set All End',
+    'Don''t Set All'
+  ]);
+
+  wbEDID := wbStringKC(EDID, 'Editor ID', 0, cpOverride);
   wbFULL := wbLStringKC(FULL, 'Name', 0, cpTranslate);
   wbFULLActor := wbLStringKC(FULL, 'Name', 0, cpTranslate, False, nil{wbActorTemplateUseBaseData});
   wbFULLReq := wbLStringKC(FULL, 'Name', 0, cpTranslate, True);
   wbDESC := wbLStringKC(DESC, 'Description', 0, cpTranslate);
   wbDESCReq := wbLStringKC(DESC, 'Description', 0, cpTranslate, True);
   wbXSCL := wbFloat(XSCL, 'Scale');
-
-  wbOBND := wbStruct(OBND, 'Object Bounds', [
-    wbInteger('X1', itS16),
-    wbInteger('Y1', itS16),
-    wbInteger('Z1', itS16),
-    wbInteger('X2', itS16),
-    wbInteger('Y2', itS16),
-    wbInteger('Z2', itS16)
-  ]);
-
-  wbOBNDReq := wbStruct(OBND, 'Object Bounds', [
-    wbInteger('X1', itS16),
-    wbInteger('Y1', itS16),
-    wbInteger('Z1', itS16),
-    wbInteger('X2', itS16),
-    wbInteger('Y2', itS16),
-    wbInteger('Z2', itS16)
-  ], cpNormal, True);
 
   wbPropTypeEnum := wbEnum([
     {00} 'None',
@@ -6538,15 +6191,26 @@ begin
 
   wbScriptPropertyObject := wbUnion('Object Union', wbScriptObjFormatDecider, [
     wbStructSK([1], 'Object v2', [
-      wbInteger('Unused', itU16, nil, cpIgnore),
-      wbInteger('Alias', itS16, wbScriptObjectAliasToStr, wbStrToAlias),
-      wbFormID('FormID')
-    ], [2, 1, 0]),
-    wbStructSK([1], 'Object v1', [
+      wbInteger('Unused', itU16, nil, cpIgnore, False, wbNeverShow),
+      wbInteger('Alias', itS16, wbScriptObjectAliasToStr, wbStrToAlias).SetDefaultEditValue('None'),
+      wbFormID('FormID').IncludeFlag(dfNoReport)
+    ], [2, 1, 0])
+      .SetSummaryKey([2, 1])
+      .SetSummaryMemberPrefixSuffix(2, '', '')
+      .SetSummaryMemberPrefixSuffix(1, ', Alias[', ']')
+      .SetSummaryDelimiter('')
+      .IncludeFlag(dfSummaryMembersNoName)
+      .IncludeFlag(dfSummaryNoSortKey),
+    wbStructSK([0], 'Object v1', [
       wbFormID('FormID'),
       wbInteger('Alias', itS16, wbScriptObjectAliasToStr, wbStrToAlias),
       wbInteger('Unused', itU16, nil, cpIgnore)
     ])
+      .SetSummaryKey([0, 1])
+      .SetSummaryMemberPrefixSuffix(0, '', '')
+      .SetSummaryMemberPrefixSuffix(1, ', Alias[', ']')
+      .SetSummaryDelimiter('')
+      .IncludeFlag(dfSummaryMembersNoName)
   ]);
 
   wbScriptPropertyStruct :=
@@ -6558,24 +6222,28 @@ begin
         {0x01} 'Edited',
         {0x02} '',
         {0x03} 'Removed'
-      ])),
-      wbUnion('Value', wbScriptPropertyStructMemberDecider, [
+      ])).SetDefaultEditValue('Edited'),
+      wbUnion('Value', wbScriptPropertyDecider, [
         {00} wbNull,
         {01} wbScriptPropertyObject,
-        {02} wbLenString('String', 2),
+        {02} wbLenString('String', 2).OverrideEncoding(wbEncodingVMAD),
         {03} wbInteger('Int32', itS32),
         {04} wbFloat('Float'),
         {05} wbInteger('Bool', itU8, wbBoolEnum),
+        {06} wbNull,
+        {07} wbRecursive('Struct', 3),
         {11} wbArray('Array of Object', wbScriptPropertyObject, -1),
-        {12} wbArray('Array of String', wbLenString('Element', 2), -1),
+        {12} wbArray('Array of String', wbLenString('Element', 2).OverrideEncoding(wbEncodingVMAD), -1),
         {13} wbArray('Array of Int32', wbInteger('Element', itS32), -1),
         {14} wbArray('Array of Float', wbFloat('Element'), -1),
-        {15} wbArray('Array of Bool', wbInteger('Element', itU8, wbBoolEnum), -1)
+        {15} wbArray('Array of Bool', wbInteger('Element', itU8, wbBoolEnum), -1),
+        {16} wbStruct('Array of Variable', [wbInteger('Element Count', itU32)]),
+        {17} wbArray('Array of Struct', wbRecursive('Struct', 4), -1)
       ])
     ]), -1, cpNormal, False);
 
-  wbScriptProperties :=
-    wbArrayS('Properties', wbStructSK([0], 'Property', [
+  wbScriptProperty :=
+    wbStructSK([0], 'Property', [
       wbLenString('propertyName', 2),
       wbInteger('Type', itU8, wbPropTypeEnum, cpNormal, False, nil, wbScriptPropertyTypeAfterSet),
       wbInteger('Flags', itU8, wbEnum([
@@ -6583,33 +6251,48 @@ begin
         {0x01} 'Edited',
         {0x02} '',
         {0x03} 'Removed'
-      ])),
+      ])).SetDefaultEditValue('Edited'),
       wbUnion('Value', wbScriptPropertyDecider, [
        {00} wbNull,
        {01} wbScriptPropertyObject,
-       {02} wbLenString('String', 2),
+       {02} wbLenString('String', 2).OverrideEncoding(wbEncodingVMAD),
        {03} wbInteger('Int32', itS32),
        {04} wbFloat('Float'),
        {05} wbInteger('Bool', itU8, wbBoolEnum),
-       {06} wbScriptPropertyStruct, // Variable. No idea if possible or how to decode, leaving like that for the moment
+       {06} wbNull,
        {07} wbScriptPropertyStruct,
        {11} wbArray('Array of Object', wbScriptPropertyObject, -1),
-       {12} wbArray('Array of String', wbLenString('Element', 2), -1),
+       {12} wbArray('Array of String', wbLenString('Element', 2).OverrideEncoding(wbEncodingVMAD), -1),
        {13} wbArray('Array of Int32', wbInteger('Element', itS32), -1),
        {14} wbArray('Array of Float', wbFloat('Element'), -1),
        {15} wbArray('Array of Bool', wbInteger('Element', itU8, wbBoolEnum), -1),
+       {16} wbStruct('Array of Variable', [wbInteger('Element Count', itU32)]),
        {17} wbArray('Array of Struct', wbScriptPropertyStruct, -1)
       ])
-    ]), -2, cpNormal, False, nil, nil, nil, False);
+    ])
+    .SetSummaryKey([1, 3])
+    .SetSummaryMemberPrefixSuffix(0, '', ':')
+    .SetSummaryMemberPrefixSuffix(3, '= ', '')
+    .IncludeFlag(dfSummaryMembersNoName)
+    .IncludeFlag(dfCollapsed, wbCollapseScriptProperties);
+
+  wbScriptProperties :=
+    wbArrayS('Properties', wbScriptProperty, -2, cpNormal, False, nil, nil, nil, wbCanAddScriptProperties)
+    .SetSummaryPassthroughMaxLength(80)
+    .SetSummaryPassthroughMaxDepth(1);
 
   wbScriptEntry := wbStructSK([0], 'Script', [
-    wbLenString('scriptName', 2),
+    wbLenString('ScriptName', 2),
     wbScriptFlags,
     wbScriptProperties
-  ]);
+  ])
+  .SetSummaryKey([2])
+  .SetSummaryMemberPrefixSuffix(2, '(', ')')
+  .SetSummaryDelimiter('')
+  .IncludeFlag(dfSummaryMembersNoName);
 
   wbScriptFragmentsInfo := wbStruct('Script Fragments', [
-    wbInteger('Unknown', itS8),
+    wbInteger('Extra bind data version', itS8).SetDefaultNativeValue(3),
     wbInteger('Flags', itU8, wbFlags([
       {1} 'OnBegin',
       {2} 'OnEnd'
@@ -6618,13 +6301,21 @@ begin
     wbArray('Fragments',  // Do NOT sort, ordered OnBegin, OnEnd
       wbStruct('Fragment', [
         wbInteger('Unknown', itS8),
-        wbLenString('scriptName', 2),
-        wbLenString('fragmentName', 2)
-      ]), [], wbScriptFragmentsInfoCounter)
-  ]);
+        wbLenString('ScriptName', 2),
+        wbLenString('FragmentName', 2)
+      ])
+      .SetSummaryKey([1, 2])
+      .SetSummaryMemberPrefixSuffix(1, '', ':')
+      .SetSummaryDelimiter('')
+      .IncludeFlag(dfSummaryMembersNoName)
+      .IncludeFlag(dfCollapsed, wbCollapseFragments)
+      , [], wbScriptFragmentsInfoCounter)
+  ])
+  .SetSummaryKey([1, 2, 3])
+  .IncludeFlag(dfSummaryMembersNoName);
 
   wbScriptFragmentsPack := wbStruct('Script Fragments', [
-    wbInteger('Unknown', itS8),
+    wbInteger('Extra bind data version', itS8).SetDefaultNativeValue(3),
     wbInteger('Flags', itU8, wbFlags([
       {1} 'OnBegin',
       {2} 'OnEnd',
@@ -6634,16 +6325,24 @@ begin
     wbArray('Fragments',  // Do NOT sort, ordered OnBegin, OnEnd, OnChange
       wbStruct('Fragment', [
         wbInteger('Unknown', itS8),
-        wbLenString('scriptName', 2),
-        wbLenString('fragmentName', 2)
-      ]), [], wbScriptFragmentsPackCounter)
-  ]);
+        wbLenString('ScriptName', 2),
+        wbLenString('FragmentName', 2)
+      ])
+      .SetSummaryKey([1, 2])
+      .SetSummaryMemberPrefixSuffix(1, '', ':')
+      .SetSummaryDelimiter('')
+      .IncludeFlag(dfSummaryMembersNoName)
+      .IncludeFlag(dfCollapsed, wbCollapseFragments)
+      , [], wbScriptFragmentsPackCounter)
+  ])
+  .SetSummaryKey([1, 2, 3])
+  .IncludeFlag(dfSummaryMembersNoName);
 
   wbScriptFragmentsQuest := wbStruct('Script Fragments', [
-    wbInteger('Unknown', itS8),
-    wbInteger('fragmentCount', itU16),
-    wbLenString('scriptName', 2),
-    // if scriptName = "" then no Flags and Properties
+    wbInteger('Extra bind data version', itS8).SetDefaultNativeValue(3),
+    wbInteger('FragmentCount', itU16, nil, cpBenign),
+    wbLenString('ScriptName', 2).SetAfterSet(wbScriptFragmentsQuestScriptNameAfterSet),
+    // if ScriptName = "" then no Flags and Properties
     wbUnion('Script', wbScriptFragmentsEmptyScriptDecider, [
       wbStruct('Script Data', [
         wbScriptFlags,
@@ -6663,14 +6362,23 @@ begin
         wbInteger('Unknown', itS16),
         wbInteger('Quest Stage Index', itS32),
         wbInteger('Unknown', itS8),
-        wbLenString('scriptName', 2),
-        wbLenString('fragmentName', 2)
-      ]),
-      wbScriptFragmentsQuestCounter)
-  ]);
+        wbLenString('ScriptName', 2),
+        wbLenString('FragmentName', 2)
+      ])
+      .SetSummaryKey([4, 5])
+      .SetSummaryMemberPrefixSuffix(0, '[', '/')
+      .SetSummaryMemberPrefixSuffix(2, '', ']')
+      .SetSummaryMemberPrefixSuffix(4, ' ', ':')
+      .SetSummaryDelimiter('')
+      .IncludeFlag(dfSummaryMembersNoName)
+      .IncludeFlag(dfCollapsed, wbCollapseFragments)
+    ).SetCountPath('FragmentCount', True)
+  ])
+  .SetSummaryKey([2, 3])
+  .IncludeFlag(dfSummaryMembersNoName);
 
   wbScriptFragmentsScen := wbStruct('Script Fragments', [
-    wbInteger('Unknown', itS8),
+    wbInteger('Extra bind data version', itS8).SetDefaultNativeValue(3),
     wbInteger('Flags', itU8, wbFlags([
       {1} 'OnBegin',
       {2} 'OnEnd'
@@ -6679,9 +6387,15 @@ begin
     wbArray('Fragments',  // Do NOT sort, ordered OnBegin, OnEnd
       wbStruct('Fragment', [
         wbInteger('Unknown', itS8),
-        wbLenString('scriptName', 2),
-        wbLenString('fragmentName', 2)
-      ]), [], wbScriptFragmentsSceneCounter),
+        wbLenString('ScriptName', 2),
+        wbLenString('FragmentName', 2)
+      ])
+      .SetSummaryKey([1, 2])
+      .SetSummaryMemberPrefixSuffix(1, '', ':')
+      .SetSummaryDelimiter('')
+      .IncludeFlag(dfSummaryMembersNoName)
+      .IncludeFlag(dfCollapsed, wbCollapseFragments)
+      , [], wbScriptFragmentsSceneCounter),
     wbArray('Phase Fragments',
       wbStructSK([0, 1], 'Phase Fragment', [
         wbInteger('Phase Flag', itU8, wbFlags([
@@ -6692,72 +6406,108 @@ begin
         wbInteger('Unknown', itS16),
         wbInteger('Unknown', itS8),
         wbInteger('Unknown', itS8),
-        wbLenString('scriptName', 2),
-        wbLenString('fragmentName', 2)
-      ]), -2)
-  ]);
+        wbLenString('ScriptName', 2),
+        wbLenString('FragmentName', 2)
+      ])
+      .SetSummaryKey([5, 6])
+      .SetSummaryMemberPrefixSuffix(0, '[', ':')
+      .SetSummaryMemberPrefixSuffix(1, '', ']')
+      .SetSummaryMemberPrefixSuffix(5, ' ', ':')
+      .SetSummaryDelimiter('')
+      .IncludeFlag(dfSummaryMembersNoName)
+      .IncludeFlag(dfCollapsed, wbCollapseFragments)
+      , -2)
+  ])
+  .SetSummaryKey([1, 2, 3, 4])
+  .IncludeFlag(dfSummaryMembersNoName);
 
   wbScriptFragments := wbStruct('Script Fragments', [
-    wbInteger('Unknown', itS8),
+    wbInteger('Extra bind data version', itS8).SetDefaultNativeValue(3),
     wbScriptEntry,
     wbArrayS('Fragments',
       wbStructSK([0], 'Fragment', [
         wbInteger('Fragment Index', itU16),
-        wbInteger('Unknown', itS16),
+        wbInteger('Unused', itS16, nil, cpIgnore, False, wbNeverShow),
         wbInteger('Unknown', itS8),
-        wbLenString('scriptName', 2),
-        wbLenString('fragmentName', 2)
-      ]), -2)
-  ]);
+        wbLenString('ScriptName', 2),
+        wbLenString('FragmentName', 2)
+      ])
+      .SetSummaryKey([3, 4])
+      .SetSummaryMemberPrefixSuffix(0, '[', ']')
+      .SetSummaryMemberPrefixSuffix(3, ' ', ':')
+      .SetSummaryDelimiter('')
+      .IncludeFlag(dfSummaryMembersNoName)
+      .IncludeFlag(dfCollapsed, wbCollapseFragments)
+      , -2)
+  ])
+  .SetSummaryKey([1, 2])
+  .IncludeFlag(dfSummaryMembersNoName);
 
   {>>> http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format/VMAD_Field <<<}
 
+  var wbVMADVersion :=
+    wbInteger('Version', itS16, nil, cpIgnore).SetDefaultNativeValue(6);
+
+  var wbVMADObjectFormat :=
+    wbInteger('Object Format', itS16, nil, cpIgnore).SetDefaultNativeValue(2);
+
+  var wbVMADScripts :=
+    wbArrayS('Scripts', wbScriptEntry, -2, cpNormal, False, nil, nil, nil, wbCanAddScripts)
+    .SetSummaryPassthroughMaxLength(100);
+
+
   wbVMAD := wbStruct(VMAD, 'Virtual Machine Adapter', [
-    wbInteger('Version', itS16, nil, cpIgnore),
-    wbInteger('Object Format', itS16, nil, cpIgnore),
-    wbArrayS('Scripts', wbScriptEntry, -2, cpNormal, False, nil, nil, nil, False)
-  ]);
+    wbVMADVersion,
+    wbVMADObjectFormat,
+    wbVMADScripts
+  ])
+  .SetSummaryKeyOnValue([2]);
 
   wbVMADFragmentedPERK := wbStruct(VMAD, 'Virtual Machine Adapter', [
-    wbInteger('Version', itS16, nil, cpIgnore),
-    wbInteger('Object Format', itS16, nil, cpIgnore),
-    wbArrayS('Scripts', wbScriptEntry, -2, cpNormal, False, nil, nil, nil, False),
+    wbVMADVersion,
+    wbVMADObjectFormat,
+    wbVMADScripts,
     wbScriptFragments
-  ], cpNormal, False, nil, 3);
+  ], cpNormal, False, nil, 3)
+  .SetSummaryKeyOnValue([2, 3]);
 
   wbVMADFragmentedPACK := wbStruct(VMAD, 'Virtual Machine Adapter', [
-    wbInteger('Version', itS16, nil, cpIgnore),
-    wbInteger('Object Format', itS16, nil, cpIgnore),
-    wbArrayS('Scripts', wbScriptEntry, -2, cpNormal, False, nil, nil, nil, False),
+    wbVMADVersion,
+    wbVMADObjectFormat,
+    wbVMADScripts,
     wbScriptFragmentsPack
-  ], cpNormal, False, nil, 3);
+  ], cpNormal, False, nil, 3)
+  .SetSummaryKeyOnValue([2, 3]);
 
   wbVMADFragmentedQUST := wbStruct(VMAD, 'Virtual Machine Adapter', [
-    wbInteger('Version', itS16, nil, cpIgnore),
-    wbInteger('Object Format', itS16, nil, cpIgnore),
-    wbArrayS('Scripts', wbScriptEntry, -2, cpNormal, False, nil, nil, nil, False),
+    wbVMADVersion,
+    wbVMADObjectFormat,
+    wbVMADScripts,
     wbScriptFragmentsQuest,
     wbArrayS('Aliases', wbStructSK([0], 'Alias', [
       wbScriptPropertyObject,
-      wbInteger('Version', itS16, nil, cpIgnore),
-      wbInteger('Object Format', itS16, nil, cpIgnore),
+      wbVMADVersion,
+      wbVMADObjectFormat,
       wbArrayS('Alias Scripts', wbScriptEntry, -2)
     ]), -2)
-  ], cpNormal, False, nil, 3);
+  ], cpNormal, False, nil, 3)
+  .SetSummaryKeyOnValue([2, 3, 4]);
 
   wbVMADFragmentedSCEN := wbStruct(VMAD, 'Virtual Machine Adapter', [
-    wbInteger('Version', itS16, nil, cpIgnore),
-    wbInteger('Object Format', itS16, nil, cpIgnore),
-    wbArrayS('Scripts', wbScriptEntry, -2, cpNormal, False, nil, nil, nil, False),
+    wbVMADVersion,
+    wbVMADObjectFormat,
+    wbVMADScripts,
     wbScriptFragmentsScen
-  ], cpNormal, False, nil, 3);
+  ], cpNormal, False, nil, 3)
+  .SetSummaryKeyOnValue([2, 3]);
 
   wbVMADFragmentedINFO := wbStruct(VMAD, 'Virtual Machine Adapter', [
-    wbInteger('Version', itS16, nil, cpIgnore),
-    wbInteger('Object Format', itS16, nil, cpIgnore),
-    wbArrayS('Scripts', wbScriptEntry, -2, cpNormal, False, nil, nil, nil, False),
+    wbVMADVersion,
+    wbVMADObjectFormat,
+    wbVMADScripts,
     wbScriptFragmentsInfo
-  ], cpNormal, False, nil, 3);
+  ], cpNormal, False, nil, 3)
+  .SetSummaryKeyOnValue([2, 3]);
 
   wbAttackData := wbRStructSK([1], 'Attack', [
     wbStruct(ATKD, 'Attack Data', [
@@ -6937,91 +6687,27 @@ begin
 
   wbEITM := wbFormIDCk(EITM, 'Object Effect', [ENCH, SPEL]);
 
-  wbPosRot :=
-    wbStruct('Position/Rotation', [
-      wbStruct('Position', [
-        wbFloat('X'),
-        wbFloat('Y'),
-        wbFloat('Z')
-      ]),
-      wbStruct('Rotation', [
-        wbFloat('X', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-        wbFloat('Y', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-        wbFloat('Z', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize)
-      ])
-    ]);
-
-  wbDATAPosRot :=
-    wbStruct(DATA, 'Position/Rotation', [
-      wbStruct('Position', [
-        wbFloat('X'),
-        wbFloat('Y'),
-        wbFloat('Z')
-      ]),
-      wbStruct('Rotation', [
-        wbFloat('X', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-        wbFloat('Y', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-        wbFloat('Z', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize)
-      ])
-    ], cpNormal, True);
-
   wbMODS := wbFormIDCk(MODS, 'Material Swap', [MSWP]);
   wbMO2S := wbFormIDCk(MO2S, 'Material Swap', [MSWP]);
   wbMO3S := wbFormIDCk(MO3S, 'Material Swap', [MSWP]);
   wbMO4S := wbFormIDCk(MO4S, 'Material Swap', [MSWP]);
   wbMO5S := wbFormIDCk(MO5S, 'Material Swap', [MSWP]);
 
-  wbMODF := wbUnknown(MODF);
-  wbMO2F := wbUnknown(MO2F);
-  wbMO3F := wbUnknown(MO3F);
-  wbMO4F := wbUnknown(MO4F);
-  wbMO5F := wbUnknown(MO5F);
+  wbModelFlags := wbFlags([
+    'Has FaceBones Model',
+    'Has 1stPerson Model'
+  ]);
+  wbMODF := wbInteger(MODF, 'Flags', itU8, wbModelFlags);
+  wbMO2F := wbInteger(MO2F, 'Flags', itU8, wbModelFlags);
+  wbMO3F := wbInteger(MO3F, 'Flags', itU8, wbModelFlags);
+  wbMO4F := wbInteger(MO4F, 'Flags', itU8, wbModelFlags);
+  wbMO5F := wbInteger(MO5F, 'Flags', itU8, wbModelFlags);
 
   wbMODC := wbFloat(MODC, 'Color Remapping Index');
   wbMO2C := wbFloat(MO2C, 'Color Remapping Index');
   wbMO3C := wbFloat(MO3C, 'Color Remapping Index');
   wbMO4C := wbFloat(MO4C, 'Color Remapping Index');
   wbMO5C := wbFloat(MO5C, 'Color Remapping Index');
-
-	wbMODT := wbByteArray(MODT, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow);
-	wbDMDT := wbByteArray(DMDT, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow);
-  {wbMODT := wbStruct(MODT, 'Texture Files Hashes', [
-    wbInteger('Number of headers', itU32),
-    wbInteger('Textures count', itU32),
-    wbByteArray('Unused', 4),
-    wbInteger('Unique textures count', itU32),
-    wbInteger('Materials count', itU32),
-    wbArray('Hashes', wbStruct('Hash', [
-      wbByteArray('Flags', 4),
-      wbString('Type', 4),
-      wbByteArray('Texture hash', 4)
-    ]))
-  ]);}
-
-  wbMODL :=
-    wbRStructSK([0], 'Model', [
-      wbString(MODL, 'Model Filename', 0, cpNormal, True),
-      wbMODT,
-      wbMODC,
-      wbMODS,
-      wbMODF
-    ], [], cpNormal, False, nil, True);
-
-  wbMODLActor :=
-    wbRStructSK([0], 'Model', [
-      wbString(MODL, 'Model Filename', 0, cpNormal, True),
-      wbMODT,
-      wbMODS
-    ], [], cpNormal, False, nil{wbActorTemplateUseModelAnimation}, True);
-
-  wbMODLReq :=
-    wbRStructSK([0], 'Model', [
-      wbString(MODL, 'Model Filename', 0, cpNormal, True),
-      wbMODT,
-      wbMODC,
-      wbMODS,
-      wbMODF
-    ], [], cpNormal, True, nil, True);
 
   wbDMDS := wbFormIDCk(DMDS, 'Material Swap', [MSWP]);
   wbDMDC := wbFloat(DMDC, 'Color Remapping Index');
@@ -7060,7 +6746,7 @@ begin
         ], cpNormal, True),
         wbString(DSTA, 'Sequence Name'),
         wbRStructSK([0], 'Model', [
-          wbString(DMDL, 'Model Filename', 0, cpNormal, True),
+          wbString(DMDL, 'Model FileName', 0, cpNormal, True),
           wbDMDT,
           wbDMDC,
           wbDMDS
@@ -7094,7 +6780,7 @@ begin
           wbInteger('Debris Count', itS32)
         ], cpNormal, True), // End DSTD
         wbRStructSK([0], 'Model', [ // Begin DMDL
-          wbString(DMDL, 'Model Filename')
+          wbString(DMDL, 'Model FileName')
         ], []), // End DMDL
         wbDMDT,
         wbDMDC,
@@ -7103,8 +6789,6 @@ begin
       ], []) // Begin Stage RStruct
     ) // End Stage Array
   ], [], cpNormal, False, nil{wbActorTemplateUseModelAnimation});
-
-  wbXLOD := wbArray(XLOD, 'Distant LOD Data', wbFloat('Unknown'), 3);
 
   wbXESP := wbStruct(XESP, 'Enable Parent', [
     wbFormIDCk('Reference', sigReferences),
@@ -7136,44 +6820,6 @@ begin
     'Very Hard'
   ]));
 
-  if wbSimpleRecords then begin
-    wbMaxHeightDataCELL := wbByteArray(MHDT, 'Max Height Data', 0, cpNormal);
-    wbMaxHeightDataWRLD := wbByteArray(MHDT, 'Max Height Data', 0, cpNormal);
-  end
-  else begin
-    wbMaxHeightDataCELL := wbStruct(MHDT, 'Max Height Data', [
-      wbFloat('Offset'),
-      wbArray('Rows',
-        wbByteArray('Columns', 32)
-        // way too verbose for no practical use
-        //wbStruct('Row', [ wbArray('Columns', wbInteger('Column', itU8), 32) ])
-      , 32)
-    ]);
-    wbMaxHeightDataWRLD := wbStruct(MHDT, 'Max Height Data', [
-      wbStruct('Min', [
-        wbInteger('X', itS16),
-        wbInteger('Y', itS16)
-      ]),
-      wbStruct('Max', [
-        wbInteger('X', itS16),
-        wbInteger('Y', itS16)
-      ]),
-      wbByteArray('Cell Data', 0)
-      // way too verbose for no practical use
-      {wbArray('Cell Data', wbStruct('Quad Height', [
-        wbInteger('Bottom Left', itU8),
-        wbInteger('Bottom Right', itU8),
-        wbInteger('Top Left', itU8),
-        wbInteger('Top Right', itU8)
-      ]))}
-    ]);
-  end;
-
-  if wbSimpleRecords then
-    wbOFST := wbByteArray(OFST, 'Offset Data')
-  else
-    wbOFST := wbArray(OFST, 'Offset Data', wbArray('Rows', wbInteger('Offset', itU32), wbOffsetDataColsCounter), 0);
-
   wbXOWN := wbStruct(XOWN, 'Owner', [
     wbFormIDCkNoReach('Owner', [FACT, ACHR, NPC_]),
     wbByteArray('Unknown', 4),
@@ -7182,126 +6828,398 @@ begin
   ]);
   wbXRNK := wbInteger(XRNK, 'Owner Faction Rank', itS32);
 
-  if wbSimpleRecords then
-    wbNVNM := wbStruct(NVNM, 'Navmesh Geometry', [
-      wbInteger('Version', itU32),
-      wbByteArray('Magic', 4),
+  wbNavmeshEdgeLinks := wbArray('Edge Links',
+		wbStruct('Edge Link', [
+			wbInteger('Type', itU32,
+				wbEnum([
+					'Portal',
+					'Ledge Up',
+					'Ledge Down',
+					'Enable/Disable Portal'
+				])
+			),
+			wbFormIDCk('Mesh', [NAVM], False, cpIgnore), // those last three are a structure
+			wbInteger('Triangle Index', itS16, nil, cpIgnore),
+			wbByteArray('Edge Index', 1, cpIgnore) // if form ver > 127
+		], cpIgnore)
+	, -1, cpIgnore);
+
+  wbCRCValuesEnum :=
+    wbEnum([],[
+      Int64(0), 'None',
+      Int64($ED157AE3), 'BGSAutoWeaponSoundDef',
+      Int64($54651A43), 'BGSCompoundSoundDef',
+      Int64($23F678C3), 'BGSMusicPaletteTrack',
+      Int64($A1A9C4D5), 'BGSMusicSilenceTrack',
+      Int64($6ED7E048), 'BGSMusicSingleTrack',
+      Int64($1EEF540A), 'BGSStandardSoundDef',
+      Int64($18837B4F), 'BSDelayEffect',
+      Int64($864804BE), 'BSOverdrive',
+      Int64($0534ED31), 'BSPathingRequest',
+      Int64($7C61EBDB), 'BSPathingSolution',
+      Int64($FF5A7BF9), 'BSPathingStreamSimpleBufferRead',
+      Int64($B8B926AB), 'BSPathingStreamSimpleBufferWrite',
+      Int64($EF575F7F), 'BSStateVariableFilter',
+      Int64($D2B19B80), 'CharacterBumper',
+      Int64($DFD9D295), 'Combat Area Shape',
+      Int64($FB4E3968), 'Combat Cluster Shape',
+      Int64($6F1CAA87), 'CombatAcquireSearchDebugData',
+      Int64($86D330A0), 'CombatAimController',
+      Int64($C7356584), 'CombatAnimatedPath',
+      Int64($19BD0D6F), 'CombatApproachTargetPathController',
+      Int64($55FAB455), 'CombatAreaHoldPosition',
+      Int64($55C1257B), 'CombatAreaReference',
+      Int64($05E817A3), 'CombatAreaShape',
+      Int64($A9BDAAFE), 'CombatAreaStandard',
+      Int64($8DF7108B), 'CombatChangePositionPathController',
+      Int64($2C7605EF), 'CombatChargingSearch',
+      Int64($C0C58495), 'CombatCluster',
+      Int64($4F117E2B), 'CombatCoverLocation',
+      Int64($93409B55), 'CombatCoverSearch',
+      Int64($CEF2A87C), 'CombatCoverSearchDebugData',
+      Int64($3BD0B457), 'CombatCoverSearchResult',
+      Int64($2F77502E), 'CombatCoveredPath',
+      Int64($9B04E6C7), 'CombatCoveredPathDebugData',
+      Int64($D092ED0A), 'CombatDebugTaskPath',
+      Int64($EE1CC4C7), 'CombatDisableActionController',
+      Int64($BE236AC9), 'CombatDisableAimController',
+      Int64($46F5F91D), 'CombatEnterCoverPathController',
+      Int64($884737D6), 'CombatFindCoverPathSpeedController',
+      Int64($D6BCB796), 'CombatFlankingSearch',
+      Int64($FD16CDF5), 'CombatFollowTargetPathController',
+      Int64($D10237D8), 'CombatInventoryItemGrenade',
+      Int64($9C2A0B47), 'CombatInventoryItemMagic',
+      Int64($84226BD5), 'CombatInventoryItemMagicT',
+      Int64($5ACB99C8), 'CombatInventoryItemMelee',
+      Int64($8121581D), 'CombatInventoryItemOneHandedBlock',
+      Int64($AC4FAA3E), 'CombatInventoryItemPotion',
+      Int64($71B72E31), 'CombatInventoryItemRanged',
+      Int64($0BEE2410), 'CombatInventoryItemScroll',
+      Int64($F86AC87B), 'CombatInventoryItemShield',
+      Int64($D74211FB), 'CombatInventoryItemStaff',
+      Int64($26038F0F), 'CombatInventoryItemThrown',
+      Int64($66D5D91E), 'CombatInventoryItemTorch',
+      Int64($11126C48), 'CombatMagicCasterArmor',
+      Int64($3DBA3C9A), 'CombatMagicCasterBoundItem',
+      Int64($E18FED78), 'CombatMagicCasterChameleon',
+      Int64($22784EA4), 'CombatMagicCasterCloak',
+      Int64($B6B0FCAD), 'CombatMagicCasterDisarm',
+      Int64($A3055CFB), 'CombatMagicCasterInvisibility',
+      Int64($C52FCE43), 'CombatMagicCasterLight',
+      Int64($41A74F91), 'CombatMagicCasterOffensive',
+      Int64($EC01479B), 'CombatMagicCasterParalyze',
+      Int64($0304EC9F), 'CombatMagicCasterReanimate',
+      Int64($58A60AE1), 'CombatMagicCasterRestore',
+      Int64($02212AB0), 'CombatMagicCasterScript',
+      Int64($E694BC11), 'CombatMagicCasterStagger',
+      Int64($D2CA5063), 'CombatMagicCasterSummon',
+      Int64($5AD2B911), 'CombatMagicCasterTargetEffect',
+      Int64($22FDD6D5), 'CombatMagicCasterWard',
+      Int64($58D2BC02), 'CombatMantlePathController',
+      Int64($4CDADCA1), 'CombatMatchTargetAimController',
+      Int64($64927B7C), 'CombatMeleeAimController',
+      Int64($9F5CADD3), 'CombatMeleeDebugData',
+      Int64($4CAE1AF1), 'CombatMovementRequestFollowActor',
+      Int64($E4487BAD), 'CombatPath',
+      Int64($3E84D96B), 'CombatPathBuilderOpen',
+      Int64($1EBC034E), 'CombatPathBuilderStandard',
+      Int64($06546465), 'CombatPathDestinationActor',
+      Int64($8D41F733), 'CombatPathDestinationFollowActor',
+      Int64($F4CF5520), 'CombatPathDestinationLocation',
+      Int64($F296CF1B), 'CombatPathDestinationLocations',
+      Int64($E35080C0), 'CombatPathDestinationNone',
+      Int64($D283E841), 'CombatPathDestinationRef',
+      Int64($C805D268), 'CombatPathDestinationRefs',
+      Int64($8103C3F5), 'CombatPathMovementMessage',
+      Int64($F8BF5B28), 'CombatPathMovementMessageEvent',
+      Int64($FDBCC031), 'CombatPathRequestFlight',
+      Int64($42107172), 'CombatPathRequestFlyingAttack',
+      Int64($F2148845), 'CombatPathRequestGeneric',
+      Int64($AB922554), 'CombatPathRequestHover',
+      Int64($8B61E783), 'CombatPathRequestLanding',
+      Int64($BEC8C98B), 'CombatPathRequestMultiGoal',
+      Int64($E5389793), 'CombatPathRequestOrbit',
+      Int64($6254EDF9), 'CombatPathRequestRotatePath',
+      Int64($DBFD5552), 'CombatPathRequestStandard',
+      Int64($181A275D), 'CombatPathRequestStraightPath',
+      Int64($1126F62D), 'CombatPathRequestWeightedMultiGoal',
+      Int64($69C1DE5A), 'CombatPathTeleportEvent',
+      Int64($0EAB162A), 'CombatPathingDebugData',
+      Int64($915016AC), 'CombatPathingGoalPolicyAvoidThreat',
+      Int64($EDF37547), 'CombatPathingGoalPolicyCharge',
+      Int64($BA6CF790), 'CombatPathingGoalPolicyCovered',
+      Int64($8BCD672F), 'CombatPathingGoalPolicyDistract',
+      Int64($BCAF5C77), 'CombatPathingGoalPolicyFindAttackLocation',
+      Int64($0BD293B3), 'CombatPathingGoalPolicyFindCover',
+      Int64($908492DD), 'CombatPathingGoalPolicyFindFlankCover',
+      Int64($5B1BCF07), 'CombatPathingGoalPolicyFindPotentialCoverLocations',
+      Int64($8E7989FB), 'CombatPathingGoalPolicyFindTargetLocation',
+      Int64($A51384C9), 'CombatPathingGoalPolicyFindValidLocation',
+      Int64($E3B56EB4), 'CombatPathingGoalPolicyFlank',
+      Int64($DABA9C1C), 'CombatPathingGoalPolicyFlankDistant',
+      Int64($25DBBA6F), 'CombatPathingGoalPolicyFlee',
+      Int64($D0AC9503), 'CombatPathingGoalPolicyFollow',
+      Int64($AB978C95), 'CombatPathingGoalPolicyInvestigateLocation',
+      Int64($EA81EBDB), 'CombatPathingGoalPolicyLocation',
+      Int64($0DE21F5F), 'CombatPathingGoalPolicyRetreat',
+      Int64($EEBD7774), 'CombatPathingGoalPolicyReturnToCombatArea',
+      Int64($0C680AD4), 'CombatPathingGoalPolicySearch',
+      Int64($B3E86A9C), 'CombatPathingGoalPolicySearchWander',
+      Int64($01C13D8E), 'CombatPathingGoalPolicyWithdraw',
+      Int64($BA27000F), 'CombatPathingRequestAdapter',
+      Int64($0221C439), 'CombatPathingRequestCovered',
+      Int64($35B4C5A0), 'CombatPathingRequestGeneric',
+      Int64($95AC34AF), 'CombatPathingRequestMultiGoal',
+      Int64($0B5AE3E8), 'CombatPathingRequestStandard',
+      Int64($30290669), 'CombatPathingSearchArea',
+      Int64($5C75F15E), 'CombatPathingSearchPolicyCharge',
+      Int64($DEB6D9D4), 'CombatPathingSearchPolicyCovered',
+      Int64($FA183888), 'CombatPathingSearchPolicyDistract',
+      Int64($6ED8538F), 'CombatPathingSearchPolicyFlank',
+      Int64($D53DEA30), 'CombatPathingSearchPolicyStandard',
+      Int64($70146229), 'CombatPathingSearchPolicyWithdraw',
+      Int64($38E53D12), 'CombatPathingTweener',
+      Int64($A0DD2269), 'CombatPositionTracker',
+      Int64($F06E7A91), 'CombatProjectileAimController',
+      Int64($AACFA802), 'CombatProjectileDebugData',
+      Int64($D55D0153), 'CombatSearchLockData',
+      Int64($D5039E9E), 'CombatSharedPath',
+      Int64($150B2FA1), 'CombatSuppressiveFireBehavior',
+      Int64($1EE53011), 'CombatTargetLocation',
+      Int64($9C2C29FA), 'CombatTargetLocationSearch',
+      Int64($C331439E), 'CombatTargetLocationSearchResult',
+      Int64($D6E95B87), 'CombatTargetSelector',
+      Int64($F7B17BBC), 'CombatTargetSelectorFixed',
+      Int64($56E7D0C9), 'CombatTargetSelectorPreferred',
+      Int64($CE50E3CA), 'CombatTargetSelectorRandom',
+      Int64($C3719B85), 'CombatTargetSelectorStandard',
+      Int64($3767DCBF), 'CombatThreatExplosion',
+      Int64($3C2E5014), 'CombatThreatLOF',
+      Int64($A7A21566), 'CombatThreatMelee',
+      Int64($A160AF0F), 'CombatThreatProjectile',
+      Int64($5AD9B53F), 'CombatTrackTargetAimController',
+      Int64($34F693AE), 'CombatTunnelPathController',
+      Int64($CB90834C), 'CombatViewController',
+      Int64($5222E337), 'CombatViewControllerGlance',
+      Int64($C5642853), 'CombatViewControllerPath',
+      Int64($C8CC82FC), 'CombatViewControllerStandard',
+      Int64($120782F9), 'Covered Path Shape',
+      Int64($B1AA41D8), 'CoveredPath',
+      Int64($5894CF75), 'DiveBombPathController',
+      Int64($6241C761), 'EquippedWeaponData',
+      Int64($76FC2C53), 'MasterFilePathingStreamGetSize',
+      Int64($3F0FBE34), 'MasterFilePathingStreamWriteToBuffer',
+      Int64($5CC2A237), 'MovementMessageActivateDoor',
+      Int64($77A37BFA), 'MovementMessageActorCollision',
+      Int64($7663F86A), 'MovementMessageApproachingDoor',
+      Int64($C8B4153E), 'MovementMessageBlocked',
+      Int64($3BED430B), 'MovementMessageFreezeDirection',
+      Int64($00DC870E), 'MovementMessageJump',
+      Int64($CDED4F63), 'MovementMessageNewPath',
+      Int64($C4D7F551), 'MovementMessageNewPathImmediate',
+      Int64($D7578F99), 'MovementMessagePathComplete',
+      Int64($8BCEF6C4), 'MovementMessagePathFailed',
+      Int64($119563E6), 'MovementMessagePlayIdle',
+      Int64($616653D5), 'MovementMessageSetStaticPath',
+      Int64($67DA9023), 'MovementMessageWarpToLocation',
+      Int64($3CF364EC), 'MovementMessageWarpToMultiple',
+      Int64($7291261A), 'MovementNodeAvoidance',
+      Int64($3B18904B), 'MovementNodeGoal',
+      Int64($0C28D1C5), 'MovementParameters',
+      Int64($BCDCF728), 'MovementParametersFixed',
+      Int64($CD4E67C5), 'NoSupport',
+      Int64($A5E9A03C), 'PathingCell',
+      Int64($E48B73F3), 'PathingDoor',
+      Int64($5826A5DD), 'PathingLockData',
+      Int64($330EB0E3), 'PathingRequest',
+      Int64($EB5ED874), 'PathingRequestClosePoint',
+      Int64($F31543AB), 'PathingRequestClosestGoal',
+      Int64($0618E573), 'PathingRequestCover',
+      Int64($FA2763CE), 'PathingRequestFlee',
+      Int64($3C5FF134), 'PathingRequestFly',
+      Int64($A5021751), 'PathingRequestFlyAction',
+      Int64($8353103B), 'PathingRequestFlyHover',
+      Int64($F075EEF7), 'PathingRequestFlyLand',
+      Int64($CDF9A2FC), 'PathingRequestFlyOrbit',
+      Int64($98C4C679), 'PathingRequestFlyTakeOff',
+      Int64($0528E757), 'PathingRequestHide',
+      Int64($54DACA55), 'PathingRequestLOS',
+      Int64($CA622528), 'PathingRequestOptimalLocation',
+      Int64($C702BB5B), 'PathingRequestRotate',
+      Int64($4773B11D), 'PathingRequestSafeStraightLine',
+      Int64($8B2152AF), 'PathingRequestStopMoving',
+      Int64($13A2CF42), 'PathingStreamLoadGame',
+      Int64($7377FDD0), 'PathingStreamMasterFileRead',
+      Int64($C5B58C0B), 'PathingStreamSaveGame',
+      Int64($6AF11190), 'QuestPathingRequest',
+      Int64($FCD0CCC3), 'Water'
+    ]);
+
+	wbNavmeshDoorTriangles := wbArrayS('Door Triangles',
+		wbStructSK([0, 2], 'Door Triangle', [
+			wbInteger('Triangle before door', itU16).SetLinksToCallback(wbTriangleLinksTo),
+			wbInteger('Door Type', itU32, wbCRCValuesEnum).SetDefaultEditValue('PathingDoor'), //contains 0 or the CRC of "PathingDoor" = F3 73 8B E4
+			wbUnion('Door', wbDoorTriangleDoorTriangleDecider, [wbNull, wbFormIDCk('Door', [REFR])])
+		])
+	, -1);
+
+	if wbSimpleRecords then begin
+		wbNavmeshVertices := wbArray('Vertices', wbByteArray('Vertex', 12), -1);
+		wbNavmeshTriangles := wbArray('Triangles', wbByteArray('Triangle', 21), -1);
+		wbNavmeshCoverArray := wbArray('Cover Array', wbByteArray('Cover', 16), -1);
+		wbNavmeshCoverTriangleMap := wbArray('Cover Triangle Mappings', wbByteArray('Cover Triangle', 8), -1);
+		wbNavmeshWaypoints := wbArray('Waypoints', wbByteArray('Waypoint', 18), -1);
+		wbNavmeshGrid := wbStruct('Navmesh Grid', [wbUnknown])
+	end else begin
+		wbNavmeshVertices := wbArray('Vertices',
+			wbStruct('Vertex', [
+				wbFloat('X'),
+				wbFloat('Y'),
+				wbFloat('Z')
+			]).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3)
+		, -1);
+
+		wbNavmeshTriangles := wbArray('Triangles',
+			wbStruct('Triangle', [
+				wbInteger('Vertex 0', itS16, wbVertexToStr0, wbVertexToInt0).SetLinksToCallback(wbVertexLinksTo),
+				wbInteger('Vertex 1', itS16, wbVertexToStr1, wbVertexToInt1).SetLinksToCallback(wbVertexLinksTo),
+				wbInteger('Vertex 2', itS16, wbVertexToStr2, wbVertexToInt2).SetLinksToCallback(wbVertexLinksTo),
+				wbInteger('Edge 0-1', itS16, wbEdgeToStr0, wbEdgeToInt0).SetLinksToCallback(wbEdgeLinksTo0),
+				wbInteger('Edge 1-2', itS16, wbEdgeToStr1, wbEdgeToInt1).SetLinksToCallback(wbEdgeLinksTo1),
+				wbInteger('Edge 2-0', itS16, wbEdgeToStr2, wbEdgeToInt1).SetLinksToCallback(wbEdgeLinksTo2),
+				wbFloat('Height'), // this and next if form ver > 57
+				wbInteger('Unknown', itU8), // flags
+				wbInteger('Flags', itU16, wbFlags([
+					'Edge 0-1 link',      //$0001 1
+					'Edge 1-2 link',      //$0002 2
+					'Edge 2-0 link',      //$0004 4
+					'',                   //$0008 8
+					'No Large Creatures',          //$0010 16   used in CK source according to Nukem
+					'Overlapping',        //$0020 32
+					'Preferred',          //$0040 64
+					'',                   //$0080 128
+					'Unknown 9',          //$0100 256  used in CK source according to Nukem
+					'Water',              //$0200 512
+					'Door',               //$0400 1024
+					'Found',              //$0800 2048
+					'Unknown 13',         //$1000 4096 used in CK source according to Nukem
+					'',                   //$2000 \
+					'',                   //$4000  |-- used as 3 bit counter inside CK, probably stripped before save
+					''                    //$8000 /
+				])),
+				{ Flags below are wrong. The first 4 bit are an enum as follows:
+				0000 = Open Edge No Cover
+				1000 = wall no cover
+				0100 = ledge cover
+				1100 = UNUSED
+				0010 = cover  64
+				1010 = cover  80
+				0110 = cover  96
+				1110 = cover 112
+				0001 = cover 128
+				1001 = cover 144
+				0101 = cover 160
+				1101 = cover 176
+				0011 = cover 192
+				1011 = cover 208
+				0111 = cover 224
+				1111 = max cover
+				then 2 bit flags, then another such enum, and the rest is probably flags.
+				Can't properly represent that with current record definition methods.
+				}
+				wbInteger('Cover Flags', itU16, wbFlags([
+					'Edge 0-1 Cover Value 1/4',
+					'Edge 0-1 Cover Value 2/4',
+					'Edge 0-1 Cover Value 3/4',
+					'Edge 0-1 Cover Value 4/4',
+					'Edge 0-1 Left',
+					'Edge 0-1 Right',
+					'Edge 1-2 Cover Value 1/4',
+					'Edge 1-2 Cover Value 2/4',
+					'Edge 1-2 Cover Value 3/4',
+					'Edge 1-2 Cover Value 4/4',
+					'Edge 1-2 Left',
+					'Edge 1-2 Right',
+					'Unknown 13',
+					'Unknown 14',
+					'Unknown 15',
+					'Unknown 16'
+				]))
+			])
+		, -1);
+
+		wbNavmeshCoverArray := wbArray('Cover Array',  // if navmesh version gt 12
+			wbStruct('Cover', [
+				wbInteger('Vertex 1', itU16).SetLinksToCallback(wbVertexLinksTo),
+				wbInteger('Vertex 2', itU16).SetLinksToCallback(wbVertexLinksTo),
+				wbByteArray('Data', 4 {, wbFlags([]) ? })
+			])
+		, -1);
+
+		wbNavmeshCoverTriangleMap := wbArray('Cover Triangle Mappings',
+			wbStruct('Cover Triangle Map', [
+				wbInteger('Cover', itU16).SetLinksToCallback(wbCoverLinksTo),
+				wbInteger('Triangle', itU16).SetLinksToCallback(wbTriangleLinksTo)
+			])
+		, -1);
+
+		wbNavmeshWaypoints := wbArray('Waypoints',  // if navmesh version gt 11
+			wbStruct('Waypoint', [
+				wbFloat('X'),
+				wbFloat('Y'),
+				wbFloat('Z'),
+				wbInteger('Triangle', itU16).SetLinksToCallback(wbTriangleLinksTo),
+				wbInteger('Flags', itU32)
+			])
+		, -1);
+
+		wbNavmeshGrid := wbStruct('Navmesh Grid', [
+			wbInteger('Navmesh Grid Size', itU32),  // max 12
+			wbFloat('Max X Distance'),
+			wbFloat('Max Y Distance'),
+			wbFloat('Min X'),
+			wbFloat('Min Y'),
+			wbFloat('Min Z'),
+			wbFloat('Max X'),
+			wbFloat('Max Y'),
+			wbFloat('Max Z'),
+			wbArray('NavMesh Grid Arrays',
+				wbArray('NavMeshGridCell',
+					wbInteger('Triangle', itS16).SetLinksToCallback(wbTriangleLinksTo)
+				, -1).IncludeFlag(dfNotAlignable)
+			).IncludeFlag(dfNotAlignable) // There are NavMeshGridSize^2 arrays to load
+		])
+	end;
+
+	wbNVNM := wbStruct(NVNM, 'Navmesh Geometry', [
+	  wbInteger('Version', itU32).SetDefaultNativeValue(15),  // Changes how the struct is loaded, should be 15 in FO4
+	  wbStruct('Pathing Cell', [
+      wbInteger('CRC Hash', itU32, wbCRCValuesEnum).SetDefaultEditValue('PathingCell'),  // This looks like a magic number (always $A5E9A03C), loaded with the parents
       wbFormIDCk('Parent Worldspace', [WRLD, NULL]),
-      wbUnion('Parent', wbNVNMParentDecider, [
+      wbUnion('Parent', wbNVNMParentDecider, [  // same as TES5 cell if worldspace is null or Grid X Y
         wbStruct('Coordinates', [
           wbInteger('Grid Y', itS16),
           wbInteger('Grid X', itS16)
         ]),
-        wbFormIDCk('Parent Cell', [CELL])
-      ]),
-      wbArray('Vertices', wbByteArray('Vertex', 12), -1),
-      wbArray('Triangles', wbByteArray('Triangle', 21), -1),
-      wbArray('Edge Links',
-        wbStruct('Edge Link', [
-          wbInteger('Unknown', itU32),
-          wbFormIDCk('Mesh', [NAVM]),
-          wbInteger('Triangle', itS16),
-          wbInteger('Unknown', itU8)
-        ])
-      , -1),
-      wbArray('Door Triangles',
-        wbStruct('Door Triangle', [
-          wbInteger('Triangle before door', itU16),
-          wbInteger('DTUnknown', itU32),
-          wbUnion('Door', wbDoorTriangleDoorTriangleDecider, [wbNull, wbFormIDCk('Door', [REFR])])
-        ])
-      , -1),
-      wbUnknown
-    ])
-  else
-    wbNVNM := wbStruct(NVNM, 'Navmesh Geometry', [
-      wbInteger('Version', itU32),  // Changes how the struct is loaded, should be 15 in FO4
-      wbStruct('Pathing Cell', [
-        wbInteger('Magic', itU32),  // This looks like a magic number (always $A5E9A03C), loaded with the parents
-        wbFormIDCk('Parent Worldspace', [WRLD, NULL]),
-        wbUnion('Parent', wbNVNMParentDecider, [  // same as TES5 cell if worldspace is null or Grid X Y
-          wbStruct('Coordinates', [
-            wbInteger('Grid Y', itS16),
-            wbInteger('Grid X', itS16)
-          ]),
-          wbFormIDCk('Parent Cell', [CELL])
-        ])
-      ]),
-      wbArray('Vertices', wbStruct('Vertex', [
-        wbFloat('X'),
-        wbFloat('Y'),
-        wbFloat('Z')
-      ]), -1),
-      wbArray('Triangles',
-        wbStruct('Triangle', [
-          wbInteger('Vertex 0', itS16),
-          wbInteger('Vertex 1', itS16),
-          wbInteger('Vertex 2', itS16),
-          wbInteger('Edge 0-1', itS16),
-          wbInteger('Edge 1-2', itS16),
-          wbInteger('Edge 2-0', itS16),
-          wbFloat('Height'), // this and next if form ver > 57
-          wbInteger('Unknown', itU8), // flags
-          wbInteger('Unknown', itU32) // encoding or flags
-        ])
-      , -1),
-      wbArray('Edge Links',
-        wbStruct('Edge Link', [
-          wbInteger('Unknown', itU32),
-          wbFormIDCk('Mesh', [NAVM]), // those last three are a structure
-          wbInteger('Triangle', itS16),
-          wbInteger('Unknown', itU8) // if form ver > 127
-        ])
-      , -1),
-      wbArray('Door Triangles',
-        wbStruct('Door Triangle', [
-          wbInteger('Triangle before door', itU16), // I would say itU16
-          wbInteger('DTUnknown', itU32),  // used as a key to lookup in a map of PathingDoor
-          wbUnion('Door', wbDoorTriangleDoorTriangleDecider, [wbNull, wbFormIDCk('Door', [REFR])])
-        ])
-      , -1),
-      wbArray('Unknown 5',  // if navmesh version gt 12
-        wbStruct('Unknown', [
-          wbInteger('Unknown', itU16),
-          wbInteger('Unknown', itU16),
-          wbInteger('Unknown', itU32 {, wbFlags([]) ? })
-        ])
-      , -1),
-      wbArray('Unknown 6',
-        wbStruct('Uknown', [
-          wbInteger('Unknown', itU16),
-          wbInteger('Unknown', itU16)
-        ])
-      , -1),
-      wbArray('Unknown 7',  // if navmesh version gt 11
-        wbStruct('Unknown', [
-          wbFloat('Unknown'),
-          wbFloat('Unknown'),
-          wbFloat('Unknown'),
-          wbInteger('Unknown', itU16),
-          wbInteger('Unknown', itU32)
-        ])
-      , -1),
-      wbStruct('Navmesh Grid', [
-        wbInteger('Navmesh Grid Size', itU32),  // max 12
-        wbFloat('Max X Distance'),
-        wbFloat('Max Y Distance'),
-        wbFloat('Min X'),
-        wbFloat('Min Y'),
-        wbFloat('Min Z'),
-        wbFloat('Max X'),
-        wbFloat('Max Y'),
-        wbFloat('Max Z'),
-        wbArray('NavMesh Grid Arrays', wbArray('NavMeshGridCell', wbInteger('Triangle', itS16), -1)) // There are NavMeshGridSize^2 arrays to load
+        wbFormIDCk('Pathing Cell', [CELL])
       ])
-    ]);
+	  ]),
+	  wbNavmeshVertices.IncludeFlag(dfNotAlignable),
+	  wbNavmeshTriangles.IncludeFlag(dfNotAlignable),
+	  wbNavmeshEdgeLinks.IncludeFlag(dfNotAlignable),
+	  wbNavmeshDoorTriangles.IncludeFlag(dfNotAlignable),
+	  wbNavmeshCoverArray.IncludeFlag(dfNotAlignable),
+	  wbNavmeshCoverTriangleMap.IncludeFlag(dfNotAlignable),
+	  wbNavmeshWaypoints.IncludeFlag(dfNotAlignable),
+	  wbNavmeshGrid
+	]);
 
-end;
+  wbMNAMNAVM := wbArrayS(MNAM, 'PreCut Map Entries', wbStructSK([0], 'PreCut Map Entry', [
+    wbFormID('Reference'),
+    wbArrayS('Triangles', wbInteger('Triangle', itU16).SetLinksToCallback(wbTriangleLinksTo), -2)
+  ]));
 
-procedure DefineFO4b;
-begin
-
-  wbRecord(ACHR, 'Placed NPC',
+  wbRefRecord(ACHR, 'Placed NPC',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
       {0x00000200}  9, 'Starts Dead',
       {0x00000400} 10, 'Persistent',
@@ -7353,6 +7271,7 @@ begin
         ])
       )
     ], []),
+    wbEmpty(XATP, 'Activation Point'),
 
     wbEmpty(XLKT, 'Linked Ref Transient'),
     wbFormIDCk(XRFG, 'Reference Group', [RFGP]),
@@ -7781,6 +7700,7 @@ begin
    100, 'Scroll',
    101, 'ColorForm',
    102, 'Reverb Parameters',
+   109, 'Component',
    116, 'Terminal'
   ]);
 
@@ -7846,7 +7766,7 @@ begin
     Int64($0F3315AC), 'Money Shots',
     Int64($5E457DAC), 'Most Caps Carried',
     Int64($D37C6909), 'Murders',
-    Int64($B91253A4), 'Mysterious Strabger Visits',
+    Int64($B91253A4), 'Mysterious Stranger Visits',
     Int64($1DEEA18A), 'Nuka Cola Flavors Created',
     Int64($9CE72536), 'Nuka World Creatures Killed',
     Int64($EB0D60AC), 'Objects Built',
@@ -7871,7 +7791,7 @@ begin
     Int64($ACE470D7), 'Skill Books Read',
     Int64($B556CC52), 'Sneak Attacks',
     Int64($32D1B38F), 'Speach Successes',
-    Int64($5D6B18F1), 'Stimpacks Taken',
+    Int64($5D6B18F1), 'Stimpaks Taken',
     Int64($C5321BC5), 'Supply Lines Created',
     Int64($3869002E), 'Survival Denied',
     Int64($F9DEC209), 'Survival Level-Ups',
@@ -7903,13 +7823,6 @@ begin
       'Very Evil'
     ]);
 
-  wbAxisEnum :=
-    wbEnum([], [
-      88, 'X',
-      89, 'Y',
-      90, 'Z'
-    ]);
-
   wbCriticalStageEnum :=
     wbEnum([
       'None',
@@ -7927,325 +7840,332 @@ begin
     'Extra Large'
   ]);
 
-  wbSexEnum := wbEnum(['Male','Female']);
-
   wbEFID := wbFormIDCk(EFID, 'Base Effect', [MGEF]);
 
   wbEFIT :=
-    wbStructSK(EFIT, [3, 4], '', [
+    wbStructSK(EFIT, [0,1,2], '', [
       wbFloat('Magnitude', cpNormal, True),
       wbInteger('Area', itU32),
       wbInteger('Duration', itU32)
     ], cpNormal, True, nil, -1, wbEFITAfterLoad);
 
-  wbCTDA := wbRStruct('Condition', [
-    wbStruct(CTDA, '', [
-      wbInteger('Type', itU8, wbCtdaTypeToStr, wbCtdaTypeToInt, cpNormal, False, nil, wbCtdaTypeAfterSet),
-      wbByteArray('Unused', 3, cpIgnore, False, wbNeverShow),
-      wbUnion('Comparison Value', wbCTDACompValueDecider, [
-        wbFloat('Comparison Value - Float'),
-        wbFormIDCk('Comparison Value - Global', [GLOB])
-      ]),
-      wbInteger('Function', itU16, wbCTDAFunctionToStr, wbCTDAFunctionToInt),
-      wbByteArray('Unused', 2, cpIgnore, False, wbNeverShow),
-      wbUnion('Parameter #1', wbCTDAParam1Decider, [
-        { unknown }
-        wbByteArray('Unknown', 4),
-        { 0 ptNone}
-        wbByteArray('None', 4, cpIgnore),
-        { 1 ptInteger}
-        wbInteger('Integer', itS32),
-        { 2 ptFloat}
-        wbFloat('Float'),
-        { 3 ptActor}
-        wbFormIDCkNoReach('Actor', [NULL, PLYR, ACHR, REFR]),
-        { 4 ptActorBase}
-        wbFormIDCkNoReach('Actor Base', [NPC_]),
-        { 5 ptActorValue}
-        wbActorValue,
-        { 6 ptAdvanceAction}
-        wbInteger('Player Action', itU32, wbAdvanceActionEnum),
-        { 7 ptAlias}
-        wbInteger('Alias', itS32, wbConditionAliasToStr, wbStrToAlias),
-        { 8 ptAlignment}
-        wbInteger('Alignment', itU32, wbAlignmentEnum),
-        { 9 ptAssociationType}
-        wbFormIDCk('Association Type', [ASTP]),
-        {10 ptAxis}
-        wbInteger('Axis', itU32, wbAxisEnum),
-        {11 ptCastingSource}
-        wbInteger('Casting Type', itU32, wbCastingSourceEnum),
-        {12 ptCell}
-        wbFormIDCkNoReach('Cell', [CELL]),
-        {13 ptClass}
-        wbFormIDCkNoReach('Class', [CLAS]),
-        {14 ptCrimeType}
-        wbInteger('Crime Type', itU32, wbCrimeTypeEnum),
-        {15 ptCriticalStage}
-        wbInteger('Critical Stage', itU32, wbCriticalStageEnum),
-        {16 ptEncounterZone}
-        wbFormIDCkNoReach('Encounter Zone', [ECZN]),
-        {17 ptEquipType}
-        wbFormIDCkNoReach('Equip Type', [EQUP]),
-        {18 ptEvent}
-        wbInteger('Event', itU32, wbEventFunctionAndMemberToStr, wbEventFunctionAndMemberToInt),
-        {19 ptEventData}
-        wbFormID('Event Data'),
-        {20 ptFaction}
-        wbFormIDCkNoReach('Faction', [FACT]),
-        {21 ptFormList}
-        wbFormIDCkNoReach('Form List', [FLST]),
-        {22 ptFormType}
-        wbInteger('Form Type', itU32, wbFormTypeEnum),
-        {23 ptFurniture}
-        wbFormIDCkNoReach('Furniture', [FURN, FLST]),
-        {24 ptFurnitureAnim}
-        wbInteger('Furniture Anim', itU32, wbFurnitureAnimTypeEnum),
-        {25 ptFurnitureEntry}
-        wbInteger('Furniture Entry', itU32, wbEnum([], [$010000, 'Front', $020000, 'Behind', $040000, 'Right', $80000, 'Left', $100000, 'Up'])),
-        {26 ptGlobal}
-        wbFormIDCkNoReach('Global', [GLOB]),
-        {27 ptIdleForm}
-        wbFormIDCkNoReach('Idle', [IDLE]),
-        {28 ptInventoryObject}
-        wbFormIDCkNoReach('Inventory Object', sigBaseObjects),
-        {29 ptKeyword}
-        wbFormIDCkNoReach('Keyword', [KYWD, FLST, NULL]),
-        {30 ptLocation}
-        wbFormIDCkNoReach('Location', [LCTN]),
-        {31 ptMagicEffect}
-        wbFormIDCkNoReach('Base Effect', [MGEF]),
-        {32 ptMagicItem}
-        wbFormIDCkNoReach('Effect Item', [SPEL, ENCH, ALCH, INGR, SCRL]),
-        {33 ptMiscStat}
-        wbInteger('Misc Stat', itU32, wbMiscStatEnum),
-        {34 ptObjectReference}
-        wbFormIDCkNoReach('Object Reference', sigReferences),
-        {35 ptOwner}
-        wbFormIDCkNoReach('Owner', [NULL, FACT, NPC_]),
-        {36 ptPackage}
-        wbFormIDCkNoReach('Package', [PACK]),
-        {37 ptPackdata}
-        wbInteger('Packdata ID', itU32),
-        {38 ptPerk}
-        wbFormIDCkNoReach('Perk', [PERK]),
-        {39 ptQuest}
-        wbFormIDCkNoReach('Quest', [QUST]),
-        {40 ptQuestStage}
-        wbInteger('Quest Stage', itU32, wbCTDAParam2QuestStageToStr, wbCTDAParam2QuestStageToInt),
-        {41 ptRace}
-        wbFormIDCkNoReach('Race', [RACE]),
-        {42 ptReferencableObject}
-        wbFormIDCkNoReach('Referenceable Object', sigBaseObjects),
-        {43 ptRefType}
-        wbFormIDCkNoReach('Location Ref Type', [LCRT]),
-        {44 ptRegion}
-        wbFormIDCkNoReach('Region', [REGN]),
-        {45 ptScene}
-        wbFormIDCk('Scene', [NULL, SCEN]),
-        {46 ptSex}
-        wbInteger('Sex', itU32, wbSexEnum),
-        {47 ptShout}
-        wbFormIDCkNoReach('Shout', [SHOU]),
-        {48 ptVariableName}
-        wbByteArray('Variable Name (unused)', 4, cpIgnore),
-        {49 ptVATSValueFunction}
-        wbInteger('VATS Value Function', itU32, wbVATSValueFunctionEnum),
-        {50 ptVATSValueParam}
-        wbInteger('VATS Value Param (unused)', itU32),
-        {51 ptVoiceType}
-        wbFormIDCkNoReach('Voice Type', [VTYP, FLST]),
-        {52 ptWardState}
-        wbInteger('Ward State', itU32, wbWardStateEnum),
-        {53 ptWeather}
-        wbFormIDCkNoReach('Weather', [WTHR]),
-        {54 ptWorldspace}
-        wbFormIDCkNoReach('Worldspace', [WRLD, FLST]),
-        {55 ptDamageType}
-        wbFormIDCkNoReach('Damage Type', [DMGT, FLST])
-      ]),
-
-      wbUnion('Parameter #2', wbCTDAParam2Decider, [
-        { unknown }
-        wbByteArray('Unknown', 4),
-        { 0 ptNone}
-        wbByteArray('None', 4, cpIgnore),
-        { 1 ptInteger}
-        wbInteger('Integer', itS32),
-        { 2 ptFloat}
-        wbFloat('Float'),
-        { 3 ptActor}
-        wbFormIDCkNoReach('Actor', [NULL, PLYR, ACHR, REFR]),
-        { 4 ptActorBase}
-        wbFormIDCkNoReach('Actor Base', [NPC_]),
-        { 5 ptActorValue}
-        wbActorValue,
-        { 6 ptAdvanceAction}
-        wbInteger('Player Action', itU32, wbAdvanceActionEnum),
-        { 7 ptAlias}
-        wbInteger('Alias', itS32, wbConditionAliasToStr, wbStrToAlias),
-        { 8 ptAlignment}
-        wbInteger('Alignment', itU32, wbAlignmentEnum),
-        { 9 ptAssociationType}
-        wbFormIDCk('Association Type', [ASTP]),
-        {10 ptAxis}
-        wbInteger('Axis', itU32, wbAxisEnum),
-        {11 ptCastingSource}
-        wbInteger('Casting Type', itU32, wbCastingSourceEnum),
-        {12 ptCell}
-        wbFormIDCkNoReach('Cell', [CELL]),
-        {13 ptClass}
-        wbFormIDCkNoReach('Class', [CLAS]),
-        {14 ptCrimeType}
-        wbInteger('Crime Type', itU32, wbCrimeTypeEnum),
-        {15 ptCriticalStage}
-        wbInteger('Critical Stage', itU32, wbCriticalStageEnum),
-        {16 ptEncounterZone}
-        wbFormIDCkNoReach('Encounter Zone', [ECZN]),
-        {17 ptEquipType}
-        wbFormIDCkNoReach('Equip Type', [EQUP]),
-        {18 ptEvent}
-        wbInteger('Event', itU32, wbEventFunctionAndMemberToStr, wbEventFunctionAndMemberToInt),
-        {19 ptEventData}
-        wbFormID('Event Data'),
-        {20 ptFaction}
-        wbFormIDCkNoReach('Faction', [FACT]),
-        {21 ptFormList}
-        wbFormIDCkNoReach('Form List', [FLST]),
-        {22 ptFormType}
-        wbInteger('Form Type', itU32, wbFormTypeEnum),
-        {23 ptFurniture}
-        wbFormIDCkNoReach('Furniture', [FURN, FLST]),
-        {24 ptFurnitureAnim}
-        wbInteger('Furniture Anim', itU32, wbFurnitureAnimTypeEnum),
-        {25 ptFurnitureEntry}
-        wbInteger('Furniture Entry', itU32, wbEnum([], [$010000, 'Front', $020000, 'Behind', $040000, 'Right', $80000, 'Left', $100000, 'Up'])),
-        {26 ptGlobal}
-        wbFormIDCkNoReach('Global', [GLOB]),
-        {27 ptIdleForm}
-        wbFormIDCkNoReach('Idle', [IDLE]),
-        {28 ptInventoryObject}
-        wbFormIDCkNoReach('Inventory Object', sigBaseObjects),
-        {29 ptKeyword}
-        wbFormIDCkNoReach('Keyword', [KYWD, FLST, NULL]),
-        {30 ptLocation}
-        wbFormIDCkNoReach('Location', [LCTN]),
-        {31 ptMagicEffect}
-        wbFormIDCkNoReach('Base Effect', [MGEF]),
-        {32 ptMagicItem}
-        wbFormIDCkNoReach('Effect Item', [SPEL, ENCH, ALCH, INGR, SCRL]),
-        {33 ptMiscStat}
-        wbInteger('Misc Stat', itU32, wbMiscStatEnum),
-        {34 ptObjectReference}
-        wbFormIDCkNoReach('Object Reference', sigReferences),
-        {35 ptOwner}
-        wbFormIDCkNoReach('Owner', [NULL, FACT, NPC_]),
-        {36 ptPackage}
-        wbFormIDCkNoReach('Package', [PACK]),
-        {37 ptPackdata}
-        wbInteger('Packdata ID', itU32),
-        {38 ptPerk}
-        wbFormIDCkNoReach('Perk', [PERK]),
-        {39 ptQuest}
-        wbFormIDCkNoReach('Quest', [QUST]),
-        {40 ptQuestStage}
-        wbInteger('Quest Stage', itU32, wbCTDAParam2QuestStageToStr, wbCTDAParam2QuestStageToInt),
-        {41 ptRace}
-        wbFormIDCkNoReach('Race', [RACE]),
-        {42 ptReferencableObject}
-        wbFormIDCkNoReach('Referenceable Object', sigBaseObjects),
-        {43 ptRefType}
-        wbFormIDCkNoReach('Location Ref Type', [LCRT]),
-        {44 ptRegion}
-        wbFormIDCkNoReach('Region', [REGN]),
-        {45 ptScene}
-        wbFormIDCk('Scene', [NULL, SCEN]),
-        {46 ptSex}
-        wbInteger('Sex', itU32, wbSexEnum),
-        {47 ptShout}
-        wbFormIDCkNoReach('Shout', [SHOU]),
-        {48 ptVariableName}
-        wbByteArray('Variable Name (unused)', 4, cpIgnore),
-        {49 ptVATSValueFunction}
-        wbInteger('VATS Value Function', itU32, wbVATSValueFunctionEnum),
-        {50 ptVATSValueParam}
-        wbUnion('VATS Value Param', wbCTDAParam2VATSValueParamDecider, [
-         { 0} wbFormIDCkNoReach('Weapon', [WEAP]),
-         { 1} wbFormIDCkNoReach('Weapon List', [FLST], [WEAP]),
-         { 2} wbFormIDCkNoReach('Target', [NPC_]),
-         { 3} wbFormIDCkNoReach('Target List', [FLST], [NPC_]),
-         { 4} wbByteArray('Unknown', 4, cpIgnore),
-         { 5} wbInteger('Target Part', itS32, wbActorValueEnum),
-         { 6} wbInteger('VATS Action', itU32, wbEnum([
-                'Unarmed Attack',
-                'One Hand Melee Attack',
-                'Two Hand Melee Attack',
-                'Magic Attack',
-                'Ranged Attack',
-                'Reload',
-                'Crouch',
-                'Stand',
-                'Switch Weapon',
-                'Toggle Weapon Drawn',
-                'Heal',
-                'Player Death'
-          ])),
-         { 7} wbByteArray('Unknown', 4, cpIgnore),
-         { 8} wbByteArray('Unknown', 4, cpIgnore),
-         { 9} wbFormIDCkNoReach('Critical Effect', [SPEL]),
-         {10} wbFormIDCkNoReach('Critical Effect List', [FLST], [SPEL]),
-         {11} wbByteArray('Unknown', 4, cpIgnore),
-         {12} wbByteArray('Unknown', 4, cpIgnore),
-         {13} wbByteArray('Unknown', 4, cpIgnore),
-         {14} wbByteArray('Unknown', 4, cpIgnore),
-         {15} wbInteger('Weapon Type', itU32, wbWeaponAnimTypeEnum),
-         {16} wbByteArray('Unknown', 4, cpIgnore),
-         {17} wbByteArray('Unknown', 4, cpIgnore),
-         {18} wbInteger('Projectile Type', itU32, wbEnum([
-                'Missile',
-                'Lobber',
-                'Beam',
-                'Flame',
-                'Cone',
-                'Barrier',
-                'Arrow'
-              ])),
-         {19} wbInteger('Delivery Type', itU32, wbTargetEnum),
-         {20} wbInteger('Casting Type', itU32, wbCastEnum)
+  wbCTDA :=
+    wbRStructSK([0], 'Condition', [
+      wbStructSK(CTDA, [3, 5, 6], '', [
+     {0}wbInteger('Type', itU8, wbCtdaTypeToStr, wbCtdaTypeToInt, cpNormal, False, nil, wbCtdaTypeAfterSet),
+     {1}wbByteArray('Unused', 3, cpIgnore, False, wbNeverShow),
+     {2}wbUnion('Comparison Value', wbCTDACompValueDecider, [
+          wbFloat('Comparison Value - Float'),
+          wbFormIDCk('Comparison Value - Global', [GLOB])
         ]),
-        {51 ptVoiceType}
-        wbFormIDCkNoReach('Voice Type', [VTYP, FLST]),
-        {52 ptWardState}
-        wbInteger('Ward State', itU32, wbWardStateEnum),
-        {53 ptWeather}
-        wbFormIDCkNoReach('Weather', [WTHR]),
-        {54 ptWorldspace}
-        wbFormIDCkNoReach('Worldspace', [WRLD, FLST]),
-        {55 ptDamageType}
-        wbFormIDCkNoReach('Damage Type', [DMGT, FLST])
-      ]),
-      wbInteger('Run On', itU32, wbEnum([
-        { 0} 'Subject',
-        { 1} 'Target',
-        { 2} 'Reference',
-        { 3} 'Combat Target',
-        { 4} 'Linked Reference',
-        { 5} 'Quest Alias',
-        { 6} 'Package Data',
-        { 7} 'Event Data',
-        { 9} 'Command Target',
-        {10} 'Event Camera Ref',
-        {11} 'My Killer'
-      ]), cpNormal, False, nil, wbCTDARunOnAfterSet),
-      wbUnion('Reference', wbCTDAReferenceDecider, [
-        wbInteger('Unused', itU32, nil, cpIgnore),
-        wbFormIDCkNoReach('Reference', sigReferences, False)
-      ]),
-      wbInteger('Parameter #3', itS32, nil, cpNormal, False, nil, nil, -1)
-    ], cpNormal, False{, nil, 0, wbCTDAAfterLoad}),
-    wbString(CIS1, 'Parameter #1'),
-    wbString(CIS2, 'Parameter #2')
-  ], [], cpNormal);
+     {3}wbInteger('Function', itU16, wbCTDAFunctionToStr, wbCTDAFunctionToInt),
+     {4}wbByteArray('Unused', 2, cpIgnore, False, wbNeverShow),
+     {5}wbUnion('Parameter #1', wbCTDAParam1Decider, [
+          { unknown }
+          wbByteArray('Unknown', 4).IncludeFlag(dfZeroSortKey),
+          { 0 ptNone}
+          wbByteArray('None', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+          { 1 ptString}
+          wbInteger('String', itU32, wbCTDAParam1StringToString, wbCTDAParam1StringToInt),
+          { 2 ptInteger}
+          wbInteger('Integer', itS32),
+          { 3 ptFloat}
+          wbFloat('Float'),
+          { 4 ptActor}
+          wbFormIDCkNoReach('Actor', [NULL, PLYR, ACHR, REFR]),
+          { 5 ptActorBase}
+          wbFormIDCkNoReach('Actor Base', [NPC_]),
+          { 6 ptActorValue}
+          wbActorValue,
+          { 7 ptAdvanceAction}
+          wbInteger('Player Action', itU32, wbAdvanceActionEnum),
+          { 8 ptAlias}
+          wbInteger('Alias', itS32, wbConditionAliasToStr, wbStrToAlias),
+          { 9 ptAlignment}
+          wbInteger('Alignment', itU32, wbAlignmentEnum),
+          {10 ptAssociationType}
+          wbFormIDCk('Association Type', [ASTP]),
+          {11 ptAxis}
+          wbInteger('Axis', itU32, wbAxisEnum),
+          {12 ptCastingSource}
+          wbInteger('Casting Type', itU32, wbCastingSourceEnum),
+          {13 ptCell}
+          wbFormIDCkNoReach('Cell', [CELL]),
+          {14 ptClass}
+          wbFormIDCkNoReach('Class', [CLAS]),
+          {15 ptCrimeType}
+          wbInteger('Crime Type', itU32, wbCrimeTypeEnum),
+          {16 ptCriticalStage}
+          wbInteger('Critical Stage', itU32, wbCriticalStageEnum),
+          {17 ptEncounterZone}
+          wbFormIDCkNoReach('Encounter Zone', [ECZN]),
+          {18 ptEquipType}
+          wbFormIDCkNoReach('Equip Type', [EQUP]),
+          {19 ptEvent}
+          wbInteger('Event', itU32, wbEventFunctionAndMemberToStr, wbEventFunctionAndMemberToInt),
+          {20 ptEventData}
+          wbFormID('Event Data'),
+          {21 ptFaction}
+          wbFormIDCkNoReach('Faction', [FACT]),
+          {22 ptFormList}
+          wbFormIDCkNoReach('Form List', [FLST]),
+          {23 ptFormType}
+          wbInteger('Form Type', itU32, wbFormTypeEnum),
+          {24 ptFurniture}
+          wbFormIDCkNoReach('Furniture', [FURN, FLST]),
+          {25 ptFurnitureAnim}
+          wbInteger('Furniture Anim', itU32, wbFurnitureAnimTypeEnum),
+          {26 ptFurnitureEntry}
+          wbInteger('Furniture Entry', itU32, wbEnum([], [$010000, 'Front', $020000, 'Behind', $040000, 'Right', $80000, 'Left', $100000, 'Up'])),
+          {27 ptGlobal}
+          wbFormIDCkNoReach('Global', [GLOB]),
+          {28 ptIdleForm}
+          wbFormIDCkNoReach('Idle', [IDLE]),
+          {29 ptInventoryObject}
+          wbFormIDCkNoReach('Inventory Object', sigBaseObjects),
+          {30 ptKeyword}
+          wbFormIDCkNoReach('Keyword', [KYWD, FLST, NULL]),
+          {31 ptLocation}
+          wbFormIDCkNoReach('Location', [LCTN]),
+          {32 ptMagicEffect}
+          wbFormIDCkNoReach('Base Effect', [MGEF]),
+          {33 ptMagicItem}
+          wbFormIDCkNoReach('Effect Item', [SPEL, ENCH, ALCH, INGR, SCRL]),
+          {34 ptMiscStat}
+          wbInteger('Misc Stat', itU32, wbMiscStatEnum),
+          {35 ptObjectReference}
+          wbFormIDCkNoReach('Object Reference', sigReferences),
+          {36 ptOwner}
+          wbFormIDCkNoReach('Owner', [NULL, FACT, NPC_]),
+          {37 ptPackage}
+          wbFormIDCkNoReach('Package', [PACK]),
+          {38 ptPackdata}
+          wbInteger('Packdata ID', itU32),
+          {39 ptPerk}
+          wbFormIDCkNoReach('Perk', [PERK]),
+          {40 ptQuest}
+          wbFormIDCkNoReach('Quest', [QUST]).AddOverlay(wbCTDAParamQuestOverlay),
+          {41 ptQuestStage}
+          wbInteger('Quest Stage', itU32, wbCTDAParam2QuestStageToStr, wbQuestStageToInt),
+          {42 ptRace}
+          wbFormIDCkNoReach('Race', [RACE]),
+          {43 ptReferencableObject}
+          wbFormIDCkNoReach('Referenceable Object', sigBaseObjects),
+          {44 ptRefType}
+          wbFormIDCkNoReach('Location Ref Type', [LCRT]),
+          {45 ptRegion}
+          wbFormIDCkNoReach('Region', [REGN]),
+          {46 ptScene}
+          wbFormIDCk('Scene', [NULL, SCEN]),
+          {47 ptSex}
+          wbInteger('Sex', itU32, wbSexEnum),
+          {48 ptShout}
+          wbFormIDCkNoReach('Shout', [SHOU]),
+          {49 ptVariableName}
+          wbByteArray('Variable Name (unused)', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+          {50 ptVATSValueFunction}
+          wbInteger('VATS Value Function', itU32, wbVATSValueFunctionEnum),
+          {51 ptVATSValueParam}
+          wbInteger('VATS Value Param (unused)', itU32).IncludeFlag(dfZeroSortKey),
+          {52 ptVoiceType}
+          wbFormIDCkNoReach('Voice Type', [VTYP, FLST]),
+          {53 ptWardState}
+          wbInteger('Ward State', itU32, wbWardStateEnum),
+          {54 ptWeather}
+          wbFormIDCkNoReach('Weather', [WTHR]),
+          {55 ptWorldspace}
+          wbFormIDCkNoReach('Worldspace', [WRLD, FLST]),
+          {56 ptDamageType}
+          wbFormIDCkNoReach('Damage Type', [DMGT, FLST]),
+          {57 ptFactionOpt}
+          wbFormIDCkNoReach('Faction', [NULL, FACT])
+        ]),
+
+        wbUnion('Parameter #2', wbCTDAParam2Decider, [
+          { unknown }
+          wbByteArray('Unknown', 4).IncludeFlag(dfZeroSortKey),
+          { 0 ptNone}
+          wbByteArray('None', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+          { 1 ptString}
+          wbInteger('String', itU32, wbCTDAParam2StringToString, wbCTDAParam2StringToInt),
+          { 2 ptInteger}
+          wbInteger('Integer', itS32),
+          { 3 ptFloat}
+          wbFloat('Float'),
+          { 4 ptActor}
+          wbFormIDCkNoReach('Actor', [NULL, PLYR, ACHR, REFR]),
+          { 5 ptActorBase}
+          wbFormIDCkNoReach('Actor Base', [NPC_]),
+          { 6 ptActorValue}
+          wbActorValue,
+          { 7 ptAdvanceAction}
+          wbInteger('Player Action', itU32, wbAdvanceActionEnum),
+          { 8 ptAlias}
+          wbInteger('Alias', itS32, wbConditionAliasToStr, wbStrToAlias),
+          { 9 ptAlignment}
+          wbInteger('Alignment', itU32, wbAlignmentEnum),
+          {10 ptAssociationType}
+          wbFormIDCk('Association Type', [ASTP]),
+          {11 ptAxis}
+          wbInteger('Axis', itU32, wbAxisEnum),
+          {12 ptCastingSource}
+          wbInteger('Casting Type', itU32, wbCastingSourceEnum),
+          {13 ptCell}
+          wbFormIDCkNoReach('Cell', [CELL]),
+          {14 ptClass}
+          wbFormIDCkNoReach('Class', [CLAS]),
+          {15 ptCrimeType}
+          wbInteger('Crime Type', itU32, wbCrimeTypeEnum),
+          {16 ptCriticalStage}
+          wbInteger('Critical Stage', itU32, wbCriticalStageEnum),
+          {17 ptEncounterZone}
+          wbFormIDCkNoReach('Encounter Zone', [ECZN]),
+          {18 ptEquipType}
+          wbFormIDCkNoReach('Equip Type', [EQUP]),
+          {19 ptEvent}
+          wbInteger('Event', itU32, wbEventFunctionAndMemberToStr, wbEventFunctionAndMemberToInt),
+          {20 ptEventData}
+          wbFormID('Event Data'),
+          {21 ptFaction}
+          wbFormIDCkNoReach('Faction', [FACT]),
+          {22 ptFormList}
+          wbFormIDCkNoReach('Form List', [FLST]),
+          {23 ptFormType}
+          wbInteger('Form Type', itU32, wbFormTypeEnum),
+          {24 ptFurniture}
+          wbFormIDCkNoReach('Furniture', [FURN, FLST]),
+          {25 ptFurnitureAnim}
+          wbInteger('Furniture Anim', itU32, wbFurnitureAnimTypeEnum),
+          {26 ptFurnitureEntry}
+          wbInteger('Furniture Entry', itU32, wbEnum([], [$010000, 'Front', $020000, 'Behind', $040000, 'Right', $80000, 'Left', $100000, 'Up'])),
+          {27 ptGlobal}
+          wbFormIDCkNoReach('Global', [GLOB]),
+          {28 ptIdleForm}
+          wbFormIDCkNoReach('Idle', [IDLE]),
+          {29 ptInventoryObject}
+          wbFormIDCkNoReach('Inventory Object', sigBaseObjects),
+          {30 ptKeyword}
+          wbFormIDCkNoReach('Keyword', [KYWD, FLST, NULL]),
+          {31 ptLocation}
+          wbFormIDCkNoReach('Location', [LCTN]),
+          {32 ptMagicEffect}
+          wbFormIDCkNoReach('Base Effect', [MGEF]),
+          {33 ptMagicItem}
+          wbFormIDCkNoReach('Effect Item', [SPEL, ENCH, ALCH, INGR, SCRL]),
+          {34 ptMiscStat}
+          wbInteger('Misc Stat', itU32, wbMiscStatEnum),
+          {35 ptObjectReference}
+          wbFormIDCkNoReach('Object Reference', sigReferences),
+          {36 ptOwner}
+          wbFormIDCkNoReach('Owner', [NULL, FACT, NPC_]),
+          {37 ptPackage}
+          wbFormIDCkNoReach('Package', [PACK]),
+          {38 ptPackdata}
+          wbInteger('Packdata ID', itU32),
+          {39 ptPerk}
+          wbFormIDCkNoReach('Perk', [PERK]),
+          {40 ptQuest}
+          wbFormIDCkNoReach('Quest', [QUST]),
+          {41 ptQuestStage}
+          wbInteger('Quest Stage', itU32, wbCTDAParam2QuestStageToStr, wbQuestStageToInt),
+          {42 ptRace}
+          wbFormIDCkNoReach('Race', [RACE]),
+          {43 ptReferencableObject}
+          wbFormIDCkNoReach('Referenceable Object', sigBaseObjects),
+          {44 ptRefType}
+          wbFormIDCkNoReach('Location Ref Type', [LCRT]),
+          {45 ptRegion}
+          wbFormIDCkNoReach('Region', [REGN]),
+          {46 ptScene}
+          wbFormIDCk('Scene', [NULL, SCEN]),
+          {47 ptSex}
+          wbInteger('Sex', itU32, wbSexEnum),
+          {48 ptShout}
+          wbFormIDCkNoReach('Shout', [SHOU]),
+          {49 ptVariableName}
+          wbByteArray('Variable Name (unused)', 4, cpIgnore),
+          {50 ptVATSValueFunction}
+          wbInteger('VATS Value Function', itU32, wbVATSValueFunctionEnum),
+          {51 ptVATSValueParam}
+          wbUnion('VATS Value Param', wbCTDAParam2VATSValueParamDecider, [
+           { 0} wbFormIDCkNoReach('Weapon', [WEAP]),
+           { 1} wbFormIDCkNoReach('Weapon List', [FLST], [WEAP]),
+           { 2} wbFormIDCkNoReach('Target', [NPC_]),
+           { 3} wbFormIDCkNoReach('Target List', [FLST], [NPC_]),
+           { 4} wbByteArray('Unknown', 4, cpIgnore),
+           { 5} wbInteger('Target Part', itS32, wbActorValueEnum),
+           { 6} wbInteger('VATS Action', itU32, wbEnum([
+                  'Unarmed Attack',
+                  'One Hand Melee Attack',
+                  'Two Hand Melee Attack',
+                  'Magic Attack',
+                  'Ranged Attack',
+                  'Reload',
+                  'Crouch',
+                  'Stand',
+                  'Switch Weapon',
+                  'Toggle Weapon Drawn',
+                  'Heal',
+                  'Player Death'
+            ])),
+           { 7} wbByteArray('Unknown', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+           { 8} wbByteArray('Unknown', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+           { 9} wbFormIDCkNoReach('Critical Effect', [SPEL]),
+           {10} wbFormIDCkNoReach('Critical Effect List', [FLST], [SPEL]),
+           {11} wbByteArray('Unknown', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+           {12} wbByteArray('Unknown', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+           {13} wbByteArray('Unknown', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+           {14} wbByteArray('Unknown', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+           {15} wbInteger('Weapon Type', itU32, wbWeaponAnimTypeEnum),
+           {16} wbByteArray('Unknown', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+           {17} wbByteArray('Unknown', 4, cpIgnore).IncludeFlag(dfZeroSortKey),
+           {18} wbInteger('Projectile Type', itU32, wbEnum([
+                  'Missile',
+                  'Lobber',
+                  'Beam',
+                  'Flame',
+                  'Cone',
+                  'Barrier',
+                  'Arrow'
+                ])),
+           {19} wbInteger('Delivery Type', itU32, wbTargetEnum),
+           {20} wbInteger('Casting Type', itU32, wbCastEnum)
+          ]),
+          {52 ptVoiceType}
+          wbFormIDCkNoReach('Voice Type', [VTYP, FLST]),
+          {53 ptWardState}
+          wbInteger('Ward State', itU32, wbWardStateEnum),
+          {54 ptWeather}
+          wbFormIDCkNoReach('Weather', [WTHR]),
+          {55 ptWorldspace}
+          wbFormIDCkNoReach('Worldspace', [WRLD, FLST]),
+          {56 ptDamageType}
+          wbFormIDCkNoReach('Damage Type', [DMGT, FLST]),
+          {57 ptFactionOpt}
+          wbFormIDCkNoReach('Faction', [NULL, FACT])
+        ]),
+        wbInteger('Run On', itU32, wbEnum([
+          { 0} 'Subject',
+          { 1} 'Target',
+          { 2} 'Reference',
+          { 3} 'Combat Target',
+          { 4} 'Linked Reference',
+          { 5} 'Quest Alias',
+          { 6} 'Package Data',
+          { 7} 'Event Data',
+          { 9} 'Command Target',
+          {10} 'Event Camera Ref',
+          {11} 'My Killer'
+        ]), cpNormal, False, nil, wbCTDARunOnAfterSet),
+        wbUnion('Reference', wbCTDAReferenceDecider, [
+          wbInteger('Unused', itU32, nil, cpIgnore),
+          wbFormIDCkNoReach('Reference', sigReferences, False)
+        ]),
+        wbInteger('Parameter #3', itS32, nil, cpNormal, False, nil, nil, -1)
+      ], cpNormal, False{, nil, 0, wbCTDAAfterLoad}),
+      wbString(CIS1, 'Parameter #1'),
+      wbString(CIS2, 'Parameter #2')
+    ], [], cpNormal).SetToStr(wbConditionToStr).IncludeFlag(dfCollapsed, wbCollapseConditions);
 
   wbCTDAs := wbRArray('Conditions', wbCTDA, cpNormal, False);
   wbCTDAsCount := wbRArray('Conditions', wbCTDA, cpNormal, False, nil, wbCTDAsAfterSet);
@@ -8260,10 +8180,15 @@ begin
   wbZNAM := wbFormIDCk(ZNAM, 'Sound - Put Down', [SNDR]);
   wbCUSD := wbFormIDCk(CUSD, 'Sound - Crafting', [SNDR]);
   wbINRD := wbFormIDCk(INRD, 'Instance Naming', [INNR]);
-  wbPRPS := wbArrayS(PRPS, 'Properties', wbStructSK([0], 'Property', [
-    wbActorValue,
-    wbFloat('Value')
-  ]));
+
+  wbObjectProperty :=
+    wbStructSK([0], 'Property', [
+      wbActorValue,
+      wbFloat('Value')
+    ]).SetToStr(wbObjectPropertyToStr).IncludeFlag(dfCollapsed, wbCollapseObjectProperties);
+
+  wbPRPS := wbArrayS(PRPS, 'Properties', wbObjectProperty);
+
   wbFLTR := wbString(FLTR, 'Filter');
   wbAPPR := wbArray(APPR, 'Attach Parent Slots', wbFormIDCk('Keyword', [KYWD]));
   wbFTYP := wbFormIDCk(FTYP, 'Forced Loc Ref Type', [LCRT]);
@@ -8301,17 +8226,17 @@ begin
     {0x10000000} 'Use Static Avoid Node',
     {0x20000000} 'Unknown 29',
     {0x40000000} 'Has Model?',
-    {0x80000000} 'Unknown 31'
+    {0x80000000} 'Is Sleep Furniture'
   ]));
 
   wbSNAMMarkerParams :=
-    wbArray(SNAM, 'Marker Paramaters', wbStruct('Marker', [
+    wbArray(SNAM, 'Marker Parameters', wbStruct('Marker', [
       wbFloat('Offset X'),
       wbFloat('Offset Y'),
       wbFloat('Offset Z'),
-      wbFloat('Rotation Z', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
+      wbFloatAngle('Rotation Z', cpNormal, True),
       wbFormIDCk('Keyword', [KYWD, NULL]),
-      wbInteger('Entry Types', itU8, wbFlags([
+      wbFromVersion(125, wbInteger('Entry Types', itU8, wbFlags([
         'Front',
         'Rear',
         'Right',
@@ -8320,8 +8245,8 @@ begin
         'Unused 5',
         'Unused 6',
         'Unused 7'
-      ])),
-      wbByteArray('Unknown', 3)
+      ])).IncludeFlag(dfCollapsed)),
+      wbFromVersion(125, wbByteArray('Unknown', 3))
     ], cpNormal, False, nil, 4));
 
   wbArmorPropertyEnum := wbEnum([
@@ -8454,7 +8379,7 @@ begin
         {0} 'Int',
         {1} 'Float',
         {2} 'Bool',
-        {3} 'Unknown 3',
+        {3} 'String',
         {4} 'FormID,Int',
         {5} 'Enum',
         {6} 'FormID,Float'
@@ -8496,7 +8421,7 @@ begin
     wbByteArray('Unused', 1),
     wbInteger('Level Max', itU8),
     wbByteArray('Unused', 1),
-    wbInteger('Addon Index', itS16{, wbOBTEAddonIndexToStr, nil, cpNormal, True, nil, nil, -1}),
+    wbInteger('Parent Combination Index', itS16{, wbOBTEAddonIndexToStr, nil, cpNormal, True, nil, nil, -1}),
     wbInteger('Default', itU8, wbBoolEnum),
     wbArray('Keywords', wbFormIDCk('Keyword', [KYWD, NULL]), -4),
     wbInteger('Min Level For Ranks', itU8),
@@ -8522,29 +8447,100 @@ begin
     wbEmpty(STOP, 'Marker', cpNormal, True)
   ], []);
 
-  wbBSMPSequence := wbRStructs('Bone Data', 'Data', [
-    wbInteger(BSMP, 'Gender', itU32, wbEnum(['Male', 'Female'])),
-    // should not be sorted!!!
-    wbRArray('Bones',
-      wbRStruct('Bone', [
-        wbString(BSMB, 'Name'),
-        wbArray(BSMS, 'Values', wbFloat('Value')),
-        wbUnknown(BMMP)
-      ], [])
-    )
-  ], []);
+  // Sorting these where applicable, as I cannot reproduce any issues that arise from doing so
+  var wbBoneDataItem :=
+      wbRStruct('Bone Data Set', [
+        wbRStruct('Bone Weight Scale Data', [
+          wbInteger(BSMP, 'Weight Scale Target Gender', itU32, wbEnum(['Male', 'Female'])),
+          wbRArrayS('Bone Weight Scales',
+            wbRStructSK([0], 'Bone Weight Scale Set', [
+              wbString(BSMB, 'Name'),
+              wbStruct(BSMS, 'Scale Set', [
+                wbVec3('Thin'),
+                wbVec3('Muscular'),
+                wbVec3('Fat')
+              ])
+              .SetSummaryKeyOnValue([0,1,2])
+              .SetSummaryPrefixSuffixOnValue(0, 'Thin: ', '')
+              .SetSummaryPrefixSuffixOnValue(1, 'Muscular: ', '')
+              .SetSummaryPrefixSuffixOnValue(2, 'Fat: ', '')
+              .SetSummaryDelimiterOnValue(', ')
+              .SetRequired
+            ], [])
+            .SetSummaryKey([1])
+            .IncludeFlag(dfCollapsed, wbCollapseRACEBoneData)
+          )
+        ],[]),
+        wbRStruct('Bone Range Modifier Data', [
+          wbInteger(BMMP, 'Range Modifier Target Gender', itU32, wbEnum(['Male', 'Female'])),
+          wbRArrayS('Bone Range Modifiers',
+            wbRStructSK([0], 'Bone Range Modifier', [
+              wbString(BSMB, 'Name'),
+              wbStruct(BSMS, 'Range', [
+                wbFloat('Min Y'),
+                wbFloat('Min Z'),
+                wbFloat('Max Y'),
+                wbFloat('Max Z')
+              ])
+              .SetSummaryKeyOnValue([0,2,1,3])
+              .SetSummaryPrefixSuffixOnValue(0, 'Y: [', '')
+              .SetSummaryPrefixSuffixOnValue(2, 'to ', '],')
+              .SetSummaryPrefixSuffixOnValue(1, 'Z: [', '')
+              .SetSummaryPrefixSuffixOnValue(3, 'to ', ']')
+              .IncludeFlag(dfCollapsed, wbCollapseRange)
+              .SetRequired
+            ], [])
+            .SetSummaryKey([1])
+            .IncludeFlag(dfCollapsed, wbCollapseRACEBoneData)
+          )
+        ],[])
+      ], []);
 
-  wbEffectsReq :=
-    wbRStructs('Effects', 'Effect', [
+  var wbArmorAddonBoneDataItem :=
+      wbRStruct('Bone Scale Modifier Set', [
+        wbInteger(BSMP, 'Target Gender', itU32, wbEnum(['Male', 'Female'])),
+        wbRArrayS('Bone Scale Modifiers',
+          wbRStructSK([0], 'Bone Scale Modifier', [
+            wbString(BSMB, 'Bone Name'),
+            wbStruct(BSMS, 'Bone Scale Delta', [
+              wbFloat('X'),
+              wbFloat('Y'),
+              wbFloat('Z')
+            ])
+            .SetSummaryKeyOnValue([0,1,2])
+            .SetSummaryPrefixSuffixOnValue(0, '[', '')
+            .SetSummaryPrefixSuffixOnValue(1, ' ', '')
+            .SetSummaryPrefixSuffixOnValue(2, ' ', ']')
+            .SetSummaryDelimiterOnValue(',')
+            .IncludeFlag(dfSummaryNoName)
+            .includeFlag(dfCollapsed, wbCollapseVec3)
+            .SetRequired
+          ], [])
+          .SetSummaryKey([1])
+          .IncludeFlag(dfCollapsed, wbCollapseARMABoneData)
+        )
+      ], []);
+
+  wbBSMPSequence := wbRArray('Bone Scale Data', wbBoneDataItem);
+
+  wbArmorAddonBSMPSequence := wbRArray('Sculpt Data', wbArmorAddonBoneDataItem);
+
+  var wbEffect :=
+    wbRStruct('Effect', [
       wbEFID,
       wbEFIT,
       wbCTDAs
-    ], [], cpNormal, True);
+    ], [], cpNormal, True)
+    .SetSummaryKey([0,2])
+    .IncludeFlag(dfSummaryMembersNoName);
+
+  wbEffectsReq :=
+    wbRArrayS('Effects', wbEffect, cpNormal, True);
 
   wbRecord(ACTI, 'Activator',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
-      {0x00000002}  2, 'Never Fades',
-      {0x00000004}  4, 'Non Occluder',
+      {0x00000004}  2, 'Never Fades',
+      {0x00000010}  4, 'Non Occluder',
       {0x00000040}  6, 'Unknown 6',
       {0x00000080}  7, 'Heading Marker',
       {0x00000100}  8, 'Must Update Anims',
@@ -8565,23 +8561,18 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbSTCP,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbDEST,
     wbKSIZ,
     wbKWDAs,
     wbPRPS,
     wbNTRM,
     wbFTYP,
-    wbStruct(PNAM, 'Marker Color', [
-      wbInteger('Red', itU8),
-      wbInteger('Green', itU8),
-      wbInteger('Blue', itU8),
-      wbInteger('Unused', itU8)
-    ]),
+    wbByteColors(PNAM, 'Marker Color'),
     wbFormIDCk(SNAM, 'Sound - Looping', [SNDR]),
     wbFormIDCk(VNAM, 'Sound - Activation', [SNDR]),
     wbFormIDCk(WNAM, 'Water Type', [WATR]),
@@ -8614,9 +8605,9 @@ begin
     ]), [17]), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbDEST,
     wbKSIZ,
     wbKWDAs,
@@ -8631,19 +8622,19 @@ begin
       {0x20000000} 29, 'Medicine'
     ])), [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
     wbKSIZ,
     wbKWDAs,
-    wbMODL,
+    wbGenericModel,
     wbICON,
     wbMICO,
+    wbDEST,
     wbYNAM,
     wbZNAM,
     wbETYP,
     wbCUSD,
-    wbDEST,
     wbDESC,
     wbFloat(DATA, 'Weight', cpNormal, True),
     wbStruct(ENIT, 'Effect Data', [
@@ -8654,19 +8645,19 @@ begin
         {0x00000004} 'Unknown 3',
         {0x00000008} 'Unknown 4',
         {0x00000010} 'Unknown 5',
-				{0x00000020} 'Unknown 6',
-				{0x00000040} 'Unknown 7',
-				{0x00000080} 'Unknown 8',
-				{0x00000100} 'Unknown 9',
-				{0x00000200} 'Unknown 10',
-				{0x00000400} 'Unknown 11',
-				{0x00000800} 'Unknown 12',
-				{0x00001000} 'Unknown 13',
-				{0x00002000} 'Unknown 14',
-				{0x00004000} 'Unknown 15',
-				{0x00008000} 'Unknown 16',
-				{0x00010000} 'Medicine',
-				{0x00020000} 'Poison'
+        {0x00000020} 'Unknown 6',
+        {0x00000040} 'Unknown 7',
+        {0x00000080} 'Unknown 8',
+        {0x00000100} 'Unknown 9',
+        {0x00000200} 'Unknown 10',
+        {0x00000400} 'Unknown 11',
+        {0x00000800} 'Unknown 12',
+        {0x00001000} 'Unknown 13',
+        {0x00002000} 'Unknown 14',
+        {0x00004000} 'Unknown 15',
+        {0x00008000} 'Unknown 16',
+        {0x00010000} 'Medicine',
+        {0x00020000} 'Poison'
       ])),
       wbFormID('Addiction'),
       wbFloat('Addiction Chance'),
@@ -8681,10 +8672,10 @@ begin
       {0x00000004}  2, 'Non-Playable'
     ])), [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbDEST,
     wbYNAM,
     wbZNAM,
@@ -8708,7 +8699,7 @@ begin
     ], cpNormal, True),
     wbLStringKC(ONAM, 'Short Name', 0, cpTranslate),
     wbString(NAM1, 'Casing Model'),
-    wbByteArray(NAM2, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow)
+    wbModelInfo(NAM2)
   ], False, nil, cpNormal, False, wbRemoveEmptyKWDA, wbKeywordsAfterSet);
 
   wbRecord(ANIO, 'Animated Object',
@@ -8716,7 +8707,7 @@ begin
       {0x00000200}  9, 'Unknown 9'
     ]), [9]), [
     wbEDID,
-    wbMODL,
+    wbGenericModel,
     wbString(BNAM, 'Unload Event')
   ]);
 
@@ -8729,24 +8720,14 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
     wbEITM,
-    wbRStruct('Male world model', [
-      wbString(MOD2, 'Model Filename'),
-      wbByteArray(MO2T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
-      wbMODC,
-      wbMO2S
-    ], []),
+    wbTexturedModel('Male World Model', [MOD2, MO2T], [wbMODC, wbMO2S, nil]),
     wbString(ICON, 'Male Inventory Image'),
     wbString(MICO, 'Male Message Icon'),
-    wbRStruct('Female world model', [
-      wbString(MOD4, 'Model Filename'),
-      wbByteArray(MO4T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
-      wbMODC,
-      wbMO4S
-    ], []),
+    wbTexturedModel('Female World Model', [MOD4, MO4T], [wbMODC, wbMO4S, nil]),
     wbString(ICO2, 'Female Inventory Image'),
     wbString(MIC2, 'Female Message Icon'),
     wbBOD2,
@@ -8776,7 +8757,7 @@ begin
       wbInteger('Armor Rating', itU16),
       wbInteger('Base Addon Index', itU16),
       wbInteger('Stagger Rating', itU8, wbStaggerEnum),
-      wbUnknown
+      wbByteArray('Unused', 3, cpIgnore, false, wbNeverShow)
     ]),
     wbArrayS(DAMA, 'Resistances', wbStructSK([0], 'Resistance', [
       wbFormIDCk('Damage Type', [DMGT]),
@@ -8790,7 +8771,7 @@ begin
   wbRecord(ARMA, 'Armor Addon',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
       {0x00000040}  6, 'No Underarmor Scaling',
-      {0x00000200}  9, 'Unknown 9',
+      {0x00000200}  9, 'Has Sculpt Data',
       {0x40000000} 30, 'Hi-Res 1st Person Only'
     ])), [
     wbEDID,
@@ -8813,34 +8794,10 @@ begin
       wbByteArray('Unknown', 1),
       wbFloat('Weapon Adjust')
     ], cpNormal, True),
-    wbRStruct('Male world model', [
-      wbString(MOD2, 'Model Filename'),
-      wbByteArray(MO2T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
-      wbMO2C,
-      wbMO2S,
-      wbMO2F
-    ], [], cpNormal, False),
-    wbRStruct('Female world model', [
-      wbString(MOD3, 'Model Filename'),
-      wbByteArray(MO3T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
-      wbMO3C,
-      wbMO3S,
-      wbMO3F
-    ], []),
-    wbRStruct('Male 1st Person', [
-      wbString(MOD4, 'Model Filename'),
-      wbByteArray(MO4T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
-      wbMO4C,
-      wbMO4S,
-      wbMO4F
-    ], []),
-    wbRStruct('Female 1st Person', [
-      wbString(MOD5, 'Model Filename'),
-      wbByteArray(MO5T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
-      wbMO5C,
-      wbMO5S,
-      wbMO5F
-    ], []),
+    wbTexturedModel('Male Biped Model', [MOD2, MO2T], [wbMO2C, wbMO2S, wbMO2F]),
+    wbTexturedModel('Female Biped Model', [MOD3, MO3T], [wbMO3C, wbMO3S, wbMO3F]),
+    wbTexturedModel('Male 1st Person', [MOD4, MO4T], [wbMO4C, wbMO4S, wbMO4F]),
+    wbTexturedModel('Female 1st Person', [MOD5, MO5T], [wbMO5C, wbMO5S, wbMO5F]),
     wbFormIDCK(NAM0, 'Male Skin Texture', [TXST, NULL]),
     wbFormIDCK(NAM1, 'Female Skin Texture', [TXST, NULL]),
     wbFormIDCK(NAM2, 'Male Skin Texture Swap List', [FLST, NULL]),
@@ -8848,16 +8805,16 @@ begin
     wbRArrayS('Additional Races', wbFormIDCK(MODL, 'Race', [RACE, NULL])),
     wbFormIDCk(SNDD, 'Footstep Sound', [FSTS, NULL]),
     wbFormIDCk(ONAM, 'Art Object', [ARTO]),
-    wbBSMPSequence
+    wbArmorAddonBSMPSequence
   ], False, nil, cpNormal, False, wbARMAAfterLoad);
 
   wbRecord(BOOK, 'Book', [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbICON,
     wbMICO,
     wbDESCreq,
@@ -8893,76 +8850,7 @@ begin
     wbLStringKC(CNAM, 'Description', 0, cpTranslate),
     wbFormIDCk(INAM, 'Inventory Art', [STAT])
   ], False, nil, cpNormal, False, nil, wbKeywordsAfterSet);
-end;
 
-procedure DefineFO4c;
-
-  procedure ReferenceRecord(aSignature: TwbSignature; const aName: string);
-  begin
-    wbRecord(aSignature, aName,
-      wbFlags(wbRecordFlagsFlags, wbFlagsList([
-        {0x00000080}  7, 'Turn Off Fire',
-        {0x00000400} 10, 'Persistent',
-        {0x00000800} 11, 'Initially Disabled',
-        {0x10000000} 28, 'Reflected By Auto Water',
-        {0x20000000} 29, 'Don''t Havok Settle',
-        {0x40000000} 30, 'No Respawn'
-      ], True, True)), [
-      wbEDID,
-      wbVMAD,
-      wbFormIDCk(NAME, 'Projectile', [PROJ, HAZD]),
-      wbFormIDCk(XEZN, 'Encounter Zone', [ECZN]),
-      wbFloat(XHTW, 'Head-Tracking Weight'),
-      wbFloat(XFVC, 'Favor Cost'),
-      wbRArrayS('Reflected/Refracted By',
-        wbStructSK(XPWR, [0], 'Water', [
-          wbFormIDCk('Reference', [REFR]),
-          wbInteger('Type', itU32, wbFlags([
-            'Reflection',
-            'Refraction'
-          ]))
-        ], cpNormal, False, nil, 1)
-      ),
-      wbRArrayS('Linked References', wbStructSK(XLKR, [0], 'Linked Reference', [
-        wbFormIDCk('Keyword/Ref', [KYWD, PLYR, ACHR, REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA, NULL]),
-        wbFormIDCk('Ref', sigReferences)
-      ], cpNormal, False, nil, 1)),
-      wbRStruct('Activate Parents', [
-        wbInteger(XAPD, 'Flags', itU8, wbFlags([
-          'Parent Activate Only'
-        ], True)),
-        wbRArrayS('Activate Parent Refs',
-          wbStructSK(XAPR, [0], 'Activate Parent Ref', [
-            wbFormIDCk('Reference', sigReferences),
-            wbFloat('Delay')
-          ])
-        )
-      ], []),
-
-      wbFormIDCk(XASP, 'Unknown', [REFR]),
-      wbUnknown(XATP),
-      wbInteger(XAMC, 'Ammo Count', itU32),
-      wbEmpty(XLKT, 'Linked Ref Transient'),
-      wbFormIDCk(XLYR, 'Layer', [LAYR]),
-      wbFormIDCk(XMSP, 'Material Swap', [MSWP]),
-      wbFormIDCk(XRFG, 'Reference Group', [RFGP]),
-      wbUnknown(XCVR),
-      wbXESP,
-      wbXOWN,
-      wbXRNK,
-      wbFormIDCk(XEMI, 'Emittance', [LIGH, REGN]),
-      wbFormIDCk(XMBR, 'MultiBound Reference', [REFR]),
-      wbEmpty(XIS2, 'Ignored by Sandbox'),
-      wbArray(XLRT, 'Location Ref Type', wbFormIDCk('Ref', [LCRT, NULL])),
-      wbFormIDCk(XLRL, 'Location Reference', [LCRT, LCTN, NULL], False, cpBenignIfAdded),
-      wbXSCL,
-      wbXLOD,
-      wbDataPosRot,
-      wbString(MNAM, 'Comments')
-    ], True, wbPlacedAddInfo);
-  end;
-
-begin
 {>>>
   Skrim has its own ref record for every projectile type
   PARW 'Arrow'
@@ -8987,16 +8875,31 @@ begin
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
       {0x00000400}  7, 'No Pre Vis',
       {0x00000400} 10, 'Persistent',
+      {0x00004000} 14, 'Partial Form',
       {0x00020000} 17, 'Off Limits',
       {0x00040000} 18, 'Compressed',
       {0x00080000} 19, 'Can''t Wait'
-    ]), [18]), [
+    ]), [14, 18])
+      .SetFlagHasDontShow(14,
+        function(const aElement: IwbElement): Boolean
+        begin
+          Result := False;
+          if not Assigned(aElement) then
+            Exit;
+          var lMainRecord := aElement.ContainingMainRecord;
+          if not Assigned(lMainRecord) then
+            Exit;
+          if lMainRecord.IsPartialForm then
+            Exit;
+          Result := not lMainRecord.CanBePartial;
+        end),
+  [
     wbEDID,
     wbFULL,
     wbInteger(DATA, 'Flags', itU16, wbFlags([
       {0x0001} 'Is Interior Cell',
       {0x0002} 'Has Water',
-      {0x0004} 'Can''t Travel From Here',
+      {0x0004} 'Can Travel From Here',
       {0x0008} 'No LOD Water',
       {0x0010} 'Unknown 5',
       {0x0020} 'Public Area',
@@ -9004,27 +8907,19 @@ begin
       {0x0080} 'Show Sky',
       {0x0100} 'Use Sky Lighting',
       {0x0200} 'Unknown 10',
-      {0x0400} 'Unknown 11',
+      {0x0400} 'Hidden from Interior Cell List',
       {0x0800} 'Sunlight Shadows',
       {0x1000} 'Distant LOD only',
       {0x2000} 'Player Followers Can''t Travel Here',
       {0x4000} 'Unknown 15',
       {0x8000} 'Unknown 16'
     ]), cpNormal, True, False, nil, wbCELLDATAAfterSet),
-    wbStruct(XCLC, 'Grid', [
-      wbInteger('X', itS32),
-      wbInteger('Y', itS32),
-      wbInteger('Force Hide Land', itU32, wbFlags([
-        'Quad 1',
-        'Quad 2',
-        'Quad 3',
-        'Quad 4'
-      ], True))
-    ], cpNormal, False, nil, 2),
 
-    wbByteArray(VISI, 'PreVis Files Timestamp', 2),
+    wbByteArray(VISI, 'PreVis Files Timestamp', 2).SetToStr(wbTimeStampToString),
     wbFormIDCk(RVIS, 'In PreVis File Of', [CELL]),
-    wbByteArray(PCMB, 'PreCombined Files Timestamp', 2),
+    wbByteArray(PCMB, 'PreCombined Files Timestamp', 2).SetToStr(wbTimeStampToString),
+
+    wbCellGrid,
 
     wbStruct(XCLL, 'Lighting', [
       wbByteColors('Ambient Color'),
@@ -9037,7 +8932,7 @@ begin
       wbFloat('Directional Fade'),
       wbFloat('Fog Clip Distance'),
       wbFloat('Fog Power'),
-      wbAmbientColors,
+      wbAmbientColors('Ambient Colors'),
       wbByteColors('Fog Color Far'),
       wbFloat('Fog Max'),
       wbFloat('Light Fade Begin'),
@@ -9071,7 +8966,8 @@ begin
     wbInteger(CNAM, 'Precombined Object Level XY', itU8),
     wbInteger(ZNAM, 'Precombined Object Level Z', itU8),
     wbByteArray(TVDT, 'Unknown', 0, cpNormal),
-    wbMaxHeightDataCELL,
+    wbMHDTCELL
+    .IncludeFlag(dfCollapsed),
     wbFormIDCk(LTMP, 'Lighting Template', [LGTM, NULL], False, cpNormal, True),
 
     {>>> XCLW sometimes has $FF7FFFFF and causes invalid floation point <<<}
@@ -9113,12 +9009,12 @@ begin
 
     // those can be sorted I think, but makes copying records very slow since some cells have over 22000+ entries
     // DLC01Lair01 "The Mechanist's Lair" [CELL:010008A3]
-    wbArrayS(XPRI, 'Physics References', wbFormIDCk('Reference', [REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA])),
-    wbStruct(XCRI, 'Combined References', [
+    wbArrayS(XPRI, 'PreVis Reference Index', wbFormIDCk('Reference', [REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA])),
+    wbStruct(XCRI, 'Combined Reference Index', [
       wbInteger('Meshes Count', itU32),
       wbInteger('References Count', itU32),
       wbArrayS('Meshes', wbInteger('Combined Mesh', itU32, wbCombinedMeshIDToStr, wbCombinedMeshIDToInt), wbCELLCombinedMeshesCounter, cpNormal, False, nil, wbCELLCombinedMeshesAfterSet),
-      wbArrayS('References',  wbStructSK([1, 0], 'Reference', [
+      wbArrayS('References',  wbStructSK([0], 'Reference', [
         wbFormIDCk('Reference', [REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA]),
         wbInteger('Combined Mesh', itU32, wbCombinedMeshIDToStr, wbCombinedMeshIDToInt)
       ]), wbCELLCombinedRefsCounter, cpNormal, False, nil, wbCELLCombinedRefsAfterSet)
@@ -9146,51 +9042,40 @@ begin
     ])),
     wbString(FNAM, 'Sun Texture'),
     wbString(GNAM, 'Sun Glare Texture'),
-    wbMODL,
-    wbStruct(TNAM, 'Timing', [
-      wbStruct('Sunrise', [
-        wbInteger('Begin', itU8, wbClmtTime),
-        wbInteger('End', itU8, wbClmtTime)
-      ]),
-      wbStruct('Sunset', [
-        wbInteger('Begin', itU8, wbClmtTime),
-        wbInteger('End', itU8, wbClmtTime)
-      ]),
-      wbInteger('Volatility', itU8),
-      wbInteger('Moons / Phase Length', itU8, wbClmtMoonsPhaseLength)
-    ], cpNormal, True)
+    wbGenericModel,
+    wbClimateTiming(wbClmtTime, wbClmtMoonsPhaseLength)
   ]);
 
   wbRecord(SPGD, 'Shader Particle Geometry', [
     wbEDID,
     wbStruct(DATA, 'Data', [
       wbFloat('Gravity Velocity'),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbFloat('Rotation Velocity'),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbFloat('Particle Size X'),
-      wbFloat('Center Offset Min'),
+      wbUnused(4),
       wbFloat('Particle Size Y'),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbFloat('Center Offset Min'),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbFloat('Center Offset Max'),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbFloat('Initial Rotation'),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbInteger('# of Subtextures X', itU32),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbInteger('# of Subtextures Y', itU32),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbInteger('Type', itU32, wbEnum([
         'Rain',
         'Snow'
       ])),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbInteger('Box Size', itU32),
-      wbByteArray('Unknown', 4),
+      wbUnused(4),
       wbFloat('Particle Density'),
-      wbUnknown
+      wbUnused(4)
     ], cpNormal, True, nil, 10),
     wbString(MNAM, 'Particle Texture')
   ]);
@@ -9198,7 +9083,7 @@ begin
   wbRecord(RFCT, 'Visual Effect', [
     wbEDID,
     wbStruct(DATA, 'Effect Data', [
-			wbFormIDCK('Effect Art', [ARTO, NULL]),
+      wbFormIDCK('Effect Art', [ARTO, NULL]),
       wbFormIDCK('Shader', [EFSH, NULL]),
       wbInteger('Flags', itU32, wbFlags([
         {0x00000001} 'Rotate to Face Target',
@@ -9219,10 +9104,10 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbCOCT,
     wbCNTOs,
     wbDEST,
@@ -9289,7 +9174,8 @@ begin
             wbInteger('Warn/Attack', itU32),
             wbInteger('Attack', itU32)
           ]),
-          wbByteArray('Unknown', 4)
+          wbFromVersion(29, wbInteger('No Slow Approach', itU8, wbBoolEnum)),
+          wbFromVersion(29, wbByteArray('Unknown', 3))
     ], cpNormal, True, nil{wbActorTemplateUseAIData});
 
   wbRecord(CSTY, 'Combat Style',
@@ -9365,16 +9251,16 @@ begin
       {0x20} 'Unknown 5'
     ]), cpNormal, True)
   ]);
-end;
 
-procedure DefineFO4d;
-begin
-  wbRecord(DIAL, 'Dialog Topic', [
+  wbRecord(DIAL, 'Dialog Topic',
+    wbFlags(wbRecordFlagsFlags, wbFlagsList([
+      {0x00004000} 14, 'Partial Form'
+    ]), [14]), [
     wbEDID,
     wbFULL,
     wbFloat(PNAM, 'Priority', cpNormal, True, 1, -1, nil, nil, 50.0),
-    wbFormIDCk(BNAM, 'Branch', [DLBR]),
-    wbFormIDCk(QNAM, 'Quest', [QUST], False, cpNormal, False),
+    wbFormIDCkNoReach(BNAM, 'Branch', [DLBR]),
+    wbFormIDCkNoReach(QNAM, 'Quest', [QUST], False, cpNormal, False),
     wbFormIDCk(KNAM, 'Keyword', [KYWD]),
     wbStruct(DATA, 'Data', [
       // this should not be named Flags since TwbFile.BuildReachable
@@ -9508,7 +9394,7 @@ begin
        {110} 'OutofBreath',
        {111} 'CombatGrunt',
        {112} 'LeaveWaterBreath',
-       {113} 'ImpatientPostitive',
+       {113} 'ImpatientPositive',
        {114} 'ImpatientNegative',
        {115} 'ImpatientNeutral',
        {116} 'ImpatientQuestion',
@@ -9523,7 +9409,9 @@ begin
       ]))
     ]),
     wbString(SNAM, 'Subtype Name', 4),
-    wbInteger(TIFC, 'Info Count', itU32, nil, cpBenign)
+    wbInteger(TIFC, 'Info Count', itU32, nil, cpIgnore),
+    wbINOM,
+    wbINOA
   ]);
 
   wbRecord(DOOR, 'Door',
@@ -9535,10 +9423,10 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbDEST,
     wbKSIZ,
     wbKWDAs,
@@ -9556,7 +9444,8 @@ begin
       'No "To" Text'
     ]), cpNormal, True),
     wbLStringKC(ONAM, 'Alternate Text - Open', 0, cpTranslate),
-    wbLStringKC(CNAM, 'Alternate Text - Close', 0, cpTranslate)
+    wbLStringKC(CNAM, 'Alternate Text - Close', 0, cpTranslate),
+    wbRArrayS('Random teleport destinations', wbFormIDCk(TNAM, 'Destination', [CELL, WRLD]))
   ]);
 
   wbBlendModeEnum := wbEnum([
@@ -9603,77 +9492,7 @@ begin
     wbString(NAM9, 'Particle Palette Texture'),
     wbUnknown(DATA),  // if form version < 62, ignored otherwise
     // format depends on Form Version (appear with form version 62, changed in form version 106), different for older records starting from the first field
-    wbUnion(DNAM, '', wbEFSHFormatDecider, [
-      wbStruct('Data', [
-        wbInteger('Membrane Shader - Source Blend Mode', itU32, wbBlendModeEnum),
-        wbInteger('Membrane Shader - Blend Operation', itU32, wbBlendOpEnum),
-        wbInteger('Membrane Shader - Z Test Function', itU32, wbZTestFuncEnum),
-        wbByteColors('Fill/Texture Effect - Color Key 1'),
-        wbFloat('Fill/Texture Effect - Alpha Fade In Time'),
-        wbFloat('Fill/Texture Effect - Full Alpha Time'),
-        wbFloat('Fill/Texture Effect - Alpha Fade Out Time'),
-        wbFloat('Fill/Texture Effect - Presistent Alpha Ratio'),
-        wbFloat('Fill/Texture Effect - Alpha Pulse Amplitude'),
-        wbFloat('Fill/Texture Effect - Alpha Pulse Frequency'),
-        wbFloat('Fill/Texture Effect - Texture Animation Speed (U)'),
-        wbFloat('Fill/Texture Effect - Texture Animation Speed (V)'),
-        wbFloat('Edge Effect - Fall Off'),
-        wbByteColors('Edge Effect - Color'),
-        wbFloat('Edge Effect - Alpha Fade In Time'),
-        wbFloat('Edge Effect - Full Alpha Time'),
-        wbFloat('Edge Effect - Alpha Fade Out Time'),
-        wbFloat('Edge Effect - Persistent Alpha Ratio'),
-        wbFloat('Edge Effect - Alpha Pulse Amplitude'),
-        wbFloat('Edge Effect - Alpha Pulse Frequency'),
-        wbFloat('Fill/Texture Effect - Full Alpha Ratio'),
-        wbFloat('Edge Effect - Full Alpha Ratio'),
-        wbInteger('Membrane Shader - Dest Blend Mode', itU32, wbBlendModeEnum),
-        wbFloat('Holes Animation - Start Time'),
-        wbFloat('Holes Animation - End Time'),
-        wbFloat('Holes Animation - Start Value'),
-        wbFloat('Holes Animation - End Value'),
-        wbFormIDCk('Ambient Sound', [SNDR, NULL]),
-        wbByteColors('Fill/Texture Effect - Color Key 2'),
-        wbByteColors('Fill/Texture Effect - Color Key 3'),
-        wbInteger('Unknown', itU8),
-        wbStruct('Fill/Texture Effect - Color Key Scale/Time', [
-          wbFloat('Color Key 1 - Scale'),
-          wbFloat('Color Key 2 - Scale'),
-          wbFloat('Color Key 3 - Scale'),
-          wbFloat('Color Key 1 - Time'),
-          wbFloat('Color Key 2 - Time'),
-          wbFloat('Color Key 3 - Time')
-        ]),
-        wbInteger('Flags', itU32, wbFlags([
-          'No Membrane Shader',
-          'Membrane Grayscale Color',
-          'Membrane Grayscale Alpha',
-          'No Particle Shader',
-          'Edge Effect - Inverse',
-          'Affect Skin Only',
-          'Texture Effect - Ignore Alpha',
-          'Texture Effect - Project UVs',
-          'Ignore Base Geometry Alpha',
-          'Texture Effect - Lighting',
-          'Texture Effect - No Weapons',
-          'Use Alpha Sorting',
-          'Prefer Dismembered Limbs',
-          'Unknown 13',
-          'Unknown 14',
-          'Particle Animated',
-          'Particle Grayscale Color',
-          'Particle Grayscale Alpha',
-          'Unknown 18',
-          'Unknown 19',
-          'Unknown 20',
-          'Unknown 21',
-          'Unknown 22',
-          'Unknown 23',
-          'Use Blood Geometry (Weapons Only)'
-        ])),
-        wbFloat('Fill/Texture Effect - Texture Scale (U)'),
-        wbFloat('Fill/Texture Effect - Texture Scale (V)')
-      ]),
+    wbUnion(DNAM, '', wbFormVersionDecider(106), [
       wbStruct('Data (old format)', [
         wbByteArray('Unknown', 1),
         wbInteger('Membrane Shader - Source Blend Mode', itU32, wbBlendModeEnum),
@@ -9805,14 +9624,84 @@ begin
         wbFloat('Fill/Texture Effect - Texture Scale (U)'),
         wbFloat('Fill/Texture Effect - Texture Scale (V)'),
         wbInteger('Scene Graph Emit Depth Limit (unused)', itU16)
+      ]),
+      wbStruct('Data', [
+        wbInteger('Membrane Shader - Source Blend Mode', itU32, wbBlendModeEnum),
+        wbInteger('Membrane Shader - Blend Operation', itU32, wbBlendOpEnum),
+        wbInteger('Membrane Shader - Z Test Function', itU32, wbZTestFuncEnum),
+        wbByteColors('Fill/Texture Effect - Color Key 1'),
+        wbFloat('Fill/Texture Effect - Alpha Fade In Time'),
+        wbFloat('Fill/Texture Effect - Full Alpha Time'),
+        wbFloat('Fill/Texture Effect - Alpha Fade Out Time'),
+        wbFloat('Fill/Texture Effect - Presistent Alpha Ratio'),
+        wbFloat('Fill/Texture Effect - Alpha Pulse Amplitude'),
+        wbFloat('Fill/Texture Effect - Alpha Pulse Frequency'),
+        wbFloat('Fill/Texture Effect - Texture Animation Speed (U)'),
+        wbFloat('Fill/Texture Effect - Texture Animation Speed (V)'),
+        wbFloat('Edge Effect - Fall Off'),
+        wbByteColors('Edge Effect - Color'),
+        wbFloat('Edge Effect - Alpha Fade In Time'),
+        wbFloat('Edge Effect - Full Alpha Time'),
+        wbFloat('Edge Effect - Alpha Fade Out Time'),
+        wbFloat('Edge Effect - Persistent Alpha Ratio'),
+        wbFloat('Edge Effect - Alpha Pulse Amplitude'),
+        wbFloat('Edge Effect - Alpha Pulse Frequency'),
+        wbFloat('Fill/Texture Effect - Full Alpha Ratio'),
+        wbFloat('Edge Effect - Full Alpha Ratio'),
+        wbInteger('Membrane Shader - Dest Blend Mode', itU32, wbBlendModeEnum),
+        wbFloat('Holes Animation - Start Time'),
+        wbFloat('Holes Animation - End Time'),
+        wbFloat('Holes Animation - Start Value'),
+        wbFloat('Holes Animation - End Value'),
+        wbFormIDCk('Ambient Sound', [SNDR, NULL]),
+        wbByteColors('Fill/Texture Effect - Color Key 2'),
+        wbByteColors('Fill/Texture Effect - Color Key 3'),
+        wbInteger('Unknown', itU8),
+        wbStruct('Fill/Texture Effect - Color Key Scale/Time', [
+          wbFloat('Color Key 1 - Scale'),
+          wbFloat('Color Key 2 - Scale'),
+          wbFloat('Color Key 3 - Scale'),
+          wbFloat('Color Key 1 - Time'),
+          wbFloat('Color Key 2 - Time'),
+          wbFloat('Color Key 3 - Time')
+        ]),
+        wbInteger('Flags', itU32, wbFlags([
+          'No Membrane Shader',
+          'Membrane Grayscale Color',
+          'Membrane Grayscale Alpha',
+          'No Particle Shader',
+          'Edge Effect - Inverse',
+          'Affect Skin Only',
+          'Texture Effect - Ignore Alpha',
+          'Texture Effect - Project UVs',
+          'Ignore Base Geometry Alpha',
+          'Texture Effect - Lighting',
+          'Texture Effect - No Weapons',
+          'Use Alpha Sorting',
+          'Prefer Dismembered Limbs',
+          'Unknown 13',
+          'Unknown 14',
+          'Particle Animated',
+          'Particle Grayscale Color',
+          'Particle Grayscale Alpha',
+          'Unknown 18',
+          'Unknown 19',
+          'Unknown 20',
+          'Unknown 21',
+          'Unknown 22',
+          'Unknown 23',
+          'Use Blood Geometry (Weapons Only)'
+        ])),
+        wbFloat('Fill/Texture Effect - Texture Scale (U)'),
+        wbFloat('Fill/Texture Effect - Texture Scale (V)')
       ])
     ], cpNormal, True),
-    wbMODL
+    wbGenericModel
   ]);
 
   wbRecord(ENCH, 'Object Effect', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbFULL,
     wbStruct(ENIT, 'Effect Data', [
       wbInteger('Enchantment Cost', itS32),
@@ -9835,24 +9724,37 @@ begin
     wbEffectsReq
   ]);
 
-  {wbRecord(EYES, 'Eyes', [
-    wbEDID
-  ]);}
+  wbRecord(EYES, 'Eyes',
+    wbFlags(wbRecordFlagsFlags, wbFlagsList([
+      {0x00000004}  2, 'Non-Playable'
+    ])), [
+    wbEDID,
+    wbFULLReq,
+    wbString(ICON, 'Texture', 0, cpNormal, True),
+    wbInteger(DATA, 'Flags', itU8, wbFlags([
+      {0x01}'Playable',
+      {0x02}'Not Male',
+      {0x04}'Not Female',
+      {0x08}'Unknown 4',
+      {0x10}'Unknown 5',
+      {0x20}'Unknown 6',
+      {0x40}'Unknown 7',
+      {0x80}'Unknown 8'
+    ]), cpNormal, True)
+  ]);
+
+  var wbFactionRank :=
+    wbRStructSK([0], 'Rank', [
+      wbInteger(RNAM, 'Rank#', itU32),
+      wbLString(MNAM, 'Male Title', 0, cpTranslate),
+      wbLString(FNAM, 'Female Title', 0, cpTranslate),
+      wbString(INAM, 'Insignia (unused)')
+    ], []);
 
   wbRecord(FACT, 'Faction', [
     wbEDID,
     wbFULL,
-    wbRArrayS('Relations',
-      wbStructSK(XNAM, [0], 'Relation', [
-        wbFormIDCkNoReach('Faction', [FACT, RACE]),
-        wbInteger('Modifier', itS32),
-        wbInteger('Group Combat Reaction', itU32, wbEnum([
-        {0x00000001} 'Neutral',
-        {0x00000002} 'Enemy',
-        {0x00000004} 'Ally',
-        {0x00000008} 'Friend'
-      ]))
-    ])),
+    wbFactionRelations,
     wbStruct(DATA, 'Flags', [
       wbInteger('Flags', itU32, wbFlags([
         {0x00000001} 'Hidden From NPC',
@@ -9892,12 +9794,7 @@ begin
       wbInteger('Escape', itU16),
       wbInteger('Werewolf (unused)', itU16)
     ], cpNormal, False, nil, 7),
-    wbRStructsSK('Ranks', 'Rank', [0], [
-      wbInteger(RNAM, 'Rank#', itU32),
-      wbLString(MNAM, 'Male Title', 0, cpTranslate),
-      wbLString(FNAM, 'Female Title', 0, cpTranslate),
-      wbString(INAM, 'Insignia (unused)')
-    ], []),
+    wbRArrayS('Ranks', wbFactionRank),
     wbFormIDCk(VEND, 'Vendor Buy/Sell List', [FLST]),
     wbFormIDCk(VENC, 'Merchant Container', [REFR]),
     wbStruct(VENV, 'Vendor Values', [
@@ -9917,7 +9814,7 @@ begin
 
   wbRecord(FURN, 'Furniture',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
-      {0x00000004}  2, 'Unknown 2',
+      {0x00000004}  2, 'Has Container',
       {0x00000010}  4, 'Unknown 4',
       {0x00000080}  7, 'Is Perch',
       {0x00002000} 13, 'Unknown 13',
@@ -9930,17 +9827,17 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbDEST,
     wbKSIZ,
     wbKWDAs,
     wbPRPS,
     wbNTRM,
     wbFTYP,
-    wbUnknown(PNAM),
+    wbByteColors(PNAM, 'Marker Color (Unused)'),
     wbFormIDCk(WNAM, 'Drinking Water Type', [WATR]),
     wbATTX,
     wbInteger(FNAM, 'Flags', itU16, wbFlags([
@@ -9982,9 +9879,9 @@ begin
     ])),
     wbString(XMRK, 'Marker Model'),
     wbSNAMMarkerParams,
-    wbNVNM,
     wbAPPR,
-    wbObjectTemplate
+    wbObjectTemplate,
+    wbNVNM
   ], False, nil, cpNormal, False, nil, wbKeywordsAfterSet);
 
   wbRecord(GLOB, 'Global',
@@ -9993,12 +9890,12 @@ begin
     ])), [
     wbEDID,
     wbInteger(FNAM, 'Type', itU8, wbEnum([], [
-             0, 'Unknown 0',
+             0, 'Unknown',
       Ord('s'), 'Short',
       Ord('l'), 'Long',
       Ord('f'), 'Float',
       Ord('b'), 'Boolean'
-    ]), cpNormal, True),
+    ]), cpNormal, True).SetDefaultEditValue('Float'),
     wbFloat(FLTV, 'Value', cpNormal, True)
   ]);
 
@@ -10010,7 +9907,8 @@ begin
       wbFloat('Float'),
       wbInteger('Bool', itU32, wbBoolEnum)
     ], cpNormal, True)
-  ]);
+  ])
+  .IncludeFlag(dfIndexEditorID);
 
   wbRecord(KYWD, 'Keyword',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
@@ -10024,10 +9922,7 @@ begin
     wbFULL,
     wbString(NNAM, 'Display Name') {Legacy record replaced with FULL}
   ]);
-end;
 
-procedure DefineFO4e;
-begin
   wbRecord(LCRT, 'Location Reference Type', [
     wbEDID,
     wbCNAM,
@@ -10048,9 +9943,9 @@ begin
 
   wbRecord(TXST, 'Texture Set', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbRStruct('Textures (RGB/A)', [
-      wbString(TX00, 'Difuse'),
+      wbString(TX00, 'Diffuse'),
       wbString(TX01, 'Normal/Gloss'),
       wbString(TX03, 'Glow'),
       wbString(TX04, 'Height'),
@@ -10058,7 +9953,7 @@ begin
       wbString(TX02, 'Wrinkles'), {TX05 TX02 TX06 Yes this has to go here}
       wbString(TX06, 'Multilayer'),
       wbString(TX07, 'Smooth Spec')
-    ], []),
+    ], []).SetSummaryKey([0]),
     wbDODT,
     wbInteger(DNAM, 'Flags', itU16, wbFlags([
       {0x0001} 'No Specular Map',
@@ -10066,7 +9961,7 @@ begin
       {0x0004} 'Has Model Space Normal Map'
     ]), cpNormal, True),
     wbString(MNAM, 'Material')
-  ]);
+  ]).SetSummaryKey([2, 3]);
 
   wbRecord(HDPT, 'Head Part',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
@@ -10074,7 +9969,7 @@ begin
     ])), [
     wbEDID,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbInteger(DATA, 'Flags', itU8, wbFlags([
       {0x01} 'Playable',
       {0x02} 'Male',
@@ -10098,14 +9993,14 @@ begin
     wbRArrayS('Extra Parts',
       wbFormIDCk(HNAM, 'Part', [HDPT])
     ),
-    wbRStructs('Parts', 'Part', [
+    wbRArray('Parts', wbRStruct('Part', [
       wbInteger(NAM0, 'Part Type', itU32, wbEnum([
         'Race Morph',
         'Tri',
         'Chargen Morph'
       ])),
-      wbString(NAM1, 'Filename', 0, cpTranslate, True)
-    ], []),
+      wbString(NAM1, 'FileName', 0, cpTranslate, True)
+    ], [])),
     wbFormIDCk(TNAM, 'Texture Set', [TXST]),
     wbFormIDCk(CNAM, 'Color', [CLFM]),
     wbFormIDCk(RNAM, 'Valid Races', [FLST]),
@@ -10114,7 +10009,7 @@ begin
 
   wbRecord(ASPC, 'Acoustic Space', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbFormIDCk(SNAM, 'Looping Sound', [SNDR]),
     wbFormIDCk(RDAT, 'Use Sound from Region (Interiors Only)', [REGN]),
     wbFormIDCk(BNAM, 'Environment Type', [REVB]),
@@ -10138,27 +10033,24 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbDEST,
     wbKSIZ,
     wbKWDAs,
     wbPRPS,
-    wbInteger(DATA, 'On Local Map', itU8, wbBoolEnum, cpNormal, True),
+    wbInteger(DATA, 'On Local Map', itU8, wbBoolEnum, cpNormal, True).SetDefaultNativeValue(1),
     wbFormIDCk(SNAM, 'Looping Sound', [SNDR])
   ]);
-end;
 
-procedure DefineFO4f;
-begin
   wbRecord(IDLM, 'Idle Marker',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
       {0x20000000} 29, 'Child Can Use'
     ])), [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbKSIZ,
     wbKWDAs,
     wbInteger(IDLF, 'Flags', itU8, wbFlags([
@@ -10172,14 +10064,14 @@ begin
     wbFloat(IDLT, 'Idle Timer Setting', cpNormal, False),
     wbArray(IDLA, 'Animations', wbFormIDCk('Animation', [IDLE]), 0, nil, wbIDLAsAfterSet, cpNormal, False),
     wbFormIDCk(QNAM, 'Unknown', [KYWD]),
-    wbMODL
+    wbGenericModel
   ], False, nil, cpNormal, False, nil, wbAnimationsAfterSet);
 
   wbRecord(PROJ, 'Projectile', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbDEST,
     wbByteArray(DATA, 'Unused', 0, cpIgnore),
     wbStruct(DNAM, 'Data', [
@@ -10233,17 +10125,17 @@ begin
       wbFormIDCk('VATS Projectile', [PROJ, NULL])
     ]),
     wbRStructSK([0], 'Muzzle Flash Model', [
-      wbString(NAM1, 'Model Filename'),
-      wbByteArray(NAM2, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow)
+      wbString(NAM1, 'Model FileName'),
+      wbModelInfo(NAM2)
     ], [], cpNormal, True),
     wbInteger(VNAM, 'Sound Level', itU32, wbSoundLevelEnum, cpNormal, True)
   ]);
 
   wbRecord(HAZD, 'Hazard', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbFULL,
-    wbMODL,
+    wbGenericModel  ,
     wbFormIDCk(MNAM, 'Image Space Modifier', [IMAD, NULL]),
     wbStruct(DNAM, 'Data', [
       wbInteger('Limit', itU32),
@@ -10271,194 +10163,7 @@ begin
     ])
   ]);
 
-  wbSoulGemEnum := wbEnum([
-    {0} 'None',
-    {1} 'Petty',
-    {2} 'Lesser',
-    {3} 'Common',
-    {4} 'Greater',
-    {5} 'Grand'
-  ]);
-
-  {wbRecord(SLGM, 'Soul Gem', [
-    wbEDID
-  ]);}
-
   if wbSimpleRecords then begin
-    wbRecord(NAVM, 'Navigation Mesh',
-      wbFlags(wbRecordFlagsFlags, wbFlagsList([
-        {0x00040000} 18, 'Compressed',
-        {0x04000000} 26, 'AutoGen',
-        {0x80000000} 31, 'Unknown 31'
-      ]), [18]), [
-      wbEDID,
-      wbNVNM,
-//      wbStruct(NVNM, 'Geometry', [
-//        wbByteArray('Unknown', 8),
-//        wbFormIDCk('Parent Worldspace', [WRLD, NULL]),
-//        wbUnion('Parent', wbNVNMParentDecider, [
-//          wbStruct('Coordinates', [
-//            wbInteger('Grid Y', itS16),
-//            wbInteger('Grid X', itS16)
-//          ]),
-//          wbFormIDCk('Parent Cell', [CELL])
-//        ]),
-//        wbArray('Vertices', wbByteArray('Vertex', 12), -1),
-//        wbArray('Triangles', wbByteArray('Triangle', 21), -1),
-//        wbArray('Edge Links',
-//          wbStruct('Edge Link', [
-//            wbByteArray('Unknown', 4),
-//            wbFormIDCk('Mesh', [NAVM]),
-//            wbInteger('Triangle', itS16),
-//            wbInteger('Unknown', itU8)
-//          ])
-//        , -1),
-//        wbArray('Door Triangles',
-//          wbStruct('Door Triangle', [
-//            wbInteger('Triangle before door', itS16),
-//            wbByteArray('Unknown', 4),
-//            wbFormIDCk('Door', [REFR])
-//          ])
-//        , -1),
-//        wbUnknown
-//      ]),
-      wbUnknown(ONAM),
-      wbUnknown(NNAM),
-      wbUnknown(MNAM)
-    ], False, wbNAVMAddInfo);
-
-  end else begin
-
-    wbRecord(NAVM, 'Navigation Mesh',
-      wbFlags(wbRecordFlagsFlags, wbFlagsList([
-        {0x00040000} 18, 'Compressed',
-        {0x04000000} 26, 'AutoGen'
-      ]), [18]), [
-      wbEDID,
-      wbNVNM,
-//      wbStruct(NVNM, 'Geometry', [
-//        wbInteger('Unknown', itU32),
-//        wbByteArray('Unknown', 4),
-//        wbFormIDCk('Parent Worldspace', [WRLD, NULL]),
-//        wbUnion('Parent', wbNVNMParentDecider, [
-//          wbStruct('Coordinates', [
-//            wbInteger('Grid Y', itS16),
-//            wbInteger('Grid X', itS16)
-//          ]),
-//          wbFormIDCk('Parent Cell', [CELL])
-//        ]),
-//        wbArray('Vertices', wbStruct('Vertex', [
-//          wbFloat('X'),
-//          wbFloat('Y'),
-//          wbFloat('Z')
-//        ]), -1),
-//        wbArray('Triangles',
-//          wbStruct('Triangle', [
-//            wbInteger('Vertex 0', itS16),
-//            wbInteger('Vertex 1', itS16),
-//            wbInteger('Vertex 2', itS16),
-//            wbInteger('Edge 0-1', itS16),
-//            wbInteger('Edge 1-2', itS16),
-//            wbInteger('Edge 2-0', itS16),
-//            wbFloat('Height'),
-//            wbByteArray('Unknown', 5)
-//          ])
-//        , -1),
-//        wbArray('Edge Links',
-//          wbStruct('Edge Link', [
-//            wbByteArray('Unknown', 4),
-//            wbFormIDCk('Mesh', [NAVM]),
-//            wbInteger('Triangle', itS16),
-//            wbInteger('Unknown', itU8)
-//          ])
-//        , -1),
-//        wbArray('Door Triangles',
-//          wbStruct('Door Triangle', [
-//            wbInteger('Triangle before door', itS16),
-//            wbByteArray('Unknown', 4),
-//            wbFormIDCk('Door', [REFR])
-//          ])
-//        , -1),
-//        wbUnknown
-//      ]),
-      wbFormID(ONAM),
-      wbArray(NNAM, 'Unknown', wbInteger('Unknown', itU16)),
-      wbUnion(MNAM, 'Unknown', wbSubrecordSizeDecider, [wbNull,
-        wbStruct('Unknown', [
-          wbFormID('Unknown'),
-          wbInteger('Unknown', itU16),
-          //wbInteger('Unused', itU16),
-          wbUnknown
-        ])
-      ])
-    ], False, wbNAVMAddInfo);
-
-  end;
-
-  if wbAdvancedNavi then begin
-
-    wbRecord(NAVI, 'Navigation Mesh Info Map', [
-      wbEDID,
-      wbInteger(NVER, 'Version', itU32),
-      wbRArray('Navigation Map Infos',
-        wbStruct(NVMI, 'Navigation Map Info', [
-          wbFormIDCk('Navigation Mesh', [NAVM]),
-          wbByteArray('Unknown', 4),
-          wbFloat('X'),
-          wbFloat('Y'),
-          wbFloat('Z'),
-          wbInteger('Preferred Merges Flag', itU32),
-          wbArray('Merged To', wbFormIDCk('Mesh', [NAVM]), -1),
-          wbArray('Preferred Merges', wbFormIDCk('Mesh', [NAVM]), -1),
-          wbArray('Linked Doors', wbStruct('Door', [
-            wbByteArray('Unknown', 4),
-            wbFormIDCk('Door Ref', [REFR])
-          ]), -1),
-          wbInteger('Is Island', itU8, wbBoolEnum),
-          wbUnion('Island', wbNAVIIslandDataDecider, [
-            wbNull,
-            wbStruct('Island Data', [
-              wbFloat('Min X'),
-              wbFloat('Min Y'),
-              wbFloat('Min Z'),
-              wbFloat('Max X'),
-              wbFloat('Max Y'),
-              wbFloat('Max Z'),
-              wbArray('Triangles',
-                wbStruct('Triangle', [
-                  wbArray('Vertices', wbInteger('Vertex', itS16), 3)
-                ])
-              , -1),
-              wbArray('Vertices', wbStruct('Vertex', [
-                wbFloat('X'),
-                wbFloat('Y'),
-                wbFloat('Z')
-              ]), -1)
-            ])
-          ]),
-          wbByteArray('Unknown', 4),
-          wbFormIDCk('Parent Worldspace', [WRLD, NULL]),
-          wbUnion('Parent', wbNAVIParentDecider, [
-            wbStruct('Coordinates', [
-              wbInteger('Grid Y', itS16),
-              wbInteger('Grid X', itS16)
-            ]),
-            wbFormIDCk('Parent Cell', [CELL])
-          ])
-        ])
-      ),
-      wbStruct(NVPP, 'Preferred Pathing', [
-        wbArray('NavMeshes', wbArray('Set', wbFormIDCk('', [NAVM]), -1), -1),
-        wbArray('NavMesh Tree?', wbStruct('', [
-          wbFormIDCk('NavMesh', [NAVM]),
-          wbInteger('Index/Node', itU32)
-        ]), -1)
-      ]),
-      wbArray(NVSI, 'Unknown', wbFormIDCk('Navigation Mesh', [NAVM]))
-    ]);
-
-  end
-  else begin
 
     wbRecord(NAVI, 'Navigation Mesh Info Map', [
       wbEDID,
@@ -10482,14 +10187,16 @@ begin
               wbArray('Vertices', wbByteArray('Vertex', 12), -1)
             ])
           ]),
-          wbByteArray('Unknown', 4),
-          wbFormIDCk('Parent Worldspace', [WRLD, NULL]),
-          wbUnion('Parent', wbNAVIParentDecider, [
-            wbStruct('Coordinates', [
-              wbInteger('Grid Y', itS16),
-              wbInteger('Grid X', itS16)
-            ]),
-            wbFormIDCk('Parent Cell', [CELL])
+          wbStruct('Pathing Cell', [
+            wbInteger('CRC Hash', itU32, wbCRCValuesEnum).SetDefaultEditValue('3C A0 E9 A5'),
+            wbFormIDCk('Parent Worldspace', [WRLD, NULL]),
+            wbUnion('Parent', wbNAVIParentDecider, [
+              wbStruct('Coordinates', [
+                wbInteger('Grid Y', itS16),
+                wbInteger('Grid X', itS16)
+              ]),
+              wbFormIDCk('Parent Cell', [CELL])
+            ])
           ])
         ])
       ),
@@ -10504,18 +10211,103 @@ begin
       wbUnknown(NVSI)
     ]);
 
+    wbRecord(NAVM, 'Navigation Mesh',
+      wbFlags(wbRecordFlagsFlags, wbFlagsList([
+        {0x00040000} 18, 'Compressed',
+        {0x04000000} 26, 'AutoGen',
+        {0x80000000} 31, 'Unknown 31'
+      ]), [18]), [
+      wbEDID,
+      wbNVNM,
+      wbFormID(ONAM),
+      wbUnknown(NNAM),
+      wbMNAMNAVM
+    ], False, wbNAVMAddInfo);
+
+  end else begin
+
+    wbRecord(NAVI, 'Navigation Mesh Info Map', [
+      wbEDID,
+      wbInteger(NVER, 'Version', itU32),
+      wbRArray('Navigation Map Infos',
+        wbStruct(NVMI, 'Navigation Map Info', [
+          wbFormIDCk('Navigation Mesh', [NAVM]),
+          wbByteArray('Unknown 1', 4), //Only the first byte is used
+          wbFloat('X'),
+          wbFloat('Y'),
+          wbFloat('Z'),
+          wbFloat('Unknown float 2'),
+          //wbInteger('Preferred Merges Flag', itU32),
+          wbArray('Merged To', wbFormIDCk('Mesh', [NAVM]), -1),
+          wbArray('Preferred Merges', wbFormIDCk('Mesh', [NAVM]), -1),
+          wbArray('Linked Doors', wbStruct('Door', [
+            wbInteger('Door Type', itu32, wbNavmeshDoorTypeEnum),
+            wbFormIDCk('Door Ref', [REFR])
+          ]), -1),
+          wbInteger('Is Island', itU8, wbBoolEnum),
+          wbUnion('Island', wbNAVIIslandDataDecider, [
+            wbNull,
+            wbStruct('Island Data', [
+              wbFloat('Min X'),
+              wbFloat('Min Y'),
+              wbFloat('Min Z'),
+              wbFloat('Max X'),
+              wbFloat('Max Y'),
+              wbFloat('Max Z'),
+              wbArray('Triangles',
+                wbStruct('Triangle', [
+                  wbArray('Vertices', wbInteger('Vertex', itS16), 3)
+                ])
+              , -1),
+              wbArray('Vertices', wbStruct('Vertex', [
+                wbFloat('X'),
+                wbFloat('Y'),
+                wbFloat('Z')
+              ]).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3), -1)
+            ])
+          ]),
+          wbStruct('Pathing Cell', [
+            wbInteger('CRC Hash', itU32, wbCRCValuesEnum).SetDefaultEditValue('3C A0 E9 A5'),
+            wbFormIDCk('Parent Worldspace', [WRLD, NULL]),
+            wbUnion('Parent', wbNAVIParentDecider, [
+              wbStruct('Coordinates', [
+                wbInteger('Grid Y', itS16),
+                wbInteger('Grid X', itS16)
+              ]),
+              wbFormIDCk('Parent Cell', [CELL])
+            ])
+          ])
+        ])
+      ),
+      wbStruct(NVPP, 'Preferred Pathing', [
+        wbArray('NavMeshes', wbArray('Set', wbFormIDCk('', [NAVM]), -1), -1),
+        wbArray('NavMesh Tree?', wbStruct('', [
+          wbFormIDCk('NavMesh', [NAVM]),
+          wbInteger('Index/Node', itU32)
+        ]), -1)
+      ]),
+      wbArray(NVSI, 'Unknown', wbFormIDCk('Navigation Mesh', [NAVM]))
+    ]);
+
+    wbRecord(NAVM, 'Navigation Mesh',
+      wbFlags(wbRecordFlagsFlags, wbFlagsList([
+        {0x00040000} 18, 'Compressed',
+        {0x04000000} 26, 'AutoGen'
+      ]), [18]), [
+      wbEDID,
+      wbNVNM,
+      wbFormID(ONAM),
+      wbArray(NNAM, 'Unknown', wbInteger('Unknown', itU16)),
+      wbMNAMNAVM
+    ], False, wbNAVMAddInfo);
+
   end;
 
-end;
-
-procedure DefineFO4g;
-begin
-
-   wbRecord(EXPL, 'Explosion', [
+  wbRecord(EXPL, 'Explosion', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbEITM,
     wbFormIDCk(MNAM, 'Image Space Modifier', [IMAD]),
     wbStruct(DATA, 'Data', [
@@ -10527,13 +10319,10 @@ begin
       wbFormIDCk('Spawn Projectile', [PROJ, NULL]),
       wbFloat('Force'),
       wbFloat('Damage'),
-      wbFloat('Inner Radius'),
+      wbFromVersion(97, wbFloat('Inner Radius')),
       wbFloat('Outer Radius'),
       wbFloat('IS Radius'),
-      wbUnion('Vertical Offset Mult', wbDeciderFormVersion99, [
-        wbByteArray('Unknown', 4),
-        wbFloat('Vertical Offset Mult')
-      ]),
+      wbFloat('Vertical Offset Mult'),
       wbInteger('Flags', itU32, wbFlags([
         {0x00000001} 'Unknown 0',
         {0x00000002} 'Always Uses World Orientation',
@@ -10548,41 +10337,51 @@ begin
         {0x00000400} 'Skip Underwater Tests'
       ])),
       wbInteger('Sound Level', itU32, wbSoundLevelEnum),
-      wbFloat('Placed Object AutoFade Delay'),
-      wbInteger('Stagger', itU32, wbEnum([
+      wbFromVersion(70, wbFloat('Placed Object AutoFade Delay')),
+      wbFromVersion(91, wbInteger('Stagger', itU32, wbEnum([
         'None',
         'Small',
         'Medium',
         'Large',
         'Extra Large'
-      ])),
-      wbStruct('Spawn', [
+      ]))),
+      wbFromVersion(112, wbStruct('Spawn', [
         wbFloat('X'),
         wbFloat('Y'),
         wbFloat('Z'),
         wbFloat('Spread Degrees'),
         wbInteger('Count', itU32)
-      ])
+      ]))
     ], cpNormal, True, nil, 13)
   ]);
 
   wbRecord(DEBR, 'Debris', [
     wbEDID,
-    wbRStructs('Models', 'Model', [
-      wbStruct(DATA, 'Data', [
-        wbInteger('Percentage', itU8),
-        wbString('Model Filename'),
-        wbInteger('Flags', itU8, wbFlags([
-          'Has Collision Data'
-        ]))
-      ], cpNormal, True),
-      wbMODT
-    ], [], cpNormal, True)
+    wbRArray('Models', wbDebrisModel(wbMODT), cpNormal, True)
   ]);
 
   wbRecord(IMGS, 'Image Space', [
     wbEDID,
-    wbByteArray(ENAM, 'Unused', 0, cpIgnore),
+    wbStruct(ENAM, 'Image Space Data', [
+      wbStruct('HDR', [
+        wbFloat('Eye Adapt Speed'),
+        wbFloat('Tonemap E'),
+        wbFloat('Bloom Threshold'),
+        wbFloat('Bloom Scale'),
+        wbFloat('Auto Exposure Min/Max'),
+        wbFloat('Sunlight Scale'),
+        wbFloat('Sky Scale')
+      ]),
+      wbStruct('Cinematic', [
+        wbFloat('Saturation'),
+        wbFloat('Brightness'),
+        wbFloat('Contrast')
+      ]),
+      wbStruct('Tint', [
+        wbFloat('Amount'),
+        wbFloatColors('Color')
+      ])
+    ]),
     wbStruct(HNAM, 'HDR', [
       wbFloat('Eye Adapt Speed'),
       wbFloat('Tonemap E'),
@@ -10633,169 +10432,125 @@ begin
     wbString(TX00, 'LUT')
   ]);
 
-  wbTimeInterpolator := wbStruct('Data', [
-    wbFloat('Time'),
-    wbFloat('Value')
-  ]);
-
-  wbColorInterpolator := wbStruct('Data', [
-    wbFloat('Time'),
-    wbFloat('Red', cpNormal, False, 255, 0),
-    wbFloat('Green', cpNormal, False, 255, 0),
-    wbFloat('Blue', cpNormal, False, 255, 0),
-    wbFloat('Alpha', cpNormal, False, 255, 0)
-  ]);
-
   wbRecord(IMAD, 'Image Space Adapter', [
     wbEDID,
-    wbStruct(DNAM, 'Data Count', [
-      wbInteger('Flags', itU32, wbFlags(['Animatable'])),
+    wbStruct(DNAM, 'Data', [
+      wbInteger('Animatable', itU32, wbBoolEnum),
       wbFloat('Duration'),
       wbStruct('HDR', [
-        wbInteger('Eye Adapt Speed Mult', itU32),
-        wbInteger('Eye Adapt Speed Add', itU32),
-        wbInteger('Bloom Blur Radius Mult', itU32),
-        wbInteger('Bloom Blur Radius Add', itU32),
-        wbInteger('Bloom Threshold Mult', itU32),
-        wbInteger('Bloom Threshold Add', itU32),
-        wbInteger('Bloom Scale Mult', itU32),
-        wbInteger('Bloom Scale Add', itU32),
-        wbInteger('Target Lum Min Mult', itU32),
-        wbInteger('Target Lum Min Add', itU32),
-        wbInteger('Target Lum Max Mult', itU32),
-        wbInteger('Target Lum Max Add', itU32),
-        wbInteger('Sunlight Scale Mult', itU32),
-        wbInteger('Sunlight Scale Add', itU32),
-        wbInteger('Sky Scale Mult', itU32),
-        wbInteger('Sky Scale Add', itU32)
+        wbInteger('Eye Adapt Speed Mult Count', itU32),
+        wbInteger('Eye Adapt Speed Add Count', itU32),
+        wbInteger('Bloom Blur Radius Mult Count', itU32),
+        wbInteger('Bloom Blur Radius Add Count', itU32),
+        wbInteger('Bloom Threshold Mult Count', itU32),
+        wbInteger('Bloom Threshold Add Count', itU32),
+        wbInteger('Bloom Scale Mult Count', itU32),
+        wbInteger('Bloom Scale Add Count', itU32),
+        wbInteger('Target Lum Min Mult Count', itU32),
+        wbInteger('Target Lum Min Add Count', itU32),
+        wbInteger('Target Lum Max Mult Count', itU32),
+        wbInteger('Target Lum Max Add Count', itU32),
+        wbInteger('Sunlight Scale Mult Count', itU32),
+        wbInteger('Sunlight Scale Add Count', itU32),
+        wbInteger('Sky Scale Mult Count', itU32),
+        wbInteger('Sky Scale Add Count', itU32)
       ]),
-      wbInteger('Unknown08 Mult', itU32),
-      wbInteger('Unknown48 Add', itU32),
-      wbInteger('Unknown09 Mult', itU32),
-      wbInteger('Unknown49 Add', itU32),
-      wbInteger('Unknown0A Mult', itU32),
-      wbInteger('Unknown4A Add', itU32),
-      wbInteger('Unknown0B Mult', itU32),
-      wbInteger('Unknown4B Add', itU32),
-      wbInteger('Unknown0C Mult', itU32),
-      wbInteger('Unknown4C Add', itU32),
-      wbInteger('Unknown0D Mult', itU32),
-      wbInteger('Unknown4D Add', itU32),
-      wbInteger('Unknown0E Mult', itU32),
-      wbInteger('Unknown4E Add', itU32),
-      wbInteger('Unknown0F Mult', itU32),
-      wbInteger('Unknown4F Add', itU32),
-      wbInteger('Unknown10 Mult', itU32),
-      wbInteger('Unknown50 Add', itU32),
+      wbInteger('Unused08 Mult Count', itU32),
+      wbInteger('Unused48 Add Count', itU32),
+      wbInteger('Unused09 Mult Count', itU32),
+      wbInteger('Unused49 Add Count', itU32),
+      wbInteger('Unused0A Mult Count', itU32),
+      wbInteger('Unused4A Add Count', itU32),
+      wbInteger('Unused0B Mult Count', itU32),
+      wbInteger('Unused4B Add Count', itU32),
+      wbInteger('Unused0C Mult Count', itU32),
+      wbInteger('Unused4C Add Count', itU32),
+      wbInteger('Unused0D Mult Count', itU32),
+      wbInteger('Unused4D Add Count', itU32),
+      wbInteger('Unused0E Mult Count', itU32),
+      wbInteger('Unused4E Add Count', itU32),
+      wbInteger('Unused0F Mult Count', itU32),
+      wbInteger('Unused4F Add Count', itU32),
+      wbInteger('Unused10 Mult Count', itU32),
+      wbInteger('Unused50 Add Count', itU32),
       wbStruct('Cinematic', [
-        wbInteger('Saturation Mult', itU32),
-        wbInteger('Saturation Add', itU32),
-        wbInteger('Brightness Mult', itU32),
-        wbInteger('Brightness Add', itU32),
-        wbInteger('Contrast Mult', itU32),
-        wbInteger('Contrast Add', itU32)
+        wbInteger('Saturation Mult Count', itU32),
+        wbInteger('Saturation Add Count', itU32),
+        wbInteger('Brightness Mult Count', itU32),
+        wbInteger('Brightness Add Count', itU32),
+        wbInteger('Contrast Mult Count', itU32),
+        wbInteger('Contrast Add Count', itU32),
+        wbInteger('Unused14 Mult Count', itU32),
+        wbInteger('Unused54 Add Count', itU32)
       ]),
-      wbInteger('Unknown14 Mult', itU32),
-      wbInteger('Unknown54 Add', itU32),
-      wbInteger('Tint Color', itU32),
-      wbInteger('Blur Radius', itU32),
-      wbInteger('Double Vision Strength', itU32),
-      wbInteger('Radial Blur Strength', itU32),
-      wbInteger('Radial Blur Ramp Up', itU32),
-      wbInteger('Radial Blur Start', itU32),
-      wbInteger('Radial Blur Flags', itU32, wbFlags(['Use Target'])),
+      wbInteger('Tint Color Count', itU32),
+      wbInteger('Blur Radius Count', itU32),
+      wbInteger('Double Vision Strength Count', itU32),
+      wbInteger('Radial Blur Strength Count', itU32),
+      wbInteger('Radial Blur Ramp Up Count', itU32),
+      wbInteger('Radial Blur Start Count', itU32),
+      wbInteger('Radial Blur Use Target', itU32, wbBoolEnum),
       wbFloat('Radial Blur Center X'),
       wbFloat('Radial Blur Center Y'),
-      wbInteger('DoF Strength', itU32),
-      wbInteger('DoF Distance', itU32),
-      wbInteger('DoF Range', itU32),
-      wbInteger('DoF Flags', itU32, wbFlags([
-        {0x00000001} 'Use Target',
-        {0x00000002} 'Unknown 2',
-        {0x00000004} 'Unknown 3',
-        {0x00000008} 'Unknown 4',
-        {0x00000010} 'Unknown 5',
-        {0x00000020} 'Unknown 6',
-        {0x00000040} 'Unknown 7',
-        {0x00000080} 'Unknown 8',
-        {0x00000100} 'Mode - Front',
-        {0x00000200} 'Mode - Back',
-        {0x00000400} 'No Sky',
-        {0x00000800} 'Blur Radius Bit 2',
-        {0x00001000} 'Blur Radius Bit 1',
-        {0x00002000} 'Blur Radius Bit 0'
+      wbInteger('DoF Strength Count', itU32),
+      wbInteger('DoF Distance Count', itU32),
+      wbInteger('DoF Range Count', itU32),
+      wbInteger('DoF Use Target', itU8, wbBoolEnum),
+      wbInteger('DoF Flags', itU8, wbFlags([
+        {0x00000001} 'Mode - Front',
+        {0x00000002} 'Mode - Back',
+        {0x00000004} 'No Sky',
+        {0x00000008} 'Blur Radius Bit 2',
+        {0x00000010} 'Blur Radius Bit 1',
+        {0x00000020} 'Blur Radius Bit 0'
       ])),
-      wbInteger('Radial Blur Ramp Down', itU32),
-      wbInteger('Radial Blur Down Start', itU32),
-      wbInteger('Fade Color', itU32),
-      wbInteger('Motion Blur Strength', itU32),
-      wbUnknown
+      wbInteger('Unused', itU16),
+      wbInteger('Radial Blur Ramp Down Count', itU32),
+      wbInteger('Radial Blur Down Start Count', itU32),
+      wbInteger('Fade Color Count', itU32),
+      wbInteger('Motion Blur Strength Count', itU32),
+      wbFromSize(248, wbInteger('Vignette Radius Count', itU32)),
+      wbFromSize(252, wbInteger('Vignette Strength Count', itU32))
     ]),
-    wbArray(BNAM, 'Blur Radius', wbTimeInterpolator),
-    wbArray(VNAM, 'Double Vision Strength', wbTimeInterpolator),
+    wbTimeInterpolators(BNAM, 'Blur Radius'),
+    wbTimeInterpolators(VNAM, 'Double Vision Strength'),
     wbArray(TNAM, 'Tint Color', wbColorInterpolator),
     wbArray(NAM3, 'Fade Color', wbColorInterpolator),
     wbRStruct('Radial Blur', [
-      wbArray(RNAM, 'Strength', wbTimeInterpolator),
-      wbArray(SNAM, 'RampUp', wbTimeInterpolator),
-      wbArray(UNAM, 'Start', wbTimeInterpolator),
-      wbArray(NAM1, 'RampDown', wbTimeInterpolator),
-      wbArray(NAM2, 'DownStart', wbTimeInterpolator)
+      wbTimeInterpolators(RNAM, 'Strength'),
+      wbTimeInterpolators(SNAM, 'Ramp Up'),
+      wbTimeInterpolators(UNAM, 'Start'),
+      wbTimeInterpolators(NAM1, 'Ramp Down'),
+      wbTimeInterpolators(NAM2, 'Down Start')
     ], []),
     wbRStruct('Depth of Field', [
-      wbArray(WNAM, 'Strength', wbTimeInterpolator),
-      wbArray(XNAM, 'Distance', wbTimeInterpolator),
-      wbArray(YNAM, 'Range', wbTimeInterpolator),
-      wbArray(NAM5, 'Vignette Radius', wbTimeInterpolator),
-      wbArray(NAM6, 'Vignette Strength', wbTimeInterpolator)
+      wbTimeInterpolators(WNAM, 'Strength'),
+      wbTimeInterpolators(XNAM, 'Distance'),
+      wbTimeInterpolators(YNAM, 'Range'),
+      wbTimeInterpolators(NAM5, 'Vignette Radius'),
+      wbTimeInterpolators(NAM6, 'Vignette Strength')
     ], []),
-    wbArray(NAM4, 'Motion Blur Strength', wbTimeInterpolator),
+    wbTimeInterpolators(NAM4, 'Motion Blur Strength'),
     wbRStruct('HDR', [
-      wbArray(_00_IAD, 'Eye Adapt Speed Mult', wbTimeInterpolator),
-      wbArray(_40_IAD, 'Eye Adapt Speed Add', wbTimeInterpolator),
-      wbArray(_01_IAD, 'Bloom Blur Radius Mult', wbTimeInterpolator),
-      wbArray(_41_IAD, 'Bloom Blur Radius Add', wbTimeInterpolator),
-      wbArray(_02_IAD, 'Bloom Threshold Mult', wbTimeInterpolator),
-      wbArray(_42_IAD, 'Bloom Threshold Add', wbTimeInterpolator),
-      wbArray(_03_IAD, 'Bloom Scale Mult', wbTimeInterpolator),
-      wbArray(_43_IAD, 'Bloom Scale Add', wbTimeInterpolator),
-      wbArray(_04_IAD, 'Target Lum Min Mult', wbTimeInterpolator),
-      wbArray(_44_IAD, 'Target Lum Min Add', wbTimeInterpolator),
-      wbArray(_05_IAD, 'Target Lum Max Mult', wbTimeInterpolator),
-      wbArray(_45_IAD, 'Target Lum Max Add', wbTimeInterpolator),
-      wbArray(_06_IAD, 'Sunlight Scale Mult', wbTimeInterpolator),
-      wbArray(_46_IAD, 'Sunlight Scale Add', wbTimeInterpolator),
-      wbArray(_07_IAD, 'Sky Scale Mult', wbTimeInterpolator),
-      wbArray(_47_IAD, 'Sky Scale Add', wbTimeInterpolator)
+      wbTimeInterpolatorsMultAdd(_00_IAD, _40_IAD, 'Eye Adapt Speed'),
+      wbTimeInterpolatorsMultAdd(_01_IAD, _41_IAD, 'Bloom Blur Radius'),
+      wbTimeInterpolatorsMultAdd(_02_IAD, _42_IAD, 'Bloom Threshold'),
+      wbTimeInterpolatorsMultAdd(_03_IAD, _43_IAD, 'Bloom Scale'),
+      wbTimeInterpolatorsMultAdd(_04_IAD, _44_IAD, 'Target Lum Min'),
+      wbTimeInterpolatorsMultAdd(_05_IAD, _45_IAD, 'Target Lum Max'),
+      wbTimeInterpolatorsMultAdd(_06_IAD, _46_IAD, 'Sunlight Scale'),
+      wbTimeInterpolatorsMultAdd(_07_IAD, _47_IAD, 'Sky Scale')
     ], []),
-    wbUnknown(_08_IAD),
-    wbUnknown(_48_IAD),
-    wbUnknown(_09_IAD),
-    wbUnknown(_49_IAD),
-    wbUnknown(_0A_IAD),
-    wbUnknown(_4A_IAD),
-    wbUnknown(_0B_IAD),
-    wbUnknown(_4B_IAD),
-    wbUnknown(_0C_IAD),
-    wbUnknown(_4C_IAD),
-    wbUnknown(_0D_IAD),
-    wbUnknown(_4D_IAD),
-    wbUnknown(_0E_IAD),
-    wbUnknown(_4E_IAD),
-    wbUnknown(_0F_IAD),
-    wbUnknown(_4F_IAD),
-    wbUnknown(_10_IAD),
-    wbUnknown(_50_IAD),
-    wbRStruct('Cinematic', [
-      wbArray(_11_IAD, 'Saturation Mult', wbTimeInterpolator),
-      wbArray(_51_IAD, 'Saturation Add', wbTimeInterpolator),
-      wbArray(_12_IAD, 'Brightness Mult', wbTimeInterpolator),
-      wbArray(_52_IAD, 'Brightness Add', wbTimeInterpolator),
-      wbArray(_13_IAD, 'Contrast Mult', wbTimeInterpolator),
-      wbArray(_53_IAD, 'Contrast Add', wbTimeInterpolator)
-    ], []),
-    wbUnknown(_14_IAD),
-    wbUnknown(_54_IAD)
+    wbTimeInterpolatorsMultAdd(_08_IAD, _48_IAD, 'Unused'),
+    wbTimeInterpolatorsMultAdd(_09_IAD, _49_IAD, 'Unused'),
+    wbTimeInterpolatorsMultAdd(_0A_IAD, _4A_IAD, 'Unused'),
+    wbTimeInterpolatorsMultAdd(_0B_IAD, _4B_IAD, 'Unused'),
+    wbTimeInterpolatorsMultAdd(_0C_IAD, _4C_IAD, 'Unused'),
+    wbTimeInterpolatorsMultAdd(_0D_IAD, _4D_IAD, 'Unused'),
+    wbTimeInterpolatorsMultAdd(_0E_IAD, _4E_IAD, 'Unused'),
+    wbTimeInterpolatorsMultAdd(_0F_IAD, _4F_IAD, 'Unused'),
+    wbTimeInterpolatorsMultAdd(_10_IAD, _50_IAD, 'Unused'),
+    wbCinematicIMAD
   ]);
 
   wbRecord(FLST, 'FormID List', [
@@ -10803,6 +10558,102 @@ begin
     wbFULL,
     wbRArrayS('FormIDs', wbFormID(LNAM, 'FormID'), cpNormal, False, nil, nil, nil, wbFLSTLNAMIsSorted)
   ]);
+
+  var wbPerkConditions :=
+    wbRStructSK([0], 'Perk Condition', [
+      wbInteger(PRKC, 'Run On (Tab Index)', itS8{, wbPRKCToStr, wbPRKCToInt}),
+      wbCTDAsReq
+    ], [], cpNormal, False{, nil, nil, wbPERKPRKCDontShow});
+
+  var wbPerkEffect :=
+    wbRStructSK([0, 1], 'Effect', [
+    wbStructSK(PRKE, [1, 2, 0], 'Header', [
+      wbPerkEffectType(wbPERKPRKETypeAfterSet),
+      wbInteger('Rank', itU8),
+      wbInteger('Priority', itU8)
+    ]),
+    wbUnion(DATA, 'Effect Data', wbPerkDATADecider, [
+      wbStructSK([0, 1], 'Quest + Stage', [
+        wbFormIDCk('Quest', [QUST]),
+        wbInteger('Quest Stage', itU16, wbPerkDATAQuestStageToStr, wbQuestStageToInt)
+      ]),
+      wbFormIDCk('Ability', [SPEL]),
+      wbStructSK([0, 1], 'Entry Point', [
+        wbInteger('Entry Point', itU8, wbEntryPointsEnum, cpNormal, True, nil{, wbPERKEntryPointAfterSet}),
+        wbInteger('Function', itU8, wbEnum([
+          {0} 'Unknown 0',
+          {1} 'Set Value', // EPFT=1
+          {2} 'Add Value', // EPFT=1
+          {3} 'Multiply Value', // EPFT=1
+          {4} 'Add Range To Value', // EPFT=2
+          {5} 'Add Actor Value Mult', // EPFT=2
+          {6} 'Absolute Value', // no params
+          {7} 'Negative Absolute Value', // no params
+          {8} 'Add Leveled List', // EPFT=3
+          {9} 'Add Activate Choice', // EPFT=4
+         {10} 'Select Spell', // EPFT=5
+         {11} 'Select Text', // EPFT=6
+         {12} 'Set to Actor Value Mult', // EPFT=2
+         {13} 'Multiply Actor Value Mult', // EPFT=2
+         {14} 'Multiply 1 + Actor Value Mult', // EPFT=2
+         {15} 'Set Text' // EPFT=7
+        ])),
+        wbInteger('Perk Condition Tab Count', itU8, nil, cpIgnore)
+      ])
+    ], cpNormal, True),
+
+    wbRArrayS('Perk Conditions', wbPerkConditions),
+
+    wbRStruct('Function Parameters', [
+      wbInteger(EPFT, 'Type', itU8, wbEnum([
+        {0} 'None',
+        {1} 'Float',
+        {2} 'Float/AV,Float',
+        {3} 'LVLI',
+        {4} 'SPEL,lstring,flags',
+        {5} 'SPEL',
+        {6} 'string',
+        {7} 'lstring',
+        {8} 'AVIF'
+      ])),
+      // case(EPFT) of
+      // 1: EPFD=float
+      // 2: EPFD=float,float
+      // 3: EPFD=LVLI
+      // 4: EPFD=SPEL, EPF2=lstring, EPF3=int32 flags
+      // 5: EPFD=SPEL
+      // 6: EPFD=string
+      // 7: EPFD=lstring
+
+      wbInteger(EPFB, 'Perk Entry ID (unique)', itU16),
+      wbLString(EPF2, 'Button Label', 0, cpTranslate),
+      // keeping as struct to be similar to tes5 format
+      wbStruct(EPF3, 'Script Flags', [
+        wbInteger('Script Flags', itU16, wbFlags([
+          'Run Immediately',
+          'Replace Default'
+        ]))
+      ]),
+      wbUnion(EPFD, 'Data', wbEPFDDecider, [
+        {0} wbByteArray('Unknown'),
+        {1} wbFloat('Float'),
+        {2} wbStruct('Float, Float', [
+              wbFloat('Float 1'),
+              wbFloat('Float 2')
+            ]),
+        {3} wbFormIDCk('Leveled Item', [LVLI]),
+        {4} wbFormIDCk('Spell', [SPEL]),
+        {5} wbFormIDCk('Spell', [SPEL]),
+        {6} wbString('Text', 0, cpTranslate),
+        {7} wbLString('Text', 0, cpTranslate),
+        {8} wbStruct('Actor Value, Float', [
+              wbActorValue, // wbInteger('Actor Value', itU32, wbEPFDActorValueToStr, wbEPFDActorValueToInt),
+              wbFloat('Float')
+            ])
+      ], cpNormal, False{, wbEPFDDontShow})
+    ], [], cpNormal, False{, wbPERKPRKCDontShow}),
+    wbEmpty(PRKF, 'End Marker', cpIgnore, True)
+  ], []);
 
   wbRecord(PERK, 'Perk',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
@@ -10818,114 +10669,18 @@ begin
       wbInteger('Trait', itU8, wbBoolEnum),
       wbInteger('Level', itU8),
       wbInteger('Num Ranks', itU8),
-      wbInteger('Playable', itU8, wbBoolEnum),
-      wbInteger('Hidden', itU8, wbBoolEnum)
+      wbFromSize(4, wbInteger('Playable', itU8, wbBoolEnum)),
+      wbFromSize(5, wbInteger('Hidden', itU8, wbBoolEnum))
     ], cpNormal, True),
     wbFormIDCk(SNAM, 'Sound', [SNDR]),
     wbFormIDCK(NNAM, 'Next Perk', [PERK, NULL]),
     wbString(FNAM, 'SWF'),
-
-    wbRStructsSK('Effects', 'Effect', [0, 1], [
-      wbStructSK(PRKE, [1, 2, 0], 'Header', [
-        wbInteger('Type', itU8, wbEnum([
-          'Quest + Stage',
-          'Ability',
-          'Entry Point'
-        ]), cpNormal, False, nil, wbPERKPRKETypeAfterSet),
-        wbInteger('Rank', itU8),
-        wbInteger('Priority', itU8)
-      ]),
-      wbUnion(DATA, 'Effect Data', wbPerkDATADecider, [
-        wbStructSK([0, 1], 'Quest + Stage', [
-          wbFormIDCk('Quest', [QUST]),
-          wbInteger('Quest Stage', itU16, wbPerkDATAQuestStageToStr, wbCTDAParam2QuestStageToInt),
-          wbByteArray('Unused', 2)
-        ]),
-        wbFormIDCk('Ability', [SPEL]),
-        wbStructSK([0, 1], 'Entry Point', [
-          wbInteger('Entry Point', itU8, wbEntryPointsEnum, cpNormal, True, nil{, wbPERKEntryPointAfterSet}),
-          wbInteger('Function', itU8, wbEnum([
-            {0} 'Unknown 0',
-            {1} 'Set Value', // EPFT=1
-            {2} 'Add Value', // EPFT=1
-            {3} 'Multiply Value', // EPFT=1
-            {4} 'Add Range To Value', // EPFT=2
-            {5} 'Add Actor Value Mult', // EPFT=2
-            {6} 'Absolute Value', // no params
-            {7} 'Negative Absolute Value', // no params
-            {8} 'Add Leveled List', // EPFT=3
-            {9} 'Add Activate Choice', // EPFT=4
-           {10} 'Select Spell', // EPFT=5
-           {11} 'Select Text', // EPFT=6
-           {12} 'Set to Actor Value Mult', // EPFT=2
-           {13} 'Multiply Actor Value Mult', // EPFT=2
-           {14} 'Multiply 1 + Actor Value Mult', // EPFT=2
-           {15} 'Set Text' // EPFT=7
-          ])),
-          wbInteger('Perk Condition Tab Count', itU8, nil, cpIgnore)
-        ])
-      ], cpNormal, True),
-
-      wbRStructsSK('Perk Conditions', 'Perk Condition', [0], [
-        wbInteger(PRKC, 'Run On (Tab Index)', itS8{, wbPRKCToStr, wbPRKCToInt}),
-        wbCTDAsReq
-      ], [], cpNormal, False{, nil, nil, wbPERKPRKCDontShow}),
-
-      wbRStruct('Function Parameters', [
-        wbInteger(EPFT, 'Type', itU8, wbEnum([
-          {0} 'None',
-          {1} 'Float',
-          {2} 'Float/AV,Float',
-          {3} 'LVLI',
-          {4} 'SPEL,lstring,flags',
-          {5} 'SPEL',
-          {6} 'string',
-          {7} 'lstring',
-          {8} 'AVIF'
-        ])),
-        // case(EPFT) of
-        // 1: EPFD=float
-        // 2: EPFD=float,float
-        // 3: EPFD=LVLI
-        // 4: EPFD=SPEL, EPF2=lstring, EPF3=int32 flags
-        // 5: EPFD=SPEL
-        // 6: EPFD=string
-        // 7: EPFD=lstring
-
-        wbInteger(EPFB, 'Perk Entry ID (unique)', itU16),
-        wbLString(EPF2, 'Button Label', 0, cpTranslate),
-        wbStruct(EPF3, 'Script Flags', [
-          wbInteger('Script Flags', itU8, wbFlags([
-            'Run Immediately',
-            'Replace Default'
-          ])),
-          wbByteArray('Unknown', 1)
-        ]),
-        wbUnion(EPFD, 'Data', wbEPFDDecider, [
-          {0} wbByteArray('Unknown'),
-          {1} wbFloat('Float'),
-          {2} wbStruct('Float, Float', [
-                wbFloat('Float 1'),
-                wbFloat('Float 2')
-              ]),
-          {3} wbFormIDCk('Leveled Item', [LVLI]),
-          {4} wbFormIDCk('Spell', [SPEL]),
-          {5} wbFormIDCk('Spell', [SPEL]),
-          {6} wbString('Text', 0, cpTranslate),
-          {7} wbLString('Text', 0, cpTranslate),
-          {8} wbStruct('Actor Value, Float', [
-                wbActorValue, // wbInteger('Actor Value', itU32, wbEPFDActorValueToStr, wbEPFDActorValueToInt),
-                wbFloat('Float')
-              ])
-        ], cpNormal, False{, wbEPFDDontShow})
-      ], [], cpNormal, False{, wbPERKPRKCDontShow}),
-      wbEmpty(PRKF, 'End Marker', cpIgnore, True)
-    ], [])
+    wbRArrayS('Effects', wbPerkEffect)
   ]);
 
   wbRecord(BPTD, 'Body Part Data', [
     wbEDID,
-    wbMODL,
+    wbGenericModel,
     wbRArrayS('Body Parts',
       wbRStructSK([1], 'Body Part', [
         wbLString(BPTN, 'Part Name', 0, cpTranslate), // optional
@@ -10942,8 +10697,8 @@ begin
           wbFloat('Cut - Min'),
           wbFloat('Cut - Max'),
           wbFloat('Cut - Radius'),
-          wbFloat('Gore Effects - Local Rotate X', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-          wbFloat('Gore Effects - Local Rotate Y', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
+          wbFloatAngle('Gore Effects - Local Rotate X'),
+          wbFloatAngle('Gore Effects - Local Rotate Y'),
           wbFloat('Cut - Tesselation'),
           wbFormIDCk('Severable - Impact DataSet', [IPDS, NULL]),
           wbFormIDCk('Explodable - Impact DataSet', [IPDS, NULL]),
@@ -11006,7 +10761,7 @@ begin
         ], cpNormal, True),
         wbString(NAM1, 'Limb Replacement Model', 0, cpNormal, True),
         wbString(NAM4, 'Gore Effects - Target Bone', 0, cpNormal, True),
-        wbByteArray(NAM5, 'Texture Files Hashes', 0, cpNormal),
+        wbModelInfo(NAM5),
         wbString(ENAM, 'Hit Reaction - Start'),
         wbString(FNAM, 'Hit Reaction - End'),
         wbFormIDCk(BNAM, 'Gore Effects - Dismember Blood Art', [ARTO]),
@@ -11021,8 +10776,8 @@ begin
 
   wbRecord(ADDN, 'Addon Node', [
     wbEDID,
-    wbOBNDReq,
-    wbMODL,
+    wbOBND(True),
+    wbGenericModel,
     wbInteger(DATA, 'Node Index', itS32, nil, cpNormal, True),
     wbFormIDCk(SNAM, 'Sound', [SNDR]),
     wbFormIDCk(LNAM, 'Light', [LIGH]),
@@ -11036,10 +10791,7 @@ begin
       ]))
     ], cpNormal, True)
   ]);
-end;
 
-procedure DefineFO4h;
-begin
   wbRecord(AVIF, 'Actor Value Information', [
     wbEDID,
     wbFULL,
@@ -11047,38 +10799,38 @@ begin
     wbLString(ANAM, 'Abbreviation', 0, cpTranslate),
     wbFloat(NAM0, 'Default Value'), // Prior to form version 81, it was either 0.0, 1.0 or 100.0, so scale or multiplier ?
     wbInteger(AVFL, 'Flags', itU32, wbFlags([ // 32 bits Flags, it used to impact NAM0 loading (bits 10, 11, 12) (even though it loads later :) )
-      'Unknown 1',
-      'Unknown 2',
-      'Unknown 3',
-      'Unknown 4',
-      'Unknown 5',
-      'Unknown 6',
-      'Unknown 7',
-      'Unknown 8',
-      'Unknown 9',
-      'Unknown 10',
-      'Unknown 11',
-      'Unknown 12',
-      'Unknown 13',
-      'Unknown 14',
-      'Unknown 15',
-      'Unknown 16',
-      'Unknown 17',
-      'Unknown 18',
-      'Unknown 19',
-      'Unknown 20',
-      'Minimum 1',
-      'Maximum 10',
-      'Maximum 100',
-      'Multiply By 100',
-      'Percentage',
-      'Unknown 26',
-      'Damage Is Positive',
-      'God Mode Immune',
-      'Unknown 29',
-      'Unknown 30',
-      'Unknown 31',
-      'Hardcoded'
+      {0x00000001} 'Unknown 0',
+      {0x00000002} 'Skill',
+      {0x00000004} 'Uses Enum',
+      {0x00000008} 'Don''t allow Script edits',
+      {0x00000010} 'Is Full AV Cached',
+      {0x00000020} 'Is Permanant AV Cached',
+      {0x00000040} 'Unknown 6',
+      {0x00000080} 'Unknown 7',
+      {0x00000100} 'Unknown 8',
+      {0x00000200} 'Unknown 9',
+      {0x00000400} 'Default to 0',
+      {0x00000800} 'Default to 1.0',
+      {0x00001000} 'Default to 100.0',
+      {0x00002000} 'Unknown 13',
+      {0x00004000} 'Unknown 14',
+      {0x00008000} 'Contains List',
+      {0x00010000} 'Unknown 16',
+      {0x00020000} 'Unknown 17',
+      {0x00040000} 'Unknown 18',
+      {0x00080000} 'Value less than 1',
+      {0x00100000} 'Minimum 1',
+      {0x00200000} 'Maximum 10',
+      {0x00400000} 'Maximum 100',
+      {0x00800000} 'Multiply By 100',
+      {0x01000000} 'Percentage',
+      {0x02000000} 'Unknown 25',
+      {0x04000000} 'Damage Is Positive',
+      {0x08000000} 'God Mode Immune',
+      {0x10000000} 'Unknown 28',
+      {0x20000000} 'Unknown 39',
+      {0x40000000} 'Unknown 30',
+      {0x80000000} 'Hardcoded'
     ])),
     wbInteger(NAM1, 'Type', itU32, wbEnum([
       'Derived Attribute',
@@ -11096,7 +10848,7 @@ begin
 
   wbRecord(CAMS, 'Camera Shot', [
     wbEDID,
-    wbMODL,
+    wbGenericModel,
     wbCTDAs,
     wbStruct(DATA, 'Data', [
       wbInteger('Action', itU32, wbEnum([
@@ -11142,7 +10894,7 @@ begin
         wbFloat('X'),
         wbFloat('Y'),
         wbFloat('Z')
-      ])
+      ]).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3)
     ], cpNormal, True, nil, 9),
     wbFormIDCk(MNAM, 'Image Space Modifier', [IMAD])
   ]);
@@ -11176,11 +10928,7 @@ begin
     wbEDID,
     wbFormIDCk(PNAM, 'Material Parent', [MATT, NULL]),
     wbString(MNAM, 'Material Name'),
-    wbStruct(CNAM, 'Havok Display Color', [
-      wbFloat('Red', cpNormal, True, 255, 0),
-      wbFloat('Green', cpNormal, True, 255, 0),
-      wbFloat('Blue', cpNormal, True, 255, 0)
-    ]),
+    wbFloatColors(CNAM, 'Havok Display Color'),
     wbFloat(BNAM, 'Buoyancy'),
     wbInteger(FNAM, 'Flags', itU32, wbFlags([
       'Stair Material',
@@ -11194,7 +10942,7 @@ begin
 
   wbRecord(IPCT, 'Impact', [
     wbEDID,
-    wbMODL,
+    wbGenericModel,
     wbStruct(DATA, '', [
       wbFloat('Effect - Duration'),
       wbInteger('Effect - Orientation', itU32, wbEnum([
@@ -11254,8 +11002,8 @@ begin
 
   wbRecord(LCTN, 'Location',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
-      {0x00000800} 11, 'Unknown 11',
-      {0x00004000} 14, 'Partial Form'
+      {0x00000800} 11, 'Interior Cells Use Ref Location for world map player marker',
+      {0x00004000} 14, 'Unknown 14'
     ])), [
     wbEDID,
 
@@ -11358,35 +11106,12 @@ begin
     wbCNAM
   ], False, nil, cpNormal, False, nil, wbKeywordsAfterSet);
 
-end;
+  var wbMenuButton :=
+    wbRStruct('Menu Button', [
+      wbLStringKC(ITXT, 'Button Text', 0, cpTranslate),
+      wbCTDAs
+    ], []);
 
-{this is required to prevent XE6 compiler error}
-type
-  TVarRecs = array of TVarRec;
-
-function CombineVarRecs(const a, b : array of const)
-                                   : TVarRecs;
-begin
-  SetLength(Result, Length(a) + Length(b));
-  if Length(a) > 0 then
-    Move(a[0], Result[0], SizeOf(TVarRec) * Length(a));
-  if Length(b) > 0 then
-    Move(b[0], Result[Length(a)], SizeOf(TVarRec) * Length(b));
-end;
-
-function MakeVarRecs(const a : array of const)
-                             : TVarRecs;
-begin
-  SetLength(Result, Length(a));
-  if Length(a) > 0 then
-    Move(a[0], Result[0], SizeOf(TVarRec) * Length(a));
-end;
-
-
-procedure DefineFO4i;
-var
-  a, b, c : TVarRecs;
-begin
   wbRecord(MESG, 'Message', [
     wbEDID,
     wbDESCReq,
@@ -11400,10 +11125,7 @@ begin
     wbInteger(TNAM, 'Display Time', itU32, nil, cpNormal, False, False, wbMESGTNAMDontShow),
     wbString(SNAM, 'SWF'),
     wbLStringKC(NNAM, 'Short Title', 0, cpTranslate),
-    wbRStructs('Menu Buttons', 'Menu Button', [
-      wbLStringKC(ITXT, 'Button Text', 0, cpTranslate),
-      wbCTDAs
-    ], [])
+    wbRArray('Menu Buttons', wbMenuButton)
   ], False, nil, cpNormal, False, wbMESGAfterLoad);
 
   a := MakeVarRecs([
@@ -11643,7 +11365,7 @@ begin
     Sig2Int('HBEC'), 'Help Basic Enchanting',
     Sig2Int('HBFG'), 'Help Basic Forging',
     Sig2Int('HBFS'), 'Help Favorites',
-    Sig2Int('HBFT'), 'Help Teamate Favor',
+    Sig2Int('HBFT'), 'Help Teammate Favor',
     Sig2Int('HBHJ'), 'Help Jail',
     Sig2Int('HBJL'), 'Help Journal',
     Sig2Int('HBLH'), 'Help Low Health',
@@ -11841,12 +11563,12 @@ begin
       wbFloat('Directional Fade'),
       wbFloat('Fog Clip Distance'),
       wbFloat('Fog Power'),
-      wbByteArray('Unused', 32, cpIgnore),
+      wbUnused(32),
       wbByteColors('Fog Color Far'),
       wbFloat('Fog Max'),
       wbFloat('Light Fade Begin'),
       wbFloat('Light Fade End'),
-      wbByteArray('Unused', 4, cpIgnore),
+      wbUnused(4),
       wbFloat('Near Height Mid'),
       wbFloat('Near Height Range'),
       wbByteColors('Fog Color High Near'),
@@ -11907,18 +11629,18 @@ begin
 
   wbRecord(SMBN, 'Story Manager Branch Node', [
     wbEDID,
-    wbFormIDCk(PNAM, 'Parent ', [SMQN, SMBN, SMEN, NULL]),
-    wbFormIDCk(SNAM, 'Child ', [SMQN, SMBN, SMEN, NULL], False, cpBenign),
+    wbFormIDCkNoReach(PNAM, 'Parent ', [SMQN, SMBN, SMEN, NULL]),
+    wbFormIDCkNoReach(SNAM, 'Previous Sibling ', [SMQN, SMBN, SMEN, NULL], False, cpBenign),
     wbCITCReq,
     wbCTDAsCount,
     wbInteger(DNAM, 'Flags', itU32, wbSMNodeFlags),
-    wbUnknown(XNAM)
+    wbInteger(XNAM, 'Max concurrent quests', itU32)
   ], False, nil, cpNormal, False, nil, wbConditionsAfterSet);
 
   wbRecord(SMQN, 'Story Manager Quest Node', [
     wbEDID,
-    wbFormIDCk(PNAM, 'Parent ', [SMQN, SMBN, SMEN, NULL]),
-    wbFormIDCk(SNAM, 'Child ', [SMQN, SMBN, SMEN, NULL], False, cpBenign),
+    wbFormIDCkNoReach(PNAM, 'Parent ', [SMQN, SMBN, SMEN, NULL]),
+    wbFormIDCkNoReach(SNAM, 'Previous Sibling ', [SMQN, SMBN, SMEN, NULL], False, cpBenign),
     wbCITCReq,
     wbCTDAsCount,
     wbStruct(DNAM, 'Flags', [
@@ -11935,29 +11657,30 @@ begin
     wbInteger(QNAM, 'Quest Count', itU32, nil, cpBenign, True),
     wbRArray('Quests', wbRStructSK([0], 'Quest', [
       wbFormIDCk(NNAM, 'Quest', [QUST]),
-      wbUnknown(FNAM),
+      wbInteger(FNAM, 'Flags', itU32, wbEmptyBaseFlags),
       wbFloat(RNAM, 'Hours until reset', cpNormal, False, 1/24)
     ], []), cpNormal, False, nil, wbSMQNQuestsAfterSet)
   ], False, nil, cpNormal, False, nil, wbConditionsAfterSet);
 
   wbRecord(SMEN, 'Story Manager Event Node', [
     wbEDID,
-    wbFormIDCk(PNAM, 'Parent ', [SMQN, SMBN, SMEN, NULL]),
-    wbFormIDCk(SNAM, 'Child ', [SMQN, SMBN, SMEN, NULL]),
+    wbFormIDCkNoReach(PNAM, 'Parent ', [SMQN, SMBN, SMEN, NULL]),
+    wbFormIDCkNoReach(SNAM, 'Previous Sibling ', [SMQN, SMBN, SMEN, NULL], False, cpBenign),
     wbCITCReq,
     wbCTDAsCount,
     wbInteger(DNAM, 'Flags', itU32, wbSMNodeFlags),
-    wbUnknown(XNAM),
-    wbString(ENAM, 'Type', 4)
-  ], False, nil, cpNormal, False, nil, wbConditionsAfterSet);
-end;
+    wbInteger(XNAM, 'Max concurrent quests', itU32),
+    wbInteger(ENAM, 'Type', itU32, wbQuestEventEnum)
+  ], False, nil, cpNormal, False, nil, wbConditionsAfterSet)
+    .SetSummaryKey([7]);
 
-procedure DefineFO4j;
-begin
   wbRecord(DLBR, 'Dialog Branch', [
     wbEDID,
     wbFormIDCk(QNAM, 'Quest', [QUST], False, cpNormal, True),
-    wbInteger(TNAM, 'Unknown', itU32),
+    wbInteger(TNAM, 'Category', itU32, wbEnum([
+        {0} 'Player',
+        {1} 'Command'
+    ])),
     wbInteger(DNAM, 'Flags', itU32, wbFlags([
       {0x01} 'Top-Level',
       {0x02} 'Blocking',
@@ -11975,14 +11698,14 @@ begin
     ]), cpNormal, True),
     wbFloat(FLTV, 'Duration'),
     wbFloat(DNAM, 'Fade-Out'),
-    wbString(ANAM, 'Track Filename'),
-    wbString(BNAM, 'Finale Filename'),
+    wbString(ANAM, 'Track FileName'),
+    wbString(BNAM, 'Finale FileName'),
     wbStruct(LNAM, 'Loop Data', [
       wbFloat('Loop Begins'),
       wbFloat('Loop Ends'),
       wbInteger('Loop Count', itU32)
     ]),
-    wbArray(FNAM, 'Cue Points', wbFloat('Point')),
+    wbArray(FNAM, 'Cue Points', wbFloat('Point')).IncludeFlag(dfNotAlignable),
     wbCITC,
     wbCTDAsCount,
     wbArray(SNAM, 'Tracks', wbFormIDCk('Track', [MUST, NULL]))
@@ -11990,13 +11713,10 @@ begin
 
   wbRecord(DLVW, 'Dialog View', [
     wbEDID,
-    wbFormIDCk(QNAM, 'Quest', [QUST], False, cpNormal, True),
-    wbRArray('Branches', wbFormIDCk(BNAM, 'Branch', [DLBR])),
-    wbRArray('Unknown TNAM', wbRStruct('Unknown', [
-      wbUnknown(TNAM)
-    ], [])),
-    wbUnknown(ENAM),
-    wbUnknown(DNAM)
+    wbFormIDCk(QNAM, 'Quest', [QUST]),
+    wbFormIDCk(BNAM, 'Branch', [DLBR]),
+    wbUnused(ENAM),
+    wbUnused(DNAM)
   ]);
 
   {wbRecord(WOOP, 'Word of Power', [
@@ -12055,27 +11775,27 @@ begin
     wbInteger(FNAM, 'Flags', itU32, wbFlags([
       {0x00000001} 'Begin on Quest Start',
       {0x00000002} 'Stop on Quest End',
-      {0x00000004} 'Unknown 2',
+      {0x00000004} 'Show All Text',
       {0x00000008} 'Repeat Conditions While True',
       {0x00000010} 'Interruptible',
-      {0x00000020} 'Unknown 5',
+      {0x00000020} 'Has Player Dialogue',
       {0x00000040} 'Prevent Player Exit Dialogue',
       {0x00000080} 'Unknown 7',
-      {0x00000100} 'Unknown 8',
-      {0x00000200} 'Unknown 9',
+      {0x00000100} 'Unknown 8', // Often present with the 'Radio' Action type
+      {0x00000200} 'Pause Actors Current Scenes',
       {0x00000400} 'Unknown 10',
       {0x00000800} 'Disable Dialogue Camera',
       {0x00001000} 'No Follower Idle Chatter'
     ])),
     wbRArray('Phases',
       wbRStruct('Phase', [
-        wbEmpty(HNAM, 'Marker Phase Start'),
-        wbString(NAM0, 'Name'),
+        wbEmpty(HNAM, 'Marker Phase Start', cpNormal, True),
+        wbString(NAM0, 'Name', 0, cpNormal, True),
         wbRStruct('Start Conditions', [wbCTDAs], []),
-        wbEmpty(NEXT, 'Marker Start Conditions'),
+        wbEmpty(NEXT, 'Marker Start Conditions', cpNormal, True),
         wbRStruct('Completion Conditions', [wbCTDAs], []),
-        wbEmpty(NEXT, 'Marker Completion Conditions'),
-        wbInteger(WNAM, 'Editor Width', itU32),
+        wbEmpty(NEXT, 'Marker Completion Conditions', cpNormal, True),
+        wbInteger(WNAM, 'Editor Width', itU32, nil, cpNormal, True, false, nil, nil, 350),
         wbInteger(FNAM, 'Flags', itU16, wbFlags([
           {0x0001} 'Start - WalkAway Phase',
           {0x0002} 'Don''t Run End Scripts on Scene Jump',
@@ -12085,17 +11805,17 @@ begin
           wbInteger('On Start', itS16),
           wbInteger('On Completion', itS16)
         ]),
-        wbEmpty(HNAM, 'Marker Phase End')
+        wbEmpty(HNAM, 'Marker Phase End', cpNormal, True)
       ], [])
     ),
     wbRArray('Actors', wbRStruct('Actor', [
-      wbInteger(ALID, 'Alias ID', itS32),
+      wbInteger(ALID, 'Alias ID', itS32, nil, cpNormal, True),
       wbInteger(LNAM, 'Flags', itU32, wbFlags([
         'No Player Activation',
         'Optional',
         'Run Only Scene Packages',
         'No Command State'
-      ])),
+      ]), cpNormal, True),
       wbInteger(DNAM, 'Behaviour Flags', itU32, wbFlags([
         'Death Pause',
         'Death End',
@@ -12105,9 +11825,9 @@ begin
         'Dialogue End',
         'OBS_COM Pause',
         'OBS_COM End'
-      ]))
+      ]), cpNormal, True, false, nil, nil, 26)
     ], [])),
-    wbRArray('Actions', wbRStruct('Action', [
+    wbRArray('Actions', wbRStructSK([0, 1, 3, 4], 'Action', [
       wbInteger(ANAM, 'Type', itU16, wbEnum([
         {0} 'Dialogue',
         {1} 'Package',
@@ -12116,7 +11836,23 @@ begin
         {4} 'Start Scene',
         {5} 'NPC Response Dialogue',
         {6} 'Radio'
-      ])),
+      ]), cpNormal, True)
+      .SetAfterSet(procedure(const aElement: IwbElement; const aOldValue, aNewValue: Variant)
+        begin
+          if not (VarIsOrdinal(aOldValue) and VarIsOrdinal(aNewValue)) then
+            Exit;
+          if aOldValue = aNewValue then
+            Exit;
+          if not Assigned(aElement) then
+            Exit;
+          var lContainer: IwbContainerElementRef;
+          if not Supports(aElement.Container, IwbContainerElementRef, lContainer) then
+            Exit;
+          var lDataElement := lContainer.ElementBySortOrder[7]; //'Type Specific Action'
+          if Assigned(lDataElement) and (lDataElement.Name <> aElement.Value) then
+            lDataElement.Remove;
+        end)
+      .IncludeFlag(dfIncludeValueInDisplaySignature),
       wbString(NAM0, 'Name'),
       wbInteger(ALID, 'Alias ID', itS32),
       wbInteger(INAM, 'Index', itU32),
@@ -12135,7 +11871,7 @@ begin
         {0x00000800} 'Player Question Use Dialogue Subtype',
         {0x00001000} 'Keep/Clear Target on Action End',
         {0x00002000} 'Unknown 13',
-        {0x00004000} 'Unknown 14',
+        {0x00004000} 'Run on End of Phase',
         {0x00008000} 'Face Target',
         {0x00010000} 'Looping',
         {0x00020000} 'Headtrack Player',
@@ -12155,58 +11891,131 @@ begin
       ])),
       wbInteger(SNAM, 'Start Phase', itU32),
       wbInteger(ENAM, 'End Phase', itU32),
-      wbFloat(SNAM, 'Timer - Max Seconds'),
-      wbInteger(SCQS, 'Set Parent Quest Stage', itS16),
-      wbFloat(TNAM, 'Timer - Min Seconds'),
-      wbUnknown(STSC),
-      wbRStructs('Start Scenes', 'Start Scene', [
-        wbFormIDCk(LCEP, 'Scene', [SCEN]),
-        wbInteger(INTT, 'Phase Index', itU16),
-        wbString(SSPN, 'Start Phase for Scene'),
-        wbCITC,
-        wbCTDAs
+      wbRUnion('Type Specific Action', function(const aContainer: IwbContainerElementRef): Integer
+        begin
+          Result := -1;
+          if not Assigned(aContainer) then
+            Exit;
+          var lType := aContainer.ElementNativeValues[ANAM];
+          if not VarIsOrdinal(lType) then
+            Exit;
+          Result := lType;
+        end,
+      [
+        {0 Dialogue}
+        wbRStruct('Dialogue', [
+          wbFormIDCk(DATA, 'Topic', [DIAL, NULL]),
+          wbFloat(DMAX, 'Looping - Max'),
+          wbFloat(DMIN, 'Looping - Min'),
+          wbStruct(CRIS, 'Camera', [
+            wbFloat('FOV On Player Camera'),
+            wbFloat('Rate Of Camera Change')
+          ]),
+          wbInteger(DEMO, 'Emotion Type', itU32, wbEmotionTypeEnum),
+          wbInteger(DEVA, 'Emotion Value', itU32),
+          wbArray(HTID, 'Player Headtracking', wbInteger('Actor ID', itS32)),
+          wbFormIDCk(VENC, 'Dialogue Subtype', [KYWD]),
+          wbFormIDCk(ONAM, 'Audio Output Override', [SOPM]),
+          wbFormIDCk(PNAM, 'AnimArchType', [KYWD])
+        ], [])
+        .IncludeFlag(dfAllowAnyMember)
+        .IncludeFlag(dfStructFirstNotRequired),
+
+        {1 Package}
+        wbRStruct('Package', [
+          wbRArray('Packages', wbFormIDCk(PNAM, 'Package', [PACK]))
+        ], []),
+
+        {2 Timer}
+        wbRStruct('Timer', [
+          wbFloat(SNAM, 'Timer - Max Seconds'),
+          wbInteger(SCQS, 'Set Parent Quest Stage', itS16),
+          wbFloat(TNAM, 'Timer - Min Seconds')
+        ], []),
+
+        {3 Player Dialogue}
+        wbRStruct('Player Dialogue', [
+          wbFormIDCk(PTOP, 'Player Positive Response', [DIAL]),
+          wbFormIDCk(NTOP, 'Player Negative Response', [DIAL]),
+          wbFormIDCk(NETO, 'Player Neutral Response', [DIAL]),
+          wbFormIDCk(QTOP, 'Player Question Response', [DIAL]),
+          wbFormIDCk(VENC, 'Player Positive Dialogue Subtype', [KYWD]),
+          wbFormIDCk(PLVD, 'Player Negative Dialogue Subtype', [KYWD]),
+          wbFormIDCk(JOUT, 'Player Neutral Dialogue Subtype', [KYWD]),
+          wbFormIDCk(DALC, 'Player Question Dialogue Subtype', [KYWD]),
+          wbArray(DTID, 'NPC Headtracking', wbInteger('Actor ID', itS32)),
+          wbFormIDCk(ONAM, 'Audio Output Override', [SOPM]),
+          wbFormIDCk(NPOT, 'NPC Positive Response', [DIAL]),
+          wbFormIDCk(NNGT, 'NPC Negative Response', [DIAL]),
+          wbFormIDCk(NNUT, 'NPC Neutral Response', [DIAL]),
+          wbFormIDCk(NQUT, 'NPC Question Response', [DIAL]),
+          wbFormIDCk(NPOS, 'NPC Positive Dialogue Subtype', [KYWD]),
+          wbFormIDCk(NNGS, 'NPC Negative Dialogue Subtype', [KYWD]),
+          wbFormIDCk(NNUS, 'NPC Neutral Dialogue Subtype', [KYWD]),
+          wbFormIDCk(NQUS, 'NPC Question Dialogue Subtype', [KYWD]),
+          wbInteger(DTGT, 'Dialogue Target Actor', itS32)
+        ], [])
+        .IncludeFlag(dfAllowAnyMember)
+        .IncludeFlag(dfStructFirstNotRequired),
+
+        {4 Start Scene}
+        wbRStruct('Start Scene', [
+          wbFormIDCk(STSC, 'Topic?', [DIAL, NULL]), // CK Error claims this is a "Topic"
+          wbRArray('Start Scenes', wbRStruct('Start Scene', [
+            wbFormIDCk(LCEP, 'Scene', [SCEN]),
+            wbInteger(INTT, 'Phase Index', itU16),
+            wbString(SSPN, 'Start Phase for Scene'),
+            wbCITC,
+            wbCTDAs
+          ], [])),
+          wbEmpty(HTID, 'End Scene Say Greeting')
+        ], [])
+        .IncludeFlag(dfAllowAnyMember)
+        .IncludeFlag(dfStructFirstNotRequired),
+
+        {5 NPC Response Dialogue}
+        wbRStruct('NPC Response Dialogue', [
+          wbFormIDCk(PTOP, 'Player Positive Response', [DIAL]),
+          wbFormIDCk(NTOP, 'Player Negative Response', [DIAL]),
+          wbFormIDCk(NETO, 'Player Neutral Response', [DIAL]),
+          wbFormIDCk(QTOP, 'Player Question Response', [DIAL]),
+          wbFormIDCk(VENC, 'Player Positive Dialogue Subtype', [KYWD]),
+          wbFormIDCk(PLVD, 'Player Negative Dialogue Subtype', [KYWD]),
+          wbFormIDCk(JOUT, 'Player Neutral Dialogue Subtype', [KYWD]),
+          wbFormIDCk(DALC, 'Player Question Dialogue Subtype', [KYWD]),
+          wbArray(DTID, 'NPC Headtracking', wbInteger('Actor ID', itS32)),
+          wbFormIDCk(ONAM, 'Audio Output Override', [SOPM])
+        ], [])
+        .IncludeFlag(dfAllowAnyMember)
+        .IncludeFlag(dfStructFirstNotRequired),
+
+        {6 Radio}
+        wbRStruct('Radio', [
+          wbFormIDCk(DATA, 'Topic', [DIAL, NULL]),
+          wbFormIDCk(HTID, 'Play Sound', [SNDR, NULL]),
+          wbFloat(DMAX, 'Looping - Max'),
+          wbFormIDCk(VENC, 'Dialogue Subtype', [KYWD])
+        ], [])
+        .IncludeFlag(dfAllowAnyMember)
+        .IncludeFlag(dfStructFirstNotRequired)
       ], []),
-      wbFormIDCk(PTOP, 'Player Positive Response', [DIAL]),
-      wbFormIDCk(NTOP, 'Player Negative Response', [DIAL]),
-      wbFormIDCk(NETO, 'Player Neutral Response', [DIAL]),
-      wbFormIDCk(QTOP, 'Player Question Response', [DIAL]),
-      wbFormIDCk(VENC, 'Player Positive Dialogue Subtype', [KYWD]),
-      wbFormIDCk(PLVD, 'Player Negative Dialogue Subtype', [KYWD]),
-      wbFormIDCk(JOUT, 'Player Neutral Dialogue Subtype', [KYWD]),
-      wbFormIDCk(DALC, 'Player Question Dialogue Subtype', [KYWD]),
-      wbArray(DTID, 'NPC Headtracking', wbInteger('Actor ID', itS32)),
-      wbFormIDCk(NPOT, 'NPC Positive Response', [DIAL]),
-      wbFormIDCk(NNGT, 'NPC Negative Response', [DIAL]),
-      wbFormIDCk(NNUT, 'NPC Neutral Response', [DIAL]),
-      wbFormIDCk(NQUT, 'NPC Question Response', [DIAL]),
-      wbFormIDCk(NPOS, 'NPC Positive Dialogue Subtype', [KYWD]),
-      wbFormIDCk(NNGS, 'NPC Negative Dialogue Subtype', [KYWD]),
-      wbFormIDCk(NNUS, 'NPC Neutral Dialogue Subtype', [KYWD]),
-      wbFormIDCk(NQUS, 'NPC Question Dialogue Subtype', [KYWD]),
-      wbInteger(DTGT, 'Dialogue Target Actor', itS32),
-      wbRArray('Packages', wbFormIDCk(PNAM, 'Package', [PACK])),
-      wbFormIDCk(DATA, 'Topic', [DIAL, NULL]),
-      wbUnion(HTID, '', wbSceneActionSoundDecider, [
-        wbEmpty('End Scene Say Greeting'),
-        wbFormIDCk('Play Sound', [SNDR, NULL])
-      ]),
-      wbFloat(DMAX, 'Looping - Max'),
-      wbFloat(DMIN, 'Looping - Min'),
-      wbStruct(CRIS, 'Camera', [
-        wbFloat('FOV On Player Camera'),
-        wbFloat('Rate Of Camera Change')
-      ]),
-      wbInteger(DEMO, 'Emotion Type', itU32, wbEmotionTypeEnum),
-      wbInteger(DEVA, 'Emotion Value', itU32),
-      wbArray(HTID, 'Player Headtracking', wbInteger('Actor ID', itS32)),
-      wbFormIDCk(VENC, 'Dialogue Subtype', [KYWD]),
-      wbFormIDCk(PNAM, 'AnimArchType', [KYWD]),
-      wbFormIDCk(ONAM, 'Audio Output Override', [SOPM]),
-      wbEmpty(ANAM, 'End Marker')
+      wbMarkerReq(ANAM)
     ], [])),
     wbFormIDCk(PNAM, 'Quest', [QUST]),
     wbInteger(INAM, 'Last Action Index', itU32),
-    wbUnknown(VNAM),
+    wbStruct(VNAM, 'Actor Behavior Settings', [
+      wbInteger('Death', itU32, wbEnum([
+        'Set All Normal',
+        '',
+        'Set All End',
+        'Don''t Set All'
+      ])),
+      wbInteger('Combat', itU32, wbActorBehaviorEnum),
+      wbInteger('Player Dialogue', itU32, wbActorBehaviorEnum)
+      .SetAfterLoad(wbSCENBehaviorEnumAfterLoad),
+      wbInteger('Observe Combat', itU32, wbActorBehaviorEnum)
+      .SetAfterLoad(wbSCENBehaviorEnumAfterLoad)
+    ]),
     wbFloat(CNAM, 'Camera Distance Override'),
     wbFloat(ACTV, 'Dialogue Distance Override'),
     wbFloat(CRIS, 'FOV Override'),
@@ -12232,41 +12041,216 @@ begin
       'Family Association'
     ]))
   ]);
-end;
 
-procedure DefineFO4k;
-begin
+  wbSPED := wbUnion(SPED, 'Movement Data', wbFormVersionDecider([28, 60, 104]), [
+ {0}wbStruct('', [
+      wbStruct('Left', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Right', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Forward', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Back', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
 
-  wbSPED := wbStruct(SPED, 'Movement Data', [
-    wbFloat('Unknown'),
-    wbFloat('Walk - Left'),
-    wbFloat('Run - Left'),
-    wbFloat('Unknown'),
-    wbFloat('Unknown'),
-    wbFloat('Walk - Right'),
-    wbFloat('Run - Right'),
-    wbFloat('Unknown'),
-    wbFloat('Unknown'),
-    wbFloat('Walk - Forward'),
-    wbFloat('Run - Forward'),
-    wbFloat('Sprint - Forward'),
-    wbFloat('Unknown'),
-    wbFloat('Walk - Back'),
-    wbFloat('Run - Back'),
-    wbFloat('Unknown'),
-    wbFloat('Standing - Pitch', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-    wbFloat('Walk - Pitch', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-    wbFloat('Run - Pitch', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-    wbFloat('Sprint - Pitch', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-    wbFloat('Unknown'{, cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize}),
-    wbFloat('Unknown'{, cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize}),
-    wbFloat('Unknown'{, cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize}),
-    wbFloat('Unknown'{, cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize}),
-    wbFloat('Standing - Yaw', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-    wbFloat('Walk - Yaw', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-    wbFloat('Run - Yaw', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-    wbFloat('Sprint - Yaw', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize)
-  ], cpNormal, True, nil, 10);
+      wbStruct('Pitch, Roll, Yaw', [
+        wbUnused,
+        wbFloatAngle('Walk'),
+        wbFloatAngle('Run'),
+        wbUnused
+      ]),
+
+      wbStruct('Unused', [
+        wbUnused,
+        wbUnused,
+        wbUnused,
+        wbUnused
+      ]),
+
+      wbStruct('Unused', [
+        wbUnused,
+        wbUnused,
+        wbUnused,
+        wbUnused
+      ]),
+
+      wbUnused,
+      wbUnused,
+      wbUnused
+    ], cpNormal, True),
+ {1}wbStruct('', [
+      wbStruct('Left', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Right', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Forward', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Back', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+
+      wbStruct('Pitch, Roll, Yaw', [
+        wbUnused,
+        wbFloatAngle('Walk'),
+        wbFloatAngle('Run'),
+        wbUnused
+      ]),
+
+      wbStruct('Unused', [
+        wbUnused,
+        wbUnused,
+        wbUnused,
+        wbUnused
+      ]),
+
+      wbStruct('Unused', [
+        wbUnused,
+        wbUnused,
+        wbUnused,
+        wbUnused
+      ]),
+
+      wbFloatAngle,
+      wbUnused,
+      wbUnused
+    ], cpNormal, True),
+ {2}wbStruct('', [
+      wbStruct('Left', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Right', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Forward', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+      wbStruct('Back', [
+        wbUnused,
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbUnused
+      ]),
+
+      wbStruct('Pitch', [
+        wbUnused,
+        wbFloatAngle('Walk'),
+        wbFloatAngle('Run'),
+        wbUnused
+      ]),
+
+      wbStruct('Roll', [
+        wbUnused,
+        wbFloatAngle('Walk'),
+        wbFloatAngle('Run'),
+        wbUnused
+      ]),
+
+      wbStruct('Yaw', [
+        wbUnused,
+        wbFloatAngle('Walk'),
+        wbFloatAngle('Run'),
+        wbUnused
+      ]),
+
+      wbFloatAngle('Unknown'),
+      wbFloatAngle('Unknown'),
+      wbFloatAngle('Unknown')
+    ], cpNormal, True),
+ {3}wbStruct('', [
+      wbStruct('Left', [
+        wbFloat('Standing'),
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbFloat('Sprint')
+      ]),
+
+      wbStruct('Right', [
+        wbFloat('Standing'),
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbFloat('Sprint')
+      ]),
+
+      wbStruct('Forward', [
+        wbFloat('Standing'),
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbFloat('Sprint')
+      ]),
+
+      wbStruct('Back', [
+        wbFloat('Standing'),
+        wbFloat('Walk'),
+        wbFloat('Run'),
+        wbFloat('Sprint')
+      ]),
+
+      wbStruct('Pitch', [
+        wbFloatAngle('Standing'),
+        wbFloatAngle('Walk'),
+        wbFloatAngle('Run'),
+        wbFloatAngle('Sprint')
+      ]),
+
+      wbStruct('Roll', [
+        wbFloatAngle('Standing'),
+        wbFloatAngle('Walk'),
+        wbFloatAngle('Run'),
+        wbFloatAngle('Sprint')
+      ]),
+
+      wbStruct('Yaw', [
+        wbFloatAngle('Standing'),
+        wbFloatAngle('Walk'),
+        wbFloatAngle('Run'),
+        wbFloatAngle('Sprint')
+      ]),
+
+      wbUnused,
+      wbUnused,
+      wbUnused
+    ], cpNormal, True)
+  ]);
 
   wbRecord(OTFT, 'Outfit', [
     wbEDID,
@@ -12275,11 +12259,11 @@ begin
 
   wbRecord(ARTO, 'Art Object', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbKSIZ,
     wbKWDAs,
-    wbMODL,
+    wbGenericModel,
     wbInteger(DNAM, 'Art Type', itU32, wbEnum([
       'Magic Casting',
       'Magic Hit Effect',
@@ -12289,7 +12273,7 @@ begin
 
   wbRecord(MATO, 'Material Object', [
     wbEDID,
-    wbMODL,
+    wbGenericModel,
     wbRArray('Property Data',
       wbByteArray(DNAM, 'Data', 0, cpIgnore, False, False, wbNeverShow)
     ),
@@ -12302,7 +12286,7 @@ begin
         wbFloat('X'),
         wbFloat('Y'),
         wbFloat('Z')
-      ]),
+      ]).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3),
       wbFloat('Normal Dampener'),
       wbFloatColors('Single Pass Color'),
       wbInteger('Flags', itU32, wbFlags(['Single Pass']))
@@ -12332,11 +12316,7 @@ begin
     ])),
     wbFormIDCk(GNAM, 'Category', [SNCT]),
     wbFormIDCk(SNAM, 'Alternate Sound For', [SNDR]),
-    wbRArray('Sounds',
-      wbRStruct('Sound Files', [
-        wbString(ANAM, 'File Name')
-      ], [])
-    ),
+    wbSoundDescriptorSounds,
     wbFormIDCk(ONAM, 'Output Model', [SOPM]),
     wbCTDAs,
     wbStruct(LNAM, 'Values', [
@@ -12374,7 +12354,20 @@ begin
   ]);
 
   wbRecord(DUAL, 'Dual Cast Data', [
-    wbEDID
+    wbEDID,
+    wbOBND(True),
+    wbStruct(DATA, 'Data', [
+      wbFormIDCk('Projectile', [PROJ, NULL]),
+      wbFormIDCk('Explosion', [EXPL, NULL]),
+      wbFormIDCk('Effect Shader', [EFSH, NULL]),
+      wbFormIDCk('Hit Effect Art', [ARTO, NULL]),
+      wbFormIDCk('Impact Data Set', [IPDS, NULL]),
+      wbInteger('Inherit Scale', itU32, wbFlags([
+        'Hit Effect Art',
+        'Projectile',
+        'Explosion'
+      ]))
+    ], cpNormal, True)
   ]);
 
   wbRecord(SNCT, 'Sound Category', [
@@ -12434,7 +12427,7 @@ begin
         'Channel 2? (unused)'
       ])
     ]),
-    wbStruct(ATTN, 'Attenuation Values', [
+    wbStruct(ATTN, 'Dynamic Attenuation Values', [
       wbFloat('Fade In Distance - Start'),
       wbFloat('Fade In Distance - End'),
       wbFloat('Fade Out Distance - Start'),
@@ -12459,12 +12452,7 @@ begin
     wbEDID,
     wbDESCReq,
     wbInteger(BNAM, 'Index', itU32, nil, cpNormal, True),
-    wbStruct(FNAM, 'Debug Color', [
-      wbInteger('Red', itU8),
-      wbInteger('Green', itU8),
-      wbInteger('Blue', itU8),
-      wbInteger('Unused', itU8)
-    ], cpNormal, True),
+    wbByteColors(FNAM, 'Debug Color'),
     wbInteger(GNAM, 'Flags', itU32, wbFlags([
       {0x00000001} 'Trigger Volume',
       {0x00000002} 'Sensor',
@@ -12495,10 +12483,7 @@ begin
     ]), cpNormal, True),
     wbCTDAs
   ]);
-end;
 
-procedure DefineFO4l;
-begin
   wbRecord(REVB, 'Reverb Parameters', [
     wbEDID,
     wbStruct(DATA, 'Data', [
@@ -12520,8 +12505,8 @@ begin
 
   wbRecord(GRAS, 'Grass', [
     wbEDID,
-    wbOBNDReq,
-    wbMODL,
+    wbOBND(True),
+    wbGenericModel,
     wbStruct(DATA, '', [
       wbInteger('Density', itU8),
       wbInteger('Min Slope', itU8),
@@ -12578,45 +12563,65 @@ begin
 
   wbRecord(INFO, 'Dialog response',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
-      {0x00000040}  6, 'Unknown 6',
+      {0x00000040}  6, 'Info Group',
       {0x00000080}  7, 'Exclude From Export',
       {0x00002000} 13, 'Actor Changed'
     ])), [
     wbEDID,
     wbVMADFragmentedINFO,
     wbStruct(ENAM, 'Response flags', [
-      wbInteger('Flags', itU16, wbFlags([
-        {0x0001} 'Start Scene on End',
-        {0x0002} 'Random',
-        {0x0004} 'Say Once',
-        {0x0008} 'Requires Player Activation',
-        {0x0010} 'Unknown 4',
-        {0x0020} 'Random End',
-        {0x0040} 'End Running Scene',
-        {0x0080} 'ForceGreet Hello',
-        {0x0100} 'Player Address',
-        {0x0200} 'Unknown 9',
-        {0x0400} 'Can Move While Greeting',
-        {0x0800} 'No LIP File',
-        {0x1000} 'Requires post-processing',
-        {0x2000} 'Audio Output Override',
-        {0x4000} 'Has Capture',
-        {0x8000} 'Unknown 16'
-      ])),
+      wbUnion('Flags', wbINFOGroupDecider,[
+        wbInteger('Flags', itU16, wbFlags([
+          {0x0001} 'Start Scene on End',
+          {0x0002} 'Random',
+          {0x0004} 'Say Once',
+          {0x0008} 'Requires Player Activation',
+          {0x0010} 'Unknown 4',
+          {0x0020} 'Random End',
+          {0x0040} 'End Running Scene',
+          {0x0080} 'ForceGreet Hello',
+          {0x0100} 'Player Address',
+          {0x0200} 'Force Subtitle',
+          {0x0400} 'Can Move While Greeting',
+          {0x0800} 'No LIP File',
+          {0x1000} 'Requires post-processing',
+          {0x2000} 'Audio Output Override',
+          {0x4000} 'Has Capture',
+          {0x8000} 'Unknown 15'
+        ])),
+        wbInteger('Flags', itU16, wbFlags([   //Info groups
+          {0x0001} 'Unknown 0', // Any changes to the idle group removes this flag
+          {0x0002} 'Random',
+          {0x0004} 'Unknown 2', // Any changes to the idle group removes this flag
+          {0x0008} 'Force all children player activate only',
+          {0x0010} 'Unknown 4',
+          {0x0020} 'Random End',
+          {0x0040} 'Unknown 6', // Any changes to the idle group removes this flag
+          {0x0080} 'Unknown 7', // Any changes to the idle group removes this flag
+          {0x0100} 'Child infos don''t inherit reset data',
+          {0x0200} 'Force All Children Random',
+          {0x0400} 'Unknown 10', // Any changes to the idle group removes this flag
+          {0x0800} 'Don''t do all before repeating',
+          {0x1000} 'Unknown 12', // Any changes to the idle group removes this flag
+          {0x2000} 'Unknown 13', // Any changes to the idle group removes this flag
+          {0x4000} 'Unknown 14', // Any changes to the idle group removes this flag
+          {0x8000} 'Unknown 15'
+        ]))
+      ]),
       wbInteger('Reset Hours', itU16, wbDiv(2730))
     ]),
     wbFormIDCk(TPIC, 'Topic', [DIAL]),
     wbFormIDCkNoReach(PNAM, 'Previous INFO', [INFO, NULL], False, cpBenign),
     wbFormIDCk(DNAM, 'Shared INFO', [INFO]),
-    wbFormIDCk(GNAM, 'Unknown', [INFO]),
-    wbString(IOVR, 'Override Filename'),
+    wbFormIDCk(GNAM, 'INFO group', [INFO]),
+    wbString(IOVR, 'Override FileName'),
 
     wbRArray('Responses', wbRStruct('Response', [
       wbStruct(TRDA, 'Response Data', [
         wbFormIDCk('Emotion', [KYWD, FFFF]),
         wbInteger('Response number', itU8),
-        wbByteArray('Unused', 3),
-        wbByteArray('Unknown', 2),
+        wbFormIDCk('Sound File', [SNDR, NULL]),
+        wbByteArray('Unknown', 1),
         wbInteger('Interrupt Percentage', itU16),
         wbInteger('Camera Target Alias', itS32),
         wbInteger('Camera Location Alias', itS32)
@@ -12668,11 +12673,11 @@ begin
   wbRecord(INGR, 'Ingredient', [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbFULL,
     wbKSIZ,
     wbKWDAs,
-    wbMODL,
+    wbGenericModel,
     wbICON,
     wbMICO,
     wbDEST,
@@ -12707,10 +12712,10 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULLReq,
-    wbMODL,
+    wbGenericModel,
     wbICON,
     wbMICO,
     wbDEST,
@@ -12724,104 +12729,30 @@ begin
     ], cpNormal, True)
   ], False, nil, cpNormal, False, nil, wbKeywordsAfterSet);
 
-  wbQuadrantEnum := wbEnum([
-    {0} 'Bottom Left',
-    {1} 'Bottom Right',
-    {2} 'Top Left',
-    {3} 'Top Right'
+  wbRecord(LAND, 'Landscape',
+    wbFlags(wbRecordFlagsFlags, wbFlagsList([
+      {0x40000} 18, 'Compressed'
+    ]), [18]), [
+    wbInteger(DATA, 'Flags', itU32, wbFlags([
+      {0x001} 'Has Vertex Normals/Height Map',
+      {0x002} 'Has Vertex Colours',
+      {0x004} 'Has Layers',
+      {0x008} 'Unknown 4',
+      {0x010} 'Auto-Calc Normals',
+      {0x020} 'Has Hi-Res Heightfield',
+      {0x040} '',
+      {0x080} '',
+      {0x100} '',
+      {0x200} '',
+      {0x400} 'Ignored'
+    ])),
+    wbLandNormals,
+    wbLandHeights,
+    wbLandColors,
+    wbLandLayers,
+    wbRArray('Hi-Res Heightfield',
+      wbByteArray(MPCD, 'Heightfield Data'))
   ]);
-
-  if wbSimpleRecords then begin
-
-    wbRecord(LAND, 'Landscape',
-      wbFlags(wbRecordFlagsFlags, wbFlagsList([
-        {0x00040000} 18, 'Compressed'
-      ]), [18]), [
-      wbByteArray(DATA, 'Unknown'),
-      wbByteArray(VNML, 'Vertex Normals'),
-      wbByteArray(VHGT, 'Vertext Height Map'),
-      wbByteArray(VCLR, 'Vertex Colours'),
-
-      wbRArrayS('Layers', wbRUnion('Layer', [
-        wbRStructSK([0],'Base Layer', [
-          wbStructSK(BTXT, [1, 3], 'Base Layer Header', [
-            wbFormIDCk('Texture', [LTEX, NULL]),
-            wbInteger('Quadrant', itU8, wbQuadrantEnum),
-            wbByteArray('Unknown', 1),
-            wbInteger('Layer', itS16)
-          ])
-        ], []),
-        wbRStructSK([0],'Alpha Layer', [
-          wbStructSK(ATXT, [1, 3], 'Alpha Layer Header', [
-            wbFormIDCk('Texture', [LTEX, NULL]),
-            wbInteger('Quadrant', itU8, wbQuadrantEnum),
-            wbByteArray('Unknown', 1),
-            wbInteger('Layer', itS16)
-          ]),
-          wbByteArray(VTXT, 'Alpha Layer Data')
-        ], [])
-      ], [])),
-      wbArray(VTEX, 'Textures', wbFormIDCk('Texture', [LTEX, NULL])),
-      wbRArray('Unknown', wbUnknown(MPCD))
-    ]);
-
-  end else begin
-
-    wbRecord(LAND, 'Landscape',
-      wbFlags(wbRecordFlagsFlags, wbFlagsList([
-        {0x00040000} 18, 'Compressed'
-      ]), [18]), [
-      wbByteArray(DATA, 'Unknown'),
-      wbArray(VNML, 'Vertex Normals', wbStruct('Row', [
-        wbArray('Columns', wbStruct('Column', [
-          wbInteger('X', itU8),
-          wbInteger('Y', itU8),
-          wbInteger('Z', itU8)
-        ]), 33)
-      ]), 33),
-      wbStruct(VHGT, 'Vertext Height Map', [
-        wbFloat('Offset'),
-        wbArray('Rows', wbStruct('Row', [
-          wbArray('Columns', wbInteger('Column', itU8), 33)
-        ]), 33),
-        wbByteArray('Unknown', 3)
-      ]),
-      wbArray(VCLR, 'Vertex Colours', wbStruct('Row', [
-        wbArray('Columns', wbStruct('Column', [
-          wbInteger('X', itU8),
-          wbInteger('Y', itU8),
-          wbInteger('Z', itU8)
-        ]), 33)
-      ]), 33),
-
-      wbRArrayS('Layers', wbRUnion('Layer', [
-        wbRStructSK([0],'Base Layer', [
-          wbStructSK(BTXT, [1, 3], 'Base Layer Header', [
-            wbFormIDCk('Texture', [LTEX, NULL]),
-            wbInteger('Quadrant', itU8, wbQuadrantEnum),
-            wbByteArray('Unknown', 1),
-            wbInteger('Layer', itS16)
-          ])
-        ], []),
-        wbRStructSK([0],'Alpha Layer', [
-          wbStructSK(ATXT, [1, 3], 'Alpha Layer Header', [
-            wbFormIDCk('Texture', [LTEX, NULL]),
-            wbInteger('Quadrant', itU8, wbQuadrantEnum),
-            wbByteArray('Unknown', 1),
-            wbInteger('Layer', itS16)
-          ]),
-          wbArrayS(VTXT, 'Alpha Layer Data', wbStructSK([0], 'Cell', [
-            wbInteger('Position', itU16, wbAtxtPosition),
-            wbByteArray('Unknown', 2),
-            wbFloat('Opacity')
-          ]))
-        ], [])
-      ], [])),
-      wbArray(VTEX, 'Textures', wbFormIDCk('Texture', [LTEX, NULL])),
-      wbRArray('Unknown', wbUnknown(MPCD))
-    ]);
-
-  end;
 
   wbRecord(LIGH, 'Light',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
@@ -12832,9 +12763,9 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
-    wbMODL,
+    wbGenericModel,
     wbKSIZ,
     wbKWDAs,
     wbDEST,
@@ -12889,13 +12820,9 @@ begin
     wbFloat(FNAM, 'Fade value', cpNormal, True),
     wbString(NAM0, 'Gobo'),
     wbFormIDCk(LNAM, 'Lens', [LENS]),
-    wbFormIDCk(WGDR, 'God Rays', [GDRY]),
-    wbFormIDCk(SNAM, 'Sound', [SNDR])
+    wbFormIDCk(SNAM, 'Sound', [SNDR]),
+    wbFormIDCk(WGDR, 'God Rays', [GDRY])
   ], False, nil, cpNormal, False, wbLIGHAfterLoad);
-end;
-
-procedure DefineFO4m;
-begin
 
   wbRecord(LSCR, 'Load Screen',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
@@ -12930,9 +12857,81 @@ begin
     wbRArray('Grasses', wbFormIDCk(GNAM, 'Grass', [GRAS]))
   ]);
 
+  var wbLeveledListEntryItem :=
+    wbRStructExSK([0], [1], 'Leveled List Entry', [
+      wbStructExSK(LVLO, [0, 2], [3], 'Base Data', [
+        wbInteger('Level', itU16),
+        wbByteArray('Unused', 2, cpIgnore, false, wbNeverShow),
+        wbFormIDCk('Reference', sigBaseObjects),
+        wbInteger('Count', itU16),
+        wbInteger('Chance None', itU8),
+        wbByteArray('Unused', 1, cpIgnore, false, wbNeverShow)
+      ])
+      .SetSummaryKeyOnValue([0, 3, 2, 4])
+      .SetSummaryPrefixSuffixOnValue(0, '[Lv', ']')
+      .SetSummaryPrefixSuffixOnValue(3, '', 'x')
+      .SetSummaryPrefixSuffixOnValue(4, '{Chance None:', '%}')
+      .SetSummaryDelimiterOnValue(' ')
+      .IncludeFlagOnValue(dfSummaryMembersNoName)
+      .IncludeFlagOnValue(dfSummaryNoSortKey)
+      , wbCOED
+    ], [])
+    .SetSummaryMemberMaxDepth(0, 1)
+    .IncludeFlag(dfCollapsed, wbCollapseLeveledItems);
+
+  var wbLeveledListEntryNPC :=
+    wbRStructExSK([0], [1], 'Leveled List Entry', [
+      wbStructExSK(LVLO, [0, 2], [3], 'Base Data', [
+        wbInteger('Level', itU16),
+        wbByteArray('Unused', 2, cpIgnore, false, wbNeverShow),
+        wbFormIDCk('Reference', [NPC_, LVLN]),
+        wbInteger('Count', itS16),
+        wbInteger('Chance None', itU8),
+        wbByteArray('Unused', 1, cpIgnore, false, wbNeverShow)
+      ])
+      .SetSummaryKeyOnValue([0, 3, 2, 4])
+      .SetSummaryPrefixSuffixOnValue(0, '[Lv', ']')
+      .SetSummaryPrefixSuffixOnValue(3, '', 'x')
+      .SetSummaryPrefixSuffixOnValue(4, '{Chance None:', '%}')
+      .SetSummaryDelimiterOnValue(' ')
+      .IncludeFlagOnValue(dfSummaryMembersNoName)
+      .IncludeFlagOnValue(dfSummaryNoSortKey)
+      , wbCOED
+    ], [])
+    .SetSummaryMemberMaxDepth(0, 1)
+    .IncludeFlag(dfCollapsed, wbCollapseLeveledItems);
+
+  var wbLeveledListEntrySpell :=
+    wbRStructSK([0], 'Leveled List Entry', [
+      wbStructExSK(LVLO, [0, 2], [3], 'Base Data', [
+        wbInteger('Level', itU16),
+        wbByteArray('Unused', 2, cpIgnore, false, wbNeverShow),
+        wbFormIDCk('Reference', [SPEL, LVSP]),
+        wbInteger('Count', itU16),
+        wbInteger('Chance None', itU8),
+        wbByteArray('Unused', 1, cpIgnore, false, wbNeverShow)
+      ])
+      .SetSummaryKeyOnValue([0, 3, 2, 4])
+      .SetSummaryPrefixSuffixOnValue(0, '[Lv', ']')
+      .SetSummaryPrefixSuffixOnValue(3, '', 'x')
+      .SetSummaryPrefixSuffixOnValue(4, '{Chance None:', '%}')
+      .SetSummaryDelimiterOnValue(' ')
+      .IncludeFlagOnValue(dfSummaryMembersNoName)
+      .IncludeFlagOnValue(dfSummaryNoSortKey)
+    ], [])
+    .SetSummaryMemberMaxDepth(0, 1)
+    .IncludeFlag(dfCollapsed, wbCollapseLeveledItems);
+
+  var wbFilterKeywordChances :=
+    wbArrayS(LLKC, 'Filter Keyword Chances',
+      wbStructSK([0], 'Filter', [
+        wbFormIDCk('Keyword', [KYWD]),
+        wbInteger('Chance', itU32)
+      ]));
+
   wbRecord(LVLN, 'Leveled NPC', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbLVLD,
     wbInteger(LVLM, 'Max Count', itU8), { Always 00 } {Unavailable}
     wbInteger(LVLF, 'Flags', itU8, wbFlags([
@@ -12942,30 +12941,14 @@ begin
     ]), cpNormal, True),
     wbFormIDCk(LVLG, 'Use Global', [GLOB]),
     wbLLCT,
-    wbRArrayS('Leveled List Entries',
-      wbRStructExSK([0], [1], 'Leveled List Entry', [
-        wbStructExSK(LVLO , [0, 2], [3], 'Base Data', [
-          wbInteger('Level', itU16),
-          wbByteArray('Unused', 2, cpIgnore, false, wbNeverShow),
-          wbFormIDCk('Reference', [NPC_, LVLN]),
-          wbInteger('Count', itS16),
-          wbInteger('Chance None', itU8),
-          wbByteArray('Unused', 1, cpIgnore, false, wbNeverShow)
-        ]),
-				wbCOED
-      ], []), cpNormal, False, nil, wbLVLOsAfterSet),
-    wbArrayS(LLKC, 'Filter Keyword Chances',
-      wbStructSK([0], 'Filter', [
-        wbFormIDCk('Keyword', [KYWD]),
-        wbInteger('Chance', itU32)
-      ])
-    ),
-    wbMODL
+    wbRArrayS('Leveled List Entries', wbLeveledListEntryNPC, cpNormal, False, nil, wbLVLOsAfterSet),
+    wbFilterKeywordChances,
+    wbGenericModel
   ], False, nil, cpNormal, False, wbLLEAfterLoad, wbLLEAfterSet);
 
   wbRecord(LVLI, 'Leveled Item', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbLVLD,
     wbInteger(LVLM, 'Max Count', itU8), { Always 00 }
     wbInteger(LVLF, 'Flags', itU8, wbFlags([
@@ -12975,31 +12958,24 @@ begin
     ]), cpNormal, True),
     wbFormIDCk(LVLG, 'Use Global', [GLOB]),
     wbLLCT,
-    wbRArrayS('Leveled List Entries',
-      wbRStructExSK([0], [1], 'Leveled List Entry', [
-        wbStructExSK(LVLO , [0, 2], [3], 'Base Data', [
-          wbInteger('Level', itU16),
-          wbByteArray('Unused', 2, cpIgnore, false, wbNeverShow),
-          wbFormIDCk('Reference', sigBaseObjects),
-          wbInteger('Count', itU16),
-          wbInteger('Chance None', itU8),
-          wbByteArray('Unused', 1, cpIgnore, false, wbNeverShow)
-        ]),
-        wbCOED
-      ], []), cpNormal, False, nil, wbLVLOsAfterSet
-    ),
-    wbArrayS(LLKC, 'Filter Keyword Chances',
-      wbStructSK([0], 'Filter', [
-        wbFormIDCk('Keyword', [KYWD]),
-        wbInteger('Chance', itU32)
-      ])
-    ),
+    wbRArrayS('Leveled List Entries', wbLeveledListEntryItem, cpNormal, False, nil, wbLVLOsAfterSet),
+    wbFilterKeywordChances,
     wbFormIDCk(LVSG, 'Epic Loot Chance', [GLOB]),
     wbLStringKC(ONAM, 'Override Name', 0, cpTranslate)
   ], False, nil, cpNormal, False, wbLLEAfterLoad, wbLLEAfterSet);
 
   wbRecord(LVSP, 'Leveled Spell', [
-    wbEDID
+    wbEDID,
+    wbOBND(True),
+    wbLVLD,
+    wbInteger(LVLM, 'Max Count', itU8), { Always 00 }
+    wbInteger(LVLF, 'Flags', itU8, wbFlags([
+      {0x01} 'Calculate from all levels <= player''s level',
+      {0x02} 'Calculate for each item in count',
+      {0x04} 'Use All'
+    ]), cpNormal, True),
+    wbLLCT,
+    wbRArrayS('Leveled List Entries', wbLeveledListEntrySpell, cpNormal, False, nil, wbLVLOsAfterSet)
   ]);
 
   wbMGEFType := wbInteger('Archetype', itU32, wbEnum([
@@ -13034,7 +13010,7 @@ begin
     {28} 'Cure Addiction',
     {29} 'Cure Poison',
     {30} 'Concussion',
-    {31} 'Stimpack',
+    {31} 'Stimpak',
     {32} 'Accumulate Magnitude',
     {33} 'Stagger',
     {34} 'Peak Value Modifier',
@@ -13063,45 +13039,46 @@ begin
         {0x00000004}  'Detrimental',
         {0x00000008}  'Snap to Navmesh',
         {0x00000010}  'No Hit Event',
-				{0x00000020}  'Unknown 6',
-				{0x00000040}  'Unknown 7',
-				{0x00000080}  'Unknown 8',
-				{0x00000100}  'Dispel with Keywords',
-				{0x00000200}  'No Duration',
-				{0x00000400}  'No Magnitude',
-				{0x00000800}  'No Area',
-				{0x00001000}  'FX Persist',
-				{0x00002000}  'Unknown 14',
-				{0x00004000}  'Gory Visuals',
-				{0x00008000}  'Hide in UI',
-				{0x00010000}  'Unknown 17',
-				{0x00020000}  'No Recast',
-				{0x00040000}  'Unknown 19',
-				{0x00080000}  'Unknown 20',
-				{0x00100000}  'Unknown 21',
-				{0x00200000}  'Power Affects Magnitude',
-				{0x00400000}  'Power Affects Duration',
-				{0x00800000}  'Unknown 24',
-				{0x01000000}  'Unknown 25',
-				{0x02000000}  'Unknown 26',
-				{0x04000000}  'Painless',
-				{0x08000000}  'No Hit Effect',
-				{0x10000000}  'No Death Dispel',
-				{0x20000000}  'Unknown 30',
-				{0x40000000}  'Unknown 31',
-				{0x80000000}  'Unknown 32'
-			])),
+        {0x00000020}  'Unknown 6',
+        {0x00000040}  'Unknown 7',
+        {0x00000080}  'Unknown 8',
+        {0x00000100}  'Dispel with Keywords',
+        {0x00000200}  'No Duration',
+        {0x00000400}  'No Magnitude',
+        {0x00000800}  'No Area',
+        {0x00001000}  'FX Persist',
+        {0x00002000}  'Unknown 14',
+        {0x00004000}  'Gory Visuals',
+        {0x00008000}  'Hide in UI',
+        {0x00010000}  'Unknown 17',
+        {0x00020000}  'No Recast',
+        {0x00040000}  'Unknown 19',
+        {0x00080000}  'Unknown 20',
+        {0x00100000}  'Unknown 21',
+        {0x00200000}  'Power Affects Magnitude',
+        {0x00400000}  'Power Affects Duration',
+        {0x00800000}  'Unknown 24',
+        {0x01000000}  'Unknown 25',
+        {0x02000000}  'Unknown 26',
+        {0x04000000}  'Painless',
+        {0x08000000}  'No Hit Effect',
+        {0x10000000}  'No Death Dispel',
+        {0x20000000}  'Unknown 30',
+        {0x40000000}  'Unknown 31',
+        {0x80000000}  'Unknown 32'
+      ])),
       wbFloat('Base Cost'),
       wbUnion('Assoc. Item', wbMGEFAssocItemDecider, [
-        wbFormID('Unused', cpIgnore),
-        wbFormIDCk('Assoc. Item', [LIGH, NULL]),
-        wbFormIDCk('Assoc. Item', [WEAP, ARMO, NULL]),
-        wbFormIDCk('Assoc. Item', [NPC_, NULL]),
-        wbFormIDCk('Assoc. Item', [HAZD, NULL]),
-        wbFormIDCk('Assoc. Item', [SPEL, NULL]),
-        wbFormIDCk('Assoc. Item', [RACE, NULL]),
-        wbFormIDCk('Assoc. Item', [ENCH, NULL]),
-        wbFormIDCk('Assoc. Item', [KYWD, NULL])
+        { 0} wbFormID('Unused', cpIgnore),
+        { 1} wbFormIDCk('Assoc. Item', [LIGH, NULL]),
+        { 2} wbFormIDCk('Assoc. Item', [WEAP, ARMO, NULL]),
+        { 3} wbFormIDCk('Assoc. Item', [NPC_, NULL]),
+        { 4} wbFormIDCk('Assoc. Item', [HAZD, NULL]),
+        { 5} wbFormIDCk('Assoc. Item', [SPEL, NULL]),
+        { 6} wbFormIDCk('Assoc. Item', [RACE, NULL]),
+        { 7} wbFormIDCk('Assoc. Item', [ENCH, NULL]),
+        { 8} wbFormIDCk('Assoc. Item', [KYWD, NULL]),
+        { 9} wbFormIDCk('Assoc. Item', [DMGT, NULL])
       ], cpNormal, False, nil, wbMGEFAssocItemAfterSet),
       wbByteArray('Magic Skill (unused)', 4),
       wbFormIDCk('Resist Value', [AVIF, NULL]),
@@ -13135,8 +13112,8 @@ begin
         wbFloat('Scale')
       ]),
       wbFormIDCk('Enchant Art', [ARTO, NULL]),
-      wbByteArray('Unknown', 4),
-      wbByteArray('Unknown', 4),
+      wbFormIDCk('Hit Visuals', [RFCT, NULL]),
+      wbFormIDCk('Enchant Visuals', [RFCT, NULL]),
       wbFormIDCk('Equip Ability', [SPEL, NULL]),
       wbFormIDCk('Image Space Modifier', [IMAD, NULL]),
       wbFormIDCk('Perk to Apply', [PERK, NULL]),
@@ -13157,17 +13134,7 @@ begin
     wbKWDAs,
     wbMGEFData,
     wbRArrayS('Counter Effects', wbFormIDCk(ESCE, 'Effect', [MGEF]), cpNormal, False, nil, wbCounterEffectsAfterSet),
-    wbArray(SNDD, 'Sounds', wbStruct('', [
-      wbInteger('Type', itU32, wbEnum([
-        'Sheathe/Draw',
-        'Charge',
-        'Ready',
-        'Release',
-        'Concentration Cast Loop',
-        'On Hit'
-      ])),
-      wbFormIDCk('Sound', [SNDR])
-    ])),
+    wbMagicEffectSounds,
     wbLStringKC(DNAM, 'Magic Item Description', 0, cpTranslate),
     wbCTDAs
   ], False, nil, cpNormal, False, nil {wbMGEFAfterLoad}, wbMGEFAfterSet);
@@ -13179,10 +13146,10 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbICON,
     wbMICO,
     wbDEST,
@@ -13203,20 +13170,23 @@ begin
     wbArray(CDIX, 'Component Display Indices', wbInteger('Display Index', itU8))
   ], False, nil, cpNormal, False, wbRemoveEmptyKWDA, wbKeywordsAfterSet);
 
+  wbComponent :=
+    wbStructSK([0], 'Component', [
+      wbFormIDCkNoReach('Component', sigBaseObjects),
+      wbInteger('Count', itU32)
+    ]).SetToStr(wbItemToStr).IncludeFlag(dfCollapsed, wbCollapseItems);
+
+  wbComponents := wbArrayS(FVPA, 'Components', wbComponent);
+
   wbRecord(COBJ, 'Constructible Object', [
     wbEDID,
     wbYNAM,
     wbZNAM,
-    wbArrayS(FVPA, 'Components',
-      wbStructSK([0], 'Component', [
-        wbFormIDCk('Component', sigBaseObjects),
-        wbInteger('Count', itU32)
-      ])
-    ),
+    wbComponents,
     wbDESC,
     wbCTDAs,
     wbFormIDCk(CNAM, 'Created Object', sigBaseObjects),
-    wbFormIDCk(BNAM, 'Workbench Keyword', [KYWD]),
+    wbFormIDCkNoReach(BNAM, 'Workbench Keyword', [KYWD]),
     wbByteArray(NAM1, 'Unused', 0, cpIgnore, False, False, wbNeverShow), // co_PA_FusionCore01
     wbByteArray(NAM2, 'Unused', 0, cpIgnore, False, False, wbNeverShow), // co_PA_FusionCore01
     wbByteArray(NAM3, 'Unused', 0, cpIgnore, False, False, wbNeverShow), // co_PA_FusionCore01
@@ -13237,7 +13207,7 @@ begin
     ]), [18]), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbSTCP,
     wbStruct(ACBS, 'Configuration', [
@@ -13301,12 +13271,7 @@ begin
       wbInteger('Bleedout Override', itU16),
       wbByteArray('Unknown', 2)
     ], cpNormal, True),
-    wbRArrayS('Factions',
-      wbStructSK(SNAM, [0], 'Faction', [
-        wbFormIDCk('Faction', [FACT]),
-        wbInteger('Rank', itS8)
-      ]), cpNormal, False, nil, nil, nil{wbActorTemplateUseFactions}
-    ),
+    wbRArrayS('Factions', wbFaction, cpNormal, False, nil, nil, nil{wbActorTemplateUseFactions}),
     wbFormIDCk(INAM, 'Death item', [LVLI], False, cpNormal, False, nil{wbActorTemplateUseTraits}),
     wbFormIDCk(VTCK, 'Voice', [VTYP], False, cpNormal, False, nil{wbActorTemplateUseTraits}),
     wbFormIDCk(TPLT, 'Default Template', [LVLN, NPC_]),
@@ -13326,7 +13291,7 @@ begin
       wbFormIDCk('Def Pack List', [LVLN, NPC_, NULL], False, cpNormal, False, wbActorTemplatesUseTemplate10),
       wbFormIDCk('Attack Data', [LVLN, NPC_, NULL], False, cpNormal, False, wbActorTemplatesUseTemplate11),
       wbFormIDCk('Keywords', [LVLN, NPC_, NULL], False, cpNormal, False, wbActorTemplatesUseTemplate12)
-    ]),
+    ], cpNormal, False, wbActorTemplatesUseTemplateAny),
     wbFormIDCk(RNAM, 'Race', [RACE], False, cpNormal, True, nil{wbActorTemplateUseTraits}),
     wbSPCT,
     wbSPLOs,
@@ -13362,12 +13327,13 @@ begin
     wbFormIDCk(CNAM, 'Class', [CLAS], False, cpNormal, True),
     wbFULL,
     wbLStringKC(SHRT, 'Short Name', 0, cpTranslate),
-    wbByteArray(DATA, 'Marker'),
+    wbEmpty(DATA, 'Marker', cpNormal, True),
     wbStruct(DNAM, '', [
-      wbInteger('Unknown', itU16),
-      wbInteger('Unknown', itU16),
+      wbInteger('Calculated Health', itU16),
+      wbInteger('Calculated Action Points', itU16),
       wbInteger('Far Away Model Distance', itU16),
-      wbInteger('Geared Up Weapons', itU16)
+      wbInteger('Geared Up Weapons', itU8),
+      wbByteArray('Unused', 1, cpIgnore)
     ]),
     wbRArrayS('Head Parts', wbFormIDCk(PNAM, 'Head Part', [HDPT]), cpNormal, False, nil, nil, nil{wbActorTemplateUseModelAnimation}),
     wbFormIDCk(HCLF, 'Hair Color', [CLFM], False, cpNormal, False),
@@ -13386,13 +13352,7 @@ begin
     wbInteger(NAM8, 'Sound Level', itU32, wbSoundLevelEnum, cpNormal, True),
     wbRStruct('Actor Sounds', [
       wbInteger(CS2H, 'Count', itU32, nil, cpBenign, True),
-      wbRArrayS('Sounds',
-        wbRStructSK([0], 'Sound', [
-          wbFormIDCk(CS2K, 'Keyword', [KYWD]),
-          wbFormIDCk(CS2D, 'Sound', [SNDR], False, cpNormal, True)
-        ], [], cpNormal, False, nil, True),
-        cpNormal, False, nil, wbNPCActorSoundsAfterSet
-      ),
+      wbActorSounds,
       wbEmpty(CS2E, 'End Marker', cpNormal, True),
       wbByteArray(CS2F, 'Finalize', 1, cpNormal, True)
     ], []),
@@ -13403,12 +13363,7 @@ begin
     wbFormIDCk(DPLT, 'Default Package List', [FLST], False, cpNormal, False),
     wbFormIDCk(CRIF, 'Crime Faction', [FACT], False, cpNormal, False),
     wbFormIDCk(FTST, 'Head Texture', [TXST], False, cpNormal, False),
-    wbStruct(QNAM, 'Texture lighting', [
-      wbFloat('Red', cpNormal, True, 255, 0),
-      wbFloat('Green', cpNormal, True, 255, 0),
-      wbFloat('Blue', cpNormal, True, 255, 0),
-      wbFloat('Alpha')
-    ]),
+    wbFloatRGBA(QNAM, 'Texture lighting'),
     wbArray(MSDK, 'Morph Keys', wbInteger('Key', itU32, wbMorphValueToStr, wbHexStrToInt)),
     wbArray(MSDV, 'Morph Values', wbFloat('Value')),
     wbRArrayS('Face Tinting Layers',
@@ -13508,73 +13463,15 @@ begin
     {0x4000} 'Unknown 15',
     {0x8000} 'Unknown 16'
   ]);
-end;
 
+  wbBlendOperationEnum := wbEnum([
+            'Default',
+            'Multiply',
+            'Overlay',
+            'Soft Light',
+            'Hard Light'
+          ]);
 
-procedure DefineFO4n;
-
-  function wbTintTemplateGroups(const aName: string): IwbSubRecordArrayDef;
-  begin
-    Result :=
-      wbRStructs(aName, 'Group', [
-        wbLString(TTGP, 'Group Name', 0, cpTranslate),
-        wbRStructs('Options', 'Option', [
-          wbStruct(TETI, 'Index', [
-            wbByteArray('Unknown', 2),
-            wbInteger('Index', itU16)
-          ]),
-          wbLString(TTGP, 'Name', 0, cpTranslate),
-          wbUnknown(TTEF),
-          wbCTDAs,
-          wbRArray('Textures', wbString(TTET, 'Texture')),
-          wbUnknown(TTEB),
-          wbArray(TTEC, 'Template Colors', wbStruct('Template Color', [
-            wbFormIDCk('Color', [CLFM]),
-            wbFloat('Alpha'),
-            wbInteger('Template Index', itU16),
-            wbByteArray('Unknown', 4)
-          ])),
-          wbFloat(TTED, 'Unknown')
-        ], []),
-        wbByteArray(TTGE, 'Group End', 4)
-      ], []);
-  end;
-
-  function wbMorphGroups(const aName: string): IwbSubRecordArrayDef;
-  begin
-    Result :=
-      wbRArray(aName,
-        wbRStruct('Morph Group', [
-          wbString(MPGN, 'Name'),
-          wbInteger(MPPC, 'Count', itU32, nil, cpBenign),
-          wbRArray('Morph Presets',
-            wbRStruct('Morph Preset', [
-              wbInteger(MPPI, 'Index', itU32, wbIntToHexStr, wbHexStrToInt),
-              wbLString(MPPN, 'Name', 0, cpTranslate),
-              wbString(MPPM, 'Unknown'),
-              wbFormIDCk(MPPT, 'Texture', [TXST]),
-              wbUnknown(MPPF)
-            ], []),
-            cpNormal, False, nil, wbMorphPresetsAfterSet
-          ),
-          wbUnknown(MPPK),
-          wbArray(MPGS, 'Unknown', wbInteger('Index', itU32, wbIntToHexStr, wbHexStrToInt))
-        ], [])
-      );
-  end;
-
-  function wbFaceMorphs(const aName: string): IwbSubRecordArrayDef;
-  begin
-    Result :=
-      wbRArray(aName,
-        wbRStruct('Face Morph', [
-          wbInteger(FMRI, 'Index', itU32, wbIntToHexStr, wbHexStrToInt),
-          wbLString(FMRN, 'Name')
-        ], [])
-      );
-  end;
-
-begin
   wbUNAMs := wbRArray('Data Inputs', wbRStruct('Data Input', [
     wbInteger(UNAM, 'Index', itS8),
     wbString(BNAM, 'Name'),
@@ -13592,7 +13489,7 @@ begin
       wbInteger('Type', itU8, wbEnum ([], [
         18, 'Package',
         19, 'Package Template'
-      ])),
+      ])).SetDefaultEditValue('Package'),
       wbInteger('Interrupt Override', itU8, wbEnum([
         {0} 'None',
         {1} 'Spectator',
@@ -13664,7 +13561,7 @@ begin
 
     wbRStruct('Package Data', [
       wbRArray('Data Input Values', wbRStruct('Value', [
-        wbString(ANAM, 'Type'),
+        wbString(ANAM, 'Type').SetAfterSet(wbPackageDataInputValueTypeAfterSet),
         wbUnion(CNAM, 'Value', wbPubPackCNAMDecider, [
           {0} wbByteArray('Unknown'),
           {1} wbInteger('Bool', itU8, wbBoolEnum),
@@ -13679,7 +13576,7 @@ begin
       ], [], cpNormal, False)),
       wbUNAMs
     ], []),
-    wbByteArray(XNAM, 'Marker'),
+    wbByteArray(XNAM, 'Marker', 0, cpNormal, True),
 
     wbRStruct('Procedure Tree', [
       wbRArray('Branches', wbRStruct('Branch', [
@@ -13720,17 +13617,17 @@ begin
       wbEmpty(POBA, 'OnBegin Marker', cpNormal, True),
       wbFormIDCk(INAM, 'Idle', [IDLE, NULL], False, cpNormal, True),
       wbPDTOs
-    ], []),
+    ], [], cpNormal, True),
     wbRStruct('OnEnd', [
       wbEmpty(POEA, 'OnEnd Marker', cpNormal, True),
       wbFormIDCk(INAM, 'Idle', [IDLE, NULL], False, cpNormal, True),
       wbPDTOs
-    ], []),
+    ], [], cpNormal, True),
     wbRStruct('OnChange', [
       wbEmpty(POCA, 'OnChange Marker', cpNormal, True),
       wbFormIDCk(INAM, 'Idle', [IDLE, NULL], False, cpNormal, True),
       wbPDTOs
-    ], [])
+    ], [], cpNormal, True)
   ], False, nil, cpNormal, False, nil {wbPACKAfterLoad});
 
   wbQUSTAliasFlags :=
@@ -13760,35 +13657,38 @@ begin
       {0x00400000} 'Can Apply Data To Non-Aliased Refs',
       {0x00800000} 'Is Companion',
       {0x01000000} 'Optional All Scenes'
-    ]));
+    ]), cpNormal, True);
 
   wbRecord(QUST, 'Quest',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
-      {0x00004000} 14, 'Partial Form'	// Allows the Record to inherit some subrecords from its master
-    ])), [
+      {0x00004000} 14, 'Partial Form'
+    ]), [14]), [
     wbEDID,
     wbVMADFragmentedQUST,
     wbFULL,
     wbStruct(DNAM, 'General', [
       wbInteger('Flags', itU16, wbFlags([
         {0x0001} 'Start Game Enabled',
-        {0x0002} 'Unknown 2',
-        {0x0004} 'Add Idle Topic To Hello',
+        {0x0002} 'Completed',
+        {0x0004} 'Add Idle topic to Hello',
         {0x0008} 'Allow repeated stages',
-        {0x0010} 'Unknown 5',
-        {0x0020} 'Unknown 6',
-        {0x0040} 'Unknown 7',
-        {0x0080} 'Unknown 8',
+        {0x0010} 'Starts Enabled',
+        {0x0020} 'Displayed In HUD',
+        {0x0040} 'Failed',
+        {0x0080} 'Stage Wait',
         {0x0100} 'Run Once',
         {0x0200} 'Exclude from dialogue export',
         {0x0400} 'Warn on alias fill failure',
-        {0x0800} 'Unknown 12',
-        {0x1000} 'Unknown 13'
+        {0x0800} 'Active',
+        {0x1000} 'Repeats Conditions',
+        {0x2000} 'Keep Instance',
+        {0x4000} 'Want Dormant',
+        {0x8000} 'Has Dialogue Data'
       ])),
       wbInteger('Priority', itU8),
-      wbInteger('Form Version', itU8, nil, cpIgnore),
-      wbByteArray('Unknown', 4),
-      wbInteger('Type', itU32, wbEnum([
+      wbByteArray('Unused', 1),
+      wbFloat('Delay Time'),
+      wbInteger('Type', itU8, wbEnum([
         {0} 'None',
         {1} 'Main Quest',
         {2} 'Brotherhood of Steel',
@@ -13804,7 +13704,8 @@ begin
        {12} 'DLC05',
        {13} 'DLC06',
        {14} 'DLC07'
-      ]))
+      ])),
+      wbByteArray('Unused', 3)
     ]),
     wbString(ENAM, 'Event', 4),
     wbFormIDCk(LNAM, 'Location', [LCTN]),
@@ -13812,7 +13713,7 @@ begin
     wbRArray('Text Display Globals', wbFormIDCk(QTGL, 'Global', [GLOB])),
     wbFLTR,
     wbRStruct('Quest Dialogue Conditions', [wbCTDAs], [], cpNormal, False),
-    wbEmpty(NEXT, 'Marker'),
+    wbEmpty(NEXT, 'Marker', cpNormal, True),
     wbCTDAs, {>>> Unknown, doesn't show up in CK <<<}
     wbRArrayS('Stages', wbRStructSK([0], 'Stage', [
       wbStructSK(INDX, [0], 'Stage Index', [
@@ -13851,7 +13752,7 @@ begin
             {0x02} 'Hostile',
             {0x04} 'Use Straight Line Pathing'
           ])),
-          wbFormIDCk('Keyword', [KYWD, NULL])
+          wbFromVersion(82, wbFormIDCk('Keyword', [KYWD, NULL]))
         ]),
         wbCTDAs
       ], []))
@@ -13863,9 +13764,9 @@ begin
       wbRUnion('Alias', [
 
         // Reference Alias
-        wbRStruct('Alias', [
-          wbInteger(ALST, 'Reference Alias ID', itU32),
-          wbString(ALID, 'Alias Name'),
+        wbRStructSK([0], 'Alias', [
+          wbInteger(ALST, 'Reference Alias ID', itU32, nil, cpNormal, True),
+          wbString(ALID, 'Alias Name', 0, cpNormal, True),
           wbQUSTAliasFlags,
           wbInteger(ALFI, 'Force Into Alias When Filled', itS32, wbQuestAliasToStr, wbStrToAlias),
           //wbFormIDCk(ALFL, 'Specific Location', [LCTN]),
@@ -13905,8 +13806,8 @@ begin
             ]))
           ], []),
           wbRStruct('Find Matching Reference From Event', [
-            wbString(ALFE, 'From Event', 4),
-            wbByteArray(ALFD, 'Event Data')
+            wbInteger(ALFE, 'From Event', itU32, wbQuestEventEnum),
+            wbInteger(ALFD, 'Event Data', itU32, wbEventMemberEnum)
           ], []),
           wbInteger(ALCC, 'Closest To Alias', itS32, wbQuestAliasToStr, wbStrToAlias),
           wbCTDAs,
@@ -13933,7 +13834,7 @@ begin
         ], [], cpNormal, False, nil, False, nil, wbContainerAfterSet),
 
         // Location Alias
-        wbRStruct('Alias', [
+        wbRStructSK([0], 'Alias', [
           wbInteger(ALLS, 'Location Alias ID', itU32),
           wbString(ALID, 'Alias Name'),
           wbQUSTAliasFlags,
@@ -13948,8 +13849,8 @@ begin
             wbInteger(ALEA, 'Alias', itS32, wbQuestExternalAliasToStr, wbStrToAlias)
           ], []),
           wbRStruct('Find Matching Location From Event', [
-            wbString(ALFE, 'From Event', 4),
-            wbByteArray(ALFD, 'Event Data')
+            wbInteger(ALFE, 'From Event', itU32, wbQuestEventEnum),
+            wbInteger(ALFD, 'Event Data', itU32, wbEventMemberEnum)
           ], []),
           wbCTDAs,
           wbInteger(ALCC, 'Closest To Alias', itS32, wbQuestAliasToStr, wbStrToAlias),
@@ -13957,7 +13858,7 @@ begin
         ], []),
 
         // Ref Collection Alias
-        wbRStruct('Alias', [
+        wbRStructSK([0], 'Alias', [
           wbInteger(ALCS, 'Collection Alias ID', itU32),
           wbInteger(ALMI, 'Max Initial Fill Count', itU8)
         ], [])
@@ -13968,10 +13869,6 @@ begin
     wbString(NNAM, 'Description', 0, cpTranslate, False),
     wbFormIDCk(GNAM, 'Quest Group', [KYWD]),
     wbString(SNAM, 'SWF File')
-  ]);
-
-  wbBodyPartIndexEnum := wbEnum([
-    'Body Texture'
   ]);
 
   wbPhonemeTargets := wbStruct(PHWT, 'Phoneme Target Weight', [
@@ -14040,26 +13937,49 @@ begin
     wbRStruct('FLAP', [wbPhonemeTargets], [])
   ], []);
 
-  wbHeadPart := wbRStructSK([0], 'Head Part', [
-    wbInteger(INDX, 'Head Part Number', itU32),
-    wbFormIDCk(HEAD, 'Head', [HDPT, NULL])
-  ], []);
-
   wbRaceRBPC :=
     wbArray(RBPC, 'Biped Object Conditions',
-      wbUnion('Slot 30+', wbFormVer78Decider, [
+      wbUnion('Slot 30+', wbFormVersionDecider(78), [
         wbInteger('Slot 30+', itU32),
         wbFormIDCk('Slot 30+', [AVIF, NULL])
       ])
     );
     // since version 78: array of pair of AVIF FormID, before array of AVIF index. Similar to DamageType (and MGEF also somehow).
-    {wbUnion(RBPC, 'Biped Object Conditions', wbFormVer78Decider, [
+    {wbUnion(RBPC, 'Biped Object Conditions', wbFormVersionDecider(78), [
       wbArray('Biped Object Conditions', wbInteger('Condition AV', itU32)),
       wbArray('Biped Object Conditions', wbStruct('Condition AV', [
         wbFormIDck('AVIF 1', [AVIF, NULL]),
         wbFormIDck('AVIF 2', [AVIF, NULL])
       ]))
     ]);}
+
+  var wbEquipSlot :=
+    wbRStruct('Equip Slot', [
+      wbFormIDCk(QNAM, 'Equip Slot', [EQUP]),
+      wbString(ZNAM, 'Node')
+    ], [])
+    .SetSummaryKey([1, 0])
+    .SetSummaryDelimiter(' = ')
+    .IncludeFlag(dfSummaryMembersNoName)
+    .IncludeFlag(dfCollapsed, wbCollapseEquipSlots);
+
+  var wbBodyPartIndexEnum := wbEnum([
+    'Body Texture'
+  ]);
+
+  var wbBodyParts :=
+    wbRArrayS('Parts',
+      wbRStructSK([0], 'Part', [
+        wbInteger(INDX, 'Index', itU32, wbBodyPartIndexEnum),
+        wbGenericModel
+      ], [])
+      .SetSummaryKey([0, 1])
+      .SetSummaryMemberPrefixSuffix(0, '[', ']')
+      .SetSummaryDelimiter(' ')
+      .IncludeFlag(dfSummaryMembersNoName)
+      .IncludeFlag(dfSummaryNoSortKey)
+      .IncludeFlag(dfCollapsed, wbCollapseBodyParts)
+    , cpNormal, True);
 
   wbRecord(RACE, 'Race',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
@@ -14080,16 +14000,16 @@ begin
     wbStruct(DATA, 'Data', [
       wbFloat('Male Height'),
       wbFloat('Female Height'),
-      wbStruct('Male Default Weight', [
+      wbFromVersion(109, wbStruct('Male Default Weight', [
         wbFloat('Thin'),
         wbFloat('Muscular'),
         wbFloat('Fat')
-      ]),
-      wbStruct('Female Default Weight', [
+      ])),
+      wbFromVersion(109, wbStruct('Female Default Weight', [
         wbFloat('Thin'),
         wbFloat('Muscular'),
         wbFloat('Fat')
-      ]),
+      ])),
       wbInteger('Flags', itU32, wbFlags([
         {0x00000001} 'Playable',
         {0x00000002} 'FaceGen Head',
@@ -14132,10 +14052,11 @@ begin
         'Large',
         'Extra Large'
       ])),
-      wbByteArray('Unknown', 8),
+      wbByteArray('Unknown Bytes1', 4),
+      wbByteArray('Unknown Bytes2', 4),
       wbFloat('Injured Health Pct'),
       wbInteger('Shield Biped Object', itS32, wbBipedObjectEnum),
-      wbInteger('Beard Biped Object', itS32, wbBipedObjectEnum),
+      wbFromVersion(124, wbInteger('Beard Biped Object', itS32, wbBipedObjectEnum)),
       wbInteger('Body Biped Object', itS32, wbBipedObjectEnum),
       wbFloat('Aim Angle Tolerance'),
       wbFloat('Flight Radius'),
@@ -14166,7 +14087,15 @@ begin
         {0x00200000} 'Low Priority Pushable',
         {0x00400000} 'Cannot Use Playable Items'
       ])),
-      wbByteArray('Unknown', 36),
+      wbFloat('Unknown Float1'),
+      wbFloat('Unknown Float2'),
+      wbByteArray('Unknown Bytes3',4),
+      wbByteArray('Unknown Bytes4',4),
+      wbByteArray('Unknown Bytes5',4),
+      wbByteArray('Unknown Bytes6',4),
+      wbByteArray('Unknown Bytes7',4),
+      wbFloat('Unknown Float3'),
+      wbByteArray('Unknown Bytes8',4),
       wbInteger('Pipboy Biped Object', itS32, wbBipedObjectEnum),
       wbInteger('XP Value', itS16),
       wbFloat('Severable - Debris Scale'),
@@ -14181,15 +14110,17 @@ begin
       wbFormIDCk('Explodable - Explosion', [EXPL, NULL]),
       wbFormIDCk('Explodable - Debris', [DEBR, NULL]),
       wbFormIDCk('Explodable - Impact DataSet', [IPDS, NULL]),
-      wbFloat('OnCripple - Debris Scale'),
-      wbInteger('OnCripple - Debris Count', itU8),
-      wbInteger('OnCripple - Decal Count', itU8),
-      wbFormIDCk('OnCripple - Explosion', [EXPL, NULL]),
-      wbFormIDCk('OnCripple - Debris', [DEBR, NULL]),
-      wbFormIDCk('OnCripple - Impact DataSet', [IPDS, NULL]),
-      wbFormIDCk('Explodable - Subsegment Explosion', [EXPL, NULL]),
-      wbFloat('Orientation Limits - Pitch'),
-      wbFloat('Orientation Limits - Roll')
+      wbFromVersion(96, wbStruct('OnCripple', [
+        wbFloat('Debris Scale'),
+        wbInteger('Debris Count', itU8),
+        wbInteger('Decal Count', itU8),
+        wbFormIDCk('Explosion', [EXPL, NULL]),
+        wbFormIDCk('Debris', [DEBR, NULL]),
+        wbFormIDCk('Impact DataSet', [IPDS, NULL])
+      ])),
+      wbFromVersion(118, wbFormIDCk('Explodable - Subsegment Explosion', [EXPL, NULL])),
+      wbFromVersion(98, wbFloat('Orientation Limits - Pitch')),
+      wbFromVersion(101, wbFloat('Orientation Limits - Roll'))
     ], cpNormal, True),
 
     wbEmpty(MNAM, 'Male Marker'),
@@ -14199,7 +14130,7 @@ begin
     wbString(ANAM, 'Female Skeletal Model'),
     wbMODT,
     wbEmpty(NAM2, 'Marker NAM2 #1'),
-    wbRArrayS('Movement Type Names', wbString(MTNM, 'Name')),
+    wbRArrayS('Movement Type Names', wbString(MTNM, 'Name', 4)),
     wbArray(VTCK, 'Voices', wbFormIDCk('Voice', [VTYP]), ['Male', 'Female'], cpNormal, True),
     //wbArray(DNAM, 'Decapitate Armors', wbFormIDCk('Decapitate Armor', [NULL, ARMO]), ['Male', 'Female'], cpNormal, False),
     wbArray(HCLF, 'Default Hair Colors', wbFormIDCk('Default Hair Color', [NULL, CLFM]), ['Male', 'Female'], cpNormal, False),
@@ -14214,37 +14145,35 @@ begin
       wbEmpty(NAM1, 'Body Data Marker', cpNormal, True),
       wbRStruct('Male Body Data', [
         wbEmpty(MNAM, 'Male Data Marker'),
-        wbRArrayS('Parts', wbRStructSK([0], 'Part', [
-          wbInteger(INDX, 'Index', itU32, wbBodyPartIndexEnum),
-          wbMODL
-        ], []), cpNormal, True)
+        wbBodyParts
       ], [], cpNormal, True),
       wbRStruct('Female Body Data', [
         wbEmpty(FNAM, 'Female Data Marker', cpNormal, True),
-        wbRArrayS('Parts', wbRStructSK([0], 'Part', [
-          wbInteger(INDX, 'Index', itU32, wbBodyPartIndexEnum),
-          wbMODL
-        ], []), cpNormal, True)
+        wbBodyParts
       ], [], cpNormal, True)
     ], [], cpNormal, True),
     wbFormIDCk(GNAM, 'Body Part Data', [BPTD]),
 
-	  wbEmpty(NAM2, 'Marker NAM2 #2', cpNormal),
-	  wbEmpty(NAM3, 'Marker NAM3 #3', cpNormal, True),
+    wbEmpty(NAM2, 'Marker NAM2 #2', cpNormal),
+    wbEmpty(NAM3, 'Marker NAM3 #3', cpNormal, True),
     wbRStruct('Male Behavior Graph', [
       wbEmpty(MNAM, 'Male Data Marker'),
-      wbMODL
-    ], [], cpNormal, True),
+      wbGenericModel
+    ], [], cpNormal, True)
+    .SetSummaryKey([1])
+    .IncludeFlag(dfCollapsed, wbCollapseModels),
     wbRStruct('Female Behavior Graph', [
       wbEmpty(FNAM, 'Female Data Marker', cpNormal, True),
-      wbMODL
-    ], [], cpNormal, True),
+      wbGenericModel
+    ], [], cpNormal, True)
+    .SetSummaryKey([1])
+    .IncludeFlag(dfCollapsed, wbCollapseModels),
 
     wbFormIDCk(NAM4, 'Impact Material Type', [MATT]),
     wbFormIDCk(NAM5, 'Impact Data Set', [IPDS]),
-		wbFormIDCk(NAM7, 'Dismember Blood Art', [ARTO]),
-		wbFormIDCk(CNAM, 'Meat Cap TextureSet', [TXST]),
-		wbFormIDCk(NAM2, 'Collar TextureSet', [TXST]),
+    wbFormIDCk(NAM7, 'Dismember Blood Art', [ARTO]),
+    wbFormIDCk(CNAM, 'Meat Cap TextureSet', [TXST]),
+    wbFormIDCk(NAM2, 'Collar TextureSet', [TXST]),
     wbFormIDCk(ONAM, 'Sound - Open Corpse', [SNDR]),
     wbFormIDCk(LNAM, 'Sound - Close Corpse', [SNDR]),
     wbRArray('Biped Object Names', wbString(NAME, 'Name')),
@@ -14254,12 +14183,7 @@ begin
       wbSPED
     ], [])),
     wbInteger(VNAM, 'Equipment Flags', itU32, wbEquipType),
-    wbRArray('Equip Slots',
-      wbRStruct('Equip Slot', [
-        wbFormIDCk(QNAM, 'Equip Slot', [EQUP]),
-        wbString(ZNAM, 'Node')
-      ], [])
-    ),
+    wbRArray('Equip Slots', wbEquipSlot),
     wbFormIDCk(UNWP, 'Unarmed Weapon', [WEAP]),
 
     wbRArray('Phoneme Target Names', wbString(PHTN, 'Name')),
@@ -14306,16 +14230,16 @@ begin
     wbFaceMorphs('Female Face Morphs'),
     wbString(WMAP, 'Female Wrinkle Map Path'),
 
-		wbFormIDCk(NAM8, 'Morph Race', [RACE]),
+    wbFormIDCk(NAM8, 'Morph Race', [RACE]),
     wbFormIDCk(RNAM, 'Armor Race', [RACE]),
     wbFormIDCk(SRAC, 'Subgraph Template Race', [RACE]),
     wbFormIDCk(SADD, 'Subgraph Additive Race', [RACE]),
     wbRArray('Subgraph Data',
       wbRStruct('Data', [
-        wbString(SGNM, 'Behaviour Graph'),
         wbRArray('Actor Keywords', wbFormIDCk(SAKD, 'Keyword', [KYWD])),
-        wbRArray('Target Keywords', wbFormIDCk(STKD, 'Keyword', [KYWD])),
+        wbString(SGNM, 'Behaviour Graph'),
         wbRArray('Animation Paths', wbString(SAPT, 'Path'), cpNormal, True),
+        wbRArray('Target Keywords', wbFormIDCk(STKD, 'Keyword', [KYWD])),
         // Values greater than $10000 sets a bool. Reading this "closes" the current record.
         wbStruct(SRAF, 'Flags', [
           wbInteger('Role', itU16, wbEnum([
@@ -14330,6 +14254,8 @@ begin
             '1st'
           ]))
         ], cpNormal, True)
+        .SetSummaryKeyOnValue([0, 1])
+        .IncludeFlag(dfTerminator)
       ], [], cpNormal, False, nil, True)
     ),
     wbFloat(PTOP, 'Idle Chatter Time Min'),
@@ -14349,7 +14275,7 @@ begin
   ], False, nil, cpNormal, False, nil, wbRACEAfterSet);
 
 
-  wbRecord(REFR, 'Placed Object', wbFormaterUnion(wbREFRRecordFlagsDecider, [
+  wbRefRecord(REFR, 'Placed Object', wbFormaterUnion(wbREFRRecordFlagsDecider, [
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
       {0x00000010}  4, 'Ground Piece',
       {0x00000100}  8, 'LOD Respects Enable State',
@@ -14460,7 +14386,7 @@ begin
       wbFloat('X'),
       wbFloat('Y'),
       wbFloat('Z')
-    ]),
+    ]).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3),
 
     {--- Primitive ---}
     wbStruct(XPRM, 'Primitive', [
@@ -14468,7 +14394,7 @@ begin
         wbFloat('X', cpNormal, True, 2, 4),
         wbFloat('Y', cpNormal, True, 2, 4),
         wbFloat('Z', cpNormal, True, 2, 4)
-      ]),
+      ]).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3),
       wbFloatColors('Color'),
       wbFloat('Unknown'),
       wbInteger('Type', itU32, wbEnum([
@@ -14487,43 +14413,17 @@ begin
     ])),
 
     // not seen in FO4 vanilla files, but can be added in CK
-    wbStruct(XPTL, 'Room Portal', [
-      wbStruct('Size', [
-        wbFloat('Width', cpNormal, False, 2),
-        wbFloat('Height', cpNormal, False, 2)
-      ]),
-      wbStruct('Position', [
-        wbFloat('X'),
-        wbFloat('Y'),
-        wbFloat('Z')
-      ]),
-      wbStruct('Rotation (Quaternion?)', [
-        wbFloat('q1'),
-        wbFloat('q2'),
-        wbFloat('q3'),
-        wbFloat('q4')
-      ])
+    wbSizePosRot(XPTL, 'Room Portal'),
+
+    // Copied from FO3; assuming that the order is the same
+    wbArray(XORD, 'Linked Occlusion References', wbFormIDCk('Reference', [REFR, NULL]), [
+      'Right',
+      'Left',
+      'Bottom',
+      'Top'
     ]),
 
-    wbUnknown(XORD),
-
-    wbStruct(XOCP, 'Occlusion Plane Data', [
-      wbStruct('Size', [
-        wbFloat('Width', cpNormal, False, 2),
-        wbFloat('Height', cpNormal, False, 2)
-      ]),
-      wbStruct('Position', [
-        wbFloat('X'),
-        wbFloat('Y'),
-        wbFloat('Z')
-      ]),
-      wbStruct('Rotation (Quaternion?)', [
-        wbFloat('q1'),
-        wbFloat('q2'),
-        wbFloat('q3'),
-        wbFloat('q4')
-      ])
-    ]),
+    wbSizePosRot(XOCP, 'Occlusion Plane Data'),
 
     wbRStruct('Bound Data', [
       wbStruct(XRMR, 'Header', [
@@ -14544,7 +14444,7 @@ begin
       wbFormIDCk(INAM, 'Image Space', [IMGS]),
       wbRArrayS('Linked Rooms',
         wbFormIDCk(XLRM, 'Linked Room', [REFR])
-      )
+      ).SetCountPath('XRMR\Linked Rooms Count')
     ], []),
     wbEmpty(XMBP, 'MultiBound Primitive Marker', cpIgnore),
 
@@ -14553,11 +14453,10 @@ begin
     wbXRGB,
 
     wbFloat(XRDS, 'Radius'),
-    wbXSCL,
 
     {--- Emittance ---}
     wbFormIDCk(XEMI, 'Emittance', [LIGH, REGN]),
-		wbStruct(XLIG, 'Light Data', [
+    wbStruct(XLIG, 'Light Data', [
       wbFloat('FOV 90+/-'),
       wbFloat('Fade 1.0+/-'),
       wbFloat('End Distance Cap'),
@@ -14565,7 +14464,11 @@ begin
       wbFloat('Near Clip'),
       wbFloat('Volumetric Intensity')
     ], cpNormal, False, nil, 4),
-		wbStruct(XALP, 'Alpha', [
+    {--- Lit Water ---}
+    wbRArrayS('Lit Water',
+      wbFormIDCk(XLTW, 'Water', [REFR])
+    ),
+    wbStruct(XALP, 'Alpha', [
       wbInteger('Cutoff', itU8),
       wbInteger('Base', itU8)
     ]),
@@ -14615,9 +14518,11 @@ begin
     wbStruct(XBSD, 'Spline', [
       wbFloat('Slack'),
       wbFloat('Thickness'),
-      wbFloat('Unknown'), // not shown in editor
-      wbFloat('Unknown'), // not shown in editor
-      wbFloat('Unknown'), // not shown in editor
+      wbStruct('Half Extents', [
+        wbFloat('X'),
+        wbFloat('Y'),
+        wbFloat('Z')
+      ]),
       wbInteger('Wind - Detached End', itU8, wbBoolEnum),
       wbByteArray('Unused', 0) // junk data?
     ], cpNormal, False, nil, 5),
@@ -14713,12 +14618,7 @@ begin
     ], [])),
 
     {--- Flags ---}
-    wbInteger(XACT, 'Action Flag', itU32, wbFlags([
-      'Use Default',
-      'Activate',
-      'Open',
-      'Open by Default'
-    ])),
+    wbActionFlag,
 
     wbFloat(XHTW, 'Head-Tracking Weight'),
     wbFloat(XFVC, 'Favor Cost'),
@@ -14845,7 +14745,7 @@ begin
     ], []),
 
     {--- Attach reference ---}
-    wbFormIDCk(XATR, 'Attach Ref', [REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA]),
+    wbFormIDCk(XATR, 'Attach Ref', [REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA, ACHR]),
 
     wbRArray('Spline Connection', wbStruct(XPLK, 'Link', [
       wbFormIDCk('Ref', [REFR, ACHR]),
@@ -14863,12 +14763,12 @@ begin
 
     wbUnknown(XCVR),
     wbUnknown(XCVL),
-    wbFormIDCk(XCZR, 'Unknown', sigReferences),
+    wbFormIDCk(XCZR, 'Current Zone Reference', sigReferences),
     wbUnknown(XCZA),
-    wbFormIDCk(XCZC, 'Unknown', [CELL, NULL]),
+    wbFormIDCk(XCZC, 'Current Zone Cell', [CELL, NULL]),
 
+    wbXSCL,
     wbXLOD, // not seen in FO4 vanilla files
-
     wbDataPosRot,
     wbString(MNAM, 'Comments')
   ], True, wbPlacedAddInfo, cpNormal, False, wbREFRAfterLoad);
@@ -14878,12 +14778,7 @@ begin
       {0x00000040} 6, 'Border Region'
     ])), [
     wbEDID,
-    wbStruct(RCLR, 'Map Color', [
-      wbInteger('Red', itU8),
-      wbInteger('Green', itU8),
-      wbInteger('Blue', itU8),
-      wbByteArray('Unknown', 1)
-    ], cpNormal, True),
+    wbByteColors(RCLR, 'Map Color'),
     wbFormIDCkNoReach(WNAM, 'Worldspace', [WRLD]),
     wbRArray('Region Areas', wbRStruct('Region Area', [
       wbInteger(RPLI, 'Edge Fall-off', itU32),
@@ -14926,25 +14821,16 @@ begin
 
       {--- Sound ---}
       wbFormIDCk(RDMO, 'Music', [MUSC], False, cpNormal, False, wbREGNSoundDontShow),
-      wbArrayS(RDSA, 'Sounds', wbStructSK([0], 'Sound', [
-        wbFormIDCk('Sound', [SNDR, NULL]),
-        wbInteger('Flags', itU32, wbFlags([
-          {0x00000001} 'Pleasant',
-          {0x00000002} 'Cloudy',
-          {0x00000004} 'Rainy',
-          {0x00000008} 'Snowy'
-        ])),
-        wbFloat('Chance')
-      ]), 0, cpNormal, False, nil, nil, wbREGNSoundDontShow),
+      wbRegionSounds,
 
-			{--- Map ---}
+      {--- Map ---}
       wbLString(RDMP, 'Map Name', 0, cpTranslate, False, wbREGNMapDontShow),
 
       {followed by one of these: }
 
       {--- Objects ---}
       wbArray(RDOT, 'Objects', wbStruct('Object', [
-        wbFormIDCk('Object', [TREE, FLOR, STAT, LTEX, MSTT]),
+        wbFormIDCk('Object', [TREE, FLOR, STAT, LTEX, MSTT, SCOL]),
         wbInteger('Parent Index', itU16, wbHideFFFF),
         wbByteArray('Unknown', 2),
         wbFloat('Density'),
@@ -14972,7 +14858,7 @@ begin
           wbInteger('X', itU16),
           wbInteger('Y', itU16),
           wbInteger('Z', itU16)
-        ]),
+        ]).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3),
         wbByteArray('Unknown', 2),
         wbByteArray('Unknown', 4)
       ]), 0, nil, nil, cpNormal, False, wbREGNObjectsDontShow),
@@ -14998,7 +14884,7 @@ begin
 
   wbRecord(SOUN, 'Sound Marker', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbFormIDCk(SDSC, 'Sound Descriptor', [SNDR, NULL]),
     wbStruct(REPT, 'Repeat', [
       wbFloat('Min Time'),
@@ -15067,7 +14953,7 @@ begin
 
   wbRecord(SPEL, 'Spell', [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbFULL,
     wbKSIZ,
     wbKWDAs,
@@ -15118,22 +15004,22 @@ begin
     ]), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFTYP,
-    wbMODL,
+    wbGenericModel,
     wbPRPS,
     wbFULL,
     wbStruct(DNAM, 'Direction Material', [
-      wbFloat('Max Angle (30-120)'),
+      wbFloat('Max Angle (30-120)').SetDefaultNativeValue(90),
       wbFormIDCk('Material', [MATO, NULL]),
-      wbFloat('Leaf Amplitude'),
-      wbFloat('Leaf Frequency')
+      wbFloat('Leaf Amplitude').SetDefaultNativeValue(1),
+      wbFloat('Leaf Frequency').SetDefaultNativeValue(1)
     ], cpNormal, True, nil, 2),
     wbNVNM,
     wbArray(MNAM, 'Distant LOD',
       wbStruct('LOD', [
-        {>>> Contains null-terminated mesh filename followed by random data up to 260 bytes <<<}
+        {>>> Contains null-terminated mesh FileName followed by random data up to 260 bytes <<<}
         wbString(True, 'Mesh', 260)
         //wbByteArray('Mesh', 260, cpIgnore)
       ]), [
@@ -15149,23 +15035,20 @@ begin
   wbRecord(TES4, 'Main File Header',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
       {0x00000001}  0, 'ESM',
+      {0x00000010}  4, 'Optimized File',
       {0x00000080}  7, 'Localized',
       {0x00000200}  9, 'ESL'
     ], False), True), [
-    wbStruct(HEDR, 'Header', [
-      wbFloat('Version'),
-      wbInteger('Number of Records', itU32),
-      wbInteger('Next Object ID', itU32)
-    ], cpNormal, True),
+    wbHEDR,
     wbByteArray(OFST, 'Unknown', 0, cpIgnore),            // If possible then ignored by the runtime. Neither from the CK
     wbByteArray(DELE, 'Unknown', 0, cpIgnore),            // If possible then ignored by the runtime. Neither from the CK
     wbString(CNAM, 'Author', 0, cpTranslate, True),
     wbString(SNAM, 'Description', 0, cpTranslate),
     wbRArray('Master Files', wbRStruct('Master File', [
-      wbString(MAST, 'Filename', 0, cpNormal, True),
+      wbStringForward(MAST, 'FileName', 0, cpNormal, True),
       // wbInteger(DATA, 'Filesize', itU64, nil, nil, cpIgnore, True)  // Should be set by CK but usually null
       wbByteArray(DATA, 'Unknown', 8, cpIgnore, True)
-    ], [ONAM])),
+    ], [ONAM])).IncludeFlag(dfInternalEditOnly, not wbAllowMasterFilesEdit),
     wbArray(ONAM, 'Overridden Forms',                     // Valid in CK
       wbFormIDCk('Form', [ACHR, LAND, NAVM, REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA, DLBR, DIAL, INFO, SCEN]),
       0, nil, nil, cpNormal, False{, wbTES4ONAMDontShow}),
@@ -15175,12 +15058,13 @@ begin
       wbArray('Unknown', wbFormID('Unknown'))
     ])),          // Ignored by the runtime
     wbInteger(INTV, 'Unknown', itU32),                    // Ignored by the runtime, 4 bytes loaded in CK
-    wbInteger(INCC, 'Unknown', itU32)                     // Size of some array of 12 bytes elements
+    wbInteger(INCC, 'Interior Cell Count', itU32)                     // Size of some array of 12 bytes elements
   ], True, nil, cpNormal, True, wbRemoveOFST);
-end;
 
-procedure DefineFO4o;
-begin
+  wbRecord(PLYR, 'Player Reference', [
+    wbEDID,
+    wbFormID(PLYR, 'Player', cpNormal, True).SetDefaultNativeValue($7)
+  ]).IncludeFlag(dfInternalEditOnly);
 
   wbRecord(TREE, 'Tree',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
@@ -15188,8 +15072,8 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
-    wbMODL,
+    wbOBND(True),
+    wbGenericModel,
     wbFormIDCK(PFIG, 'Ingredient', sigBaseObjects),
     wbFormIDCK(SNAM, 'Harvest Sound', [SNDR, NULL]),
     wbStruct(PFPC, 'Ingredient Production', [
@@ -15202,15 +15086,14 @@ begin
     wbStruct(CNAM, 'Tree Data', [
       wbFloat('Trunk Flexibility'),
       wbFloat('Branch Flexibility'),
-      //wbByteArray('Unknown', 32),
-      wbFloat('Unknown'),
-      wbFloat('Unknown'),
-      wbFloat('Unknown'),
-      wbFloat('Unknown'),
-      wbFloat('Unknown'),
-      wbFloat('Unknown'),
-      wbFloat('Unknown'),
-      wbFloat('Unknown'),
+      wbFloat('Trunk Amplitude'),
+      wbFloat('Front Amplitude'),
+      wbFloat('Back Amplitude'),
+      wbFloat('Side Amplitude'),
+      wbFloat('Front Frequency'),
+      wbFloat('Back Frequency'),
+      wbFloat('Side Frequency'),
+      wbFloat('Leaf Flexibility'),
       wbFloat('Leaf Amplitude'),
       wbFloat('Leaf Frequency')
     ], cpNormal, True)
@@ -15219,15 +15102,15 @@ begin
   wbRecord(FLOR, 'Flora', [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbFULLReq,
-    wbMODL,
+    wbGenericModel,
     wbDEST,
     wbKSIZ,
     wbKWDAs,
     wbPRPS,
-    wbUnknown(PNAM),
+    wbByteColors(PNAM, 'Marker Color (Unused)'),
     wbATTX,
     wbLStringKC(RNAM, 'Activate Text Override', 0, cpTranslate),
     wbUnknown(FNAM),
@@ -15326,12 +15209,12 @@ begin
       wbFloat('X'),
       wbFloat('Y'),
       wbFloat('Z')
-    ], cpNormal, False),
+    ], cpNormal, False).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3),
     wbStruct(NAM1, 'Angular Velocity', [
       wbFloat('X'),
       wbFloat('Y'),
       wbFloat('Z')
-    ], cpNormal, False),
+    ], cpNormal, False).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3),
     wbString(NAM2, 'Layer 1 Noise Texture'),
     wbString(NAM3, 'Layer 2 Noise Texture'),
     wbString(NAM4, 'Layer 3 Noise Texture')
@@ -15344,11 +15227,11 @@ begin
     ])), [
     wbEDID,
     wbVMAD,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbSTCP,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbICON,
     wbMICO,
     wbEITM,
@@ -15367,8 +15250,8 @@ begin
     wbObjectTemplate,
     wbFormIDCk(NNAM, 'Embedded Weapon Mod', [OMOD]),
     wbRStruct('1st Person Model', [
-      wbString(MOD4, 'Model Filename'),
-      wbByteArray(MO4T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
+      wbString(MOD4, 'Model FileName'),
+      wbModelInfo(MO4T),
       wbMO4S,
       wbMO4C,
       wbMO4F
@@ -15463,7 +15346,7 @@ begin
       wbFloat('Rumble - Right Motor Strength'),
       wbFloat('Rumble - Duration'),
       wbFloat('Animation Reload Seconds'),
-      wbByteArray('Unknown', 4),
+      wbByteArray('Bolt Anim Seconds', 4),
       wbFloat('Sighted Transition Seconds'),
       wbInteger('# Projectiles', itU8),
       wbFormIDCk('Override Projectile', [PROJ, NULL]),
@@ -15499,309 +15382,13 @@ begin
     ]))
   ], False, nil, cpNormal, False, nil{wbWEAPAfterLoad}, wbKeywordsAfterSet);
 
-  wbRecord(WRLD, 'Worldspace',
-    wbFlags(wbRecordFlagsFlags, wbFlagsList([
-      {0x00080000} 19, 'Can''t Wait'
-    ])), [
-    wbEDID,
-    wbRArray('Unused RNAM', wbUnknown(RNAM), cpIgnore, False{, wbNeverShow}),
-    wbMaxHeightDataWRLD,
-    wbFULL,
-    wbStruct(WCTR, 'Fixed Dimensions Center Cell', [
-      wbInteger('X', itS16),
-      wbInteger('Y', itS16)
-    ]),
-    wbFormIDCk(LTMP, 'Interior Lighting', [LGTM]),
-    wbFormIDCk(XEZN, 'Encounter Zone', [ECZN, NULL]),
-    wbFormIDCk(XLCN, 'Location', [LCTN, NULL]),
-    wbRStruct('Parent', [
-      wbFormIDCk(WNAM, 'Worldspace', [WRLD]),
-      wbStruct(PNAM, '', [
-        wbInteger('Flags', itU8, wbFlags([
-          {0x0001} 'Use Land Data',
-          {0x0002} 'Use LOD Data',
-          {0x0004} 'Don''t Use Map Data',
-          {0x0008} 'Use Water Data',
-          {0x0010} 'Use Climate Data',
-          {0x0020} 'Use Image Space Data (unused)',
-          {0x0040} 'Use Sky Cell'
-        ], [5])),
-        wbByteArray('Unknown', 1)
-      ], cpNormal, True)
-    ], []),
-    wbFormIDCk(CNAM, 'Climate', [CLMT]),
-    wbFormIDCk(NAM2, 'Water', [WATR]),
-    wbFormIDCk(NAM3, 'LOD Water Type', [WATR]),
-    wbFloat(NAM4, 'LOD Water Height'),
-    wbStruct(DNAM, 'Land Data', [
-      wbFloat('Default Land Height'),
-      wbFloat('Default Water Height')
-    ]),
-    wbString(ICON, 'Map Image'),
-    wbRStruct('Cloud Model', [wbMODL], []),
-    wbStruct(MNAM, 'Map Data', [
-      wbStruct('Usable Dimensions', [
-        wbInteger('X', itS32),
-        wbInteger('Y', itS32)
-      ]),
-      wbStruct('Cell Coordinates', [
-        wbStruct('NW Cell', [
-          wbInteger('X', itS16),
-          wbInteger('Y', itS16)
-        ]),
-        wbStruct('SE Cell', [
-          wbInteger('X', itS16),
-          wbInteger('Y', itS16)
-        ])
-      ])
-    ]),
-    wbStruct(ONAM, 'World Map Offset Data', [
-      wbFloat('World Map Scale'),
-      wbFloat('Cell X Offset'),
-      wbFloat('Cell Y Offset'),
-      wbFloat('Cell Z Offset')
-    ], cpNormal, True),
-    wbFloat(NAMA, 'Distant LOD Multiplier'),
-    wbInteger(DATA, 'Flags', itU8, wbFlags([
-      {0x01} 'Small World',
-      {0x02} 'Can''t Fast Travel',
-      {0x04} 'Unknown 3',
-      {0x08} 'No LOD Water',
-      {0x10} 'No Landscape',
-      {0x20} 'No Sky',
-      {0x40} 'Fixed Dimensions',
-      {0x80} 'No Grass'
-    ]), cpNormal, True),
-    {>>> Object Bounds doesn't show up in CK <<<}
-    wbRStruct('Object Bounds', [
-      wbStruct(NAM0, 'Min', [
-        wbFloat('X', cpNormal, False, 1/4096),
-        wbFloat('Y', cpNormal, False, 1/4096)
-      ], cpIgnore, True),
-      wbStruct(NAM9, 'Max', [
-        wbFloat('X', cpNormal, False, 1/4096),
-        wbFloat('Y', cpNormal, False, 1/4096)
-      ], cpIgnore, True)
-    ], []),
-    wbFormIDCk(ZNAM, 'Music', [MUSC]),
-    wbString(NNAM, 'Canopy Shadow (unused)', 0, cpIgnore),
-    wbString(XWEM, 'Water Environment Map'),
-    wbString(TNAM, 'HD LOD Diffuse Texture'),
-    wbString(UNAM, 'HD LOD Normal Texture'),
-    wbRStruct('World Default Level Data', [
-      wbStruct(WLEV, 'Dimension', [
-        wbStruct('NW Cell', [
-          wbInteger('X', itS8),
-          wbInteger('Y', itS8)
-        ]),
-        wbStruct('Size', [
-          wbInteger('Width', itU8),
-          wbInteger('Height', itU8)
-        ])
-      ]),
-      wbByteArray(WLEV, 'Data')
-    ], []),
-    wbOFST,
-    wbUnknown(CLSZ)
-  ], False, nil, cpNormal, False, wbWRLDAfterLoad);
-
-
-  wbRecord(WTHR, 'Weather',
-    wbFlags(wbRecordFlagsFlags, wbFlagsList([
-      {0x00000200}  9, 'Unknown 9'
-    ])), [
-    wbEDID,
-    wbString(_00_0TX, 'Cloud Texture Layer #0'),
-    wbString(_10_0TX, 'Cloud Texture Layer #1'),
-    wbString(_20_0TX, 'Cloud Texture Layer #2'),
-    wbString(_30_0TX, 'Cloud Texture Layer #3'),
-    wbString(_40_0TX, 'Cloud Texture Layer #4'),
-    wbString(_50_0TX, 'Cloud Texture Layer #5'),
-    wbString(_60_0TX, 'Cloud Texture Layer #6'),
-    wbString(_70_0TX, 'Cloud Texture Layer #7'),
-    wbString(_80_0TX, 'Cloud Texture Layer #8'),
-    wbString(_90_0TX, 'Cloud Texture Layer #9'),
-    wbString(_3A_0TX, 'Cloud Texture Layer #10'),
-    wbString(_3B_0TX, 'Cloud Texture Layer #11'),
-    wbString(_3C_0TX, 'Cloud Texture Layer #12'),
-    wbString(_3D_0TX, 'Cloud Texture Layer #13'),
-    wbString(_3E_0TX, 'Cloud Texture Layer #14'),
-    wbString(_3F_0TX, 'Cloud Texture Layer #15'),
-    wbString(_40h_0TX, 'Cloud Texture Layer #16'),
-    wbString(A0TX, 'Cloud Texture Layer #17'),
-    wbString(B0TX, 'Cloud Texture Layer #18'),
-    wbString(C0TX, 'Cloud Texture Layer #19'),
-    wbString(D0TX, 'Cloud Texture Layer #20'),
-    wbString(E0TX, 'Cloud Texture Layer #21'),
-    wbString(F0TX, 'Cloud Texture Layer #22'),
-    wbString(G0TX, 'Cloud Texture Layer #23'),
-    wbString(H0TX, 'Cloud Texture Layer #24'),
-    wbString(I0TX, 'Cloud Texture Layer #25'),
-    wbString(J0TX, 'Cloud Texture Layer #26'),
-    wbString(K0TX, 'Cloud Texture Layer #27'),
-    wbString(L0TX, 'Cloud Texture Layer #28'),
-    wbUnknown(LNAM),
-    wbFormIDCK(MNAM, 'Precipitation Type', [SPGD, NULL]),
-    wbFormIDCK(NNAM, 'Visual Effect', [RFCT, NULL], False, cpNormal, True),
-    wbByteArray(ONAM, 'Unused', 0, cpIgnore),
-    wbRStruct('Cloud Speed', [
-      wbArray(RNAM, 'Y Speed', wbInteger('Layer', itU8, wbCloudSpeedToStr, wbCloudSpeedToInt)),
-      wbArray(QNAM, 'X Speed', wbInteger('Layer', itU8, wbCloudSpeedToStr, wbCloudSpeedToInt))
-    ], []),
-    wbArray(PNAM, 'Cloud Colors', wbWeatherColors('Layer')),
-    wbArray(JNAM, 'Cloud Alphas', wbStruct('Layer', [
-      wbFloat('Sunrise'),
-      wbFloat('Day'),
-      wbFloat('Sunset'),
-      wbFloat('Night'),
-      wbFloat('EarlySunrise'),
-      wbFloat('LateSunrise'),
-      wbFloat('EarlySunset'),
-      wbFloat('LateSunset')
-    ])),
-    wbStruct(NAM0, 'Weather Colors', [
-      wbWeatherColors('Sky-Upper'),
-      wbWeatherColors('Fog Near'),
-      wbWeatherColors('Unknown'),
-      wbWeatherColors('Ambient'),
-      wbWeatherColors('Sunlight'),
-      wbWeatherColors('Sun'),
-      wbWeatherColors('Stars'),
-      wbWeatherColors('Sky-Lower'),
-      wbWeatherColors('Horizon'),
-      wbWeatherColors('Effect Lighting'),
-      wbWeatherColors('Cloud LOD Diffuse'),
-      wbWeatherColors('Cloud LOD Ambient'),
-      wbWeatherColors('Fog Far'),
-      wbWeatherColors('Sky Statics'),
-      wbWeatherColors('Water Multiplier'),
-      wbWeatherColors('Sun Glare'),
-      wbWeatherColors('Moon Glare'),
-      wbWeatherColors('Fog Near High'),
-      wbWeatherColors('Fog Far High')
-    ], cpNormal, True, nil, 8),
-    wbArray(NAM4, 'Unknown', wbFloat('Unknown')),
-    wbStruct(FNAM, 'Fog Distance', [
-      wbFloat('Day - Near'),
-      wbFloat('Day - Far'),
-      wbFloat('Night - Near'),
-      wbFloat('Night - Far'),
-      wbFloat('Day - Power'),
-      wbFloat('Night - Power'),
-      wbFloat('Day - Max'),
-      wbFloat('Night - Max'),
-      wbFloat('Day - Near Height Mid'),
-      wbFloat('Day - Near Height Range'),
-      wbFloat('Night - Near Height Mid'),
-      wbFloat('Night - Near Height Range'),
-      wbFloat('Day - High Density Scale'),
-      wbFloat('Night - High Density Scale'),
-      wbFloat('Day - Far Height Mid'),
-      wbFloat('Day - Far Height Range'),
-      wbFloat('Night - Far Height Mid'),
-      wbFloat('Night - Far Height Range')
-    ], cpNormal, True, nil, 8),
-    wbStruct(DATA, 'Data', [
-      wbInteger('Wind Speed', itU8), // scaled 0..1
-      wbByteArray('Unknown', 2),
-      wbInteger('Trans Delta', itU8), // scaled 0..0,25
-      wbInteger('Sun Glare', itU8), // scaled 0..1
-      wbInteger('Sun Damage', itU8), // scaled 0..1
-      wbInteger('Precipitation - Begin Fade In', itU8), // scaled 0..1
-      wbInteger('Precipitation - End Fade Out', itU8), // scaled 0..1
-      wbInteger('Thunder/Lightning - Begin Fade In', itU8),
-      wbInteger('Thunder/Lightning - End Fade Out', itU8),
-      wbInteger('Thunder/Lightning - Frequency', itU8),
-      wbInteger('Flags', itU8, wbFlags([
-        {0x01} 'Weather - Pleasant',
-        {0x02} 'Weather - Cloudy',
-        {0x04} 'Weather - Rainy',
-        {0x08} 'Weather - Snow',
-        {0x10} 'Sky Statics - Always Visible',
-        {0x20} 'Sky Statics - Follows Sun Position',
-        {0x40} 'Rain Occlusion',
-        {0x80} 'HUD Rain Effects'
-      ])),
-      wbStruct('Lightning Color', [
-        wbInteger('Red', itU8),
-        wbInteger('Green', itU8),
-        wbInteger('Blue', itU8)
-      ]),
-      wbInteger('Visual Effect - Begin', itU8), // scaled 0..1
-      wbInteger('Visual Effect - End', itU8), // scaled 0..1
-      wbInteger('Wind Direction', itU8), // scaled 0..360
-      wbInteger('Wind Direction Range', itU8), // scaled 0..180
-      wbInteger('Unknown', itU8)
-    ], cpNormal, True, nil, 16),
-    wbInteger(NAM1, 'Disabled Cloud Layers', itU32, wbFlags(['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'])),
-    wbRArray('Sounds',
-      wbStruct(SNAM, 'Sound', [
-        wbFormIDCK('Sound', [SNDR, NULL]),
-        wbInteger('Type', itU32, wbEnum([
-          {0x01} 'Default',
-          {0x02} 'Precipitation',
-          {0x04} 'Wind',
-          {0x08} 'Thunder'
-        ]))
-      ])
-    ),
-    wbRArrayS('Sky Statics', wbFormIDCk(TNAM, 'Static', [STAT, NULL])),
-    wbStruct(IMSP, 'Image Spaces', [
-      wbFormIDCK('Sunrise', [IMGS, NULL]),
-      wbFormIDCK('Day', [IMGS, NULL]),
-      wbFormIDCK('Sunset', [IMGS, NULL]),
-      wbFormIDCK('Night', [IMGS, NULL]),
-      wbFormIDCK('EarlySunrise', [IMGS, NULL]),
-      wbFormIDCK('LateSunrise', [IMGS, NULL]),
-      wbFormIDCK('EarlySunset', [IMGS, NULL]),
-      wbFormIDCK('LateSunset', [IMGS, NULL])
-    ], cpNormal, True, nil, 4),
-    wbStruct(WGDR, 'God Rays', [
-      wbFormIDCK('Sunrise', [GDRY, NULL]),
-      wbFormIDCK('Day', [GDRY, NULL]),
-      wbFormIDCK('Sunset', [GDRY, NULL]),
-      wbFormIDCK('Night', [GDRY, NULL]),
-      wbFormIDCK('EarlySunrise', [GDRY, NULL]),
-      wbFormIDCK('LateSunrise', [GDRY, NULL]),
-      wbFormIDCK('EarlySunset', [GDRY, NULL]),
-      wbFormIDCK('LateSunset', [GDRY, NULL])
-    ]),
-    wbRStruct('Directional Ambient Lighting Colors', [
-      wbAmbientColors(DALC, 'Sunrise'),
-      wbAmbientColors(DALC, 'Day'),
-      wbAmbientColors(DALC, 'Sunset'),
-      wbAmbientColors(DALC, 'Night'),
-      wbAmbientColors(DALC, 'EarlySunrise'),
-      wbAmbientColors(DALC, 'LateSunrise'),
-      wbAmbientColors(DALC, 'EarlySunset'),
-      wbAmbientColors(DALC, 'LateSunset')
-    ], [], cpNormal, True),
-    wbRStruct('Aurora', [wbMODL], []),
-    wbFormIDCk(GNAM, 'Sun Glare Lens Flare', [LENS]),
-    wbStruct(UNAM, 'Magic', [
-      wbFormIDCk('On Lightning Strike - Spell', [SPEL, NULL]),
-      wbFloat('On Lightning Strike - Threshold'),
-      wbFormIDCk('On Weather Activate - Spell', [SPEL, NULL]),
-      wbFloat('On Weather Activate - Threshold'),
-      wbByteArray('Unknown', 4), // SPEL FormID for another context but unresolved in Fallout4.esm, legacy data
-      wbFloat('Unknown')
-    ], cpNormal, False, nil, 3),
-    wbFloat(VNAM, 'Volatility Mult'),
-    wbFloat(WNAM, 'Visibility Mult')
-  ]);
-end;
-
-procedure DefineFO4p;
-begin
   {wbRecord(SCPT, 'SCPT', [
     wbEDID
   ]);}
-end;
+
 
 {>>> Start of new Fallout 4 Records <<<}
 
-procedure DefineFO4q;
-begin
   wbRecord(AECH, 'Audio Effect Chain', [
     wbEDID,
     wbRArray('Effects',
@@ -15810,33 +15397,31 @@ begin
           Int64($864804BE), 'BSOverdrive',
           Int64($EF575F7F), 'BSStateVariableFilter',
           Int64($18837B4F), 'BSDelayEffect'
-        ]), cpNormal, False, False, nil, nil, Int64($864804BE)),
+        ]), cpNormal, False, False, nil, nil, Int64($864804BE)).SetAfterSet(wbAECHTypeAfterSet),
         wbStruct(DNAM, 'Data', [
           wbInteger('Enabled', itU32, wbBoolEnum),
-          wbUnion('Value 1', wbAECHDataDecider, [
-            wbFloat('Input Gain'), // exponentially(?) normalized from 0..10 to -80..20
-            wbFloat('Center Freq'),
-            wbFloat('Feedback %')
-          ]),
-          wbUnion('Value 2', wbAECHDataDecider, [
-            wbFloat('Output Gain'), // exponentially(?) normalized from 0..10 to -80..20
-            wbFloat('Q Value'),
-            wbFloat('Wet Mix %')
-          ]),
-          wbUnion('Value 3', wbAECHDataDecider, [
-            wbFloat('Upper Threshold'), // exponentially(?) normalized from 0..1 to -74..0
-            wbInteger('Filter Mode', itU32, wbEnum([
-              'High Pass',
-              'Low Pass',
-              'Band Pass',
-              'Notch'
-            ])),
-            wbInteger('Delay MS', itU32)
-          ]),
-          wbUnion('Value 4', wbAECHDataDecider, [
-            wbFloat('Lower Threshold'), // exponentially(?) normalized from 0..1 to -80..0
-            wbByteArray('Unused', 0),
-            wbByteArray('Unused', 0)
+          wbUnion('Value', wbAECHDataDecider, [
+            wbStruct('Overdrive', [
+              wbFloat('Input Gain'), // exponentially(?) normalized from 0..10 to -80..20
+              wbFloat('Output Gain'), // exponentially(?) normalized from 0..10 to -80..20
+              wbFloat('Upper Threshold'), // exponentially(?) normalized from 0..1 to -74..0
+              wbFloat('Lower Threshold') // exponentially(?) normalized from 0..1 to -80..0
+            ]),
+            wbStruct('State Variable Filter', [
+              wbFloat('Center Freq'),
+              wbFloat('Q Value'),
+              wbInteger('Filter Mode', itU32, wbEnum([
+                'High Pass',
+                'Low Pass',
+                'Band Pass',
+                'Notch'
+              ]))
+            ]),
+            wbStruct('Delay Effect', [
+              wbFloat('Feedback %'),
+              wbFloat('Wet Mix %'),
+              wbInteger('Delay MS', itU32)
+            ])
           ])
         ])
       ], [])
@@ -15904,12 +15489,13 @@ begin
   wbRecord(DFOB, 'Default Object', [
     wbEDID,
     wbFormID(DATA, 'Object')
-  ]);
+  ])
+  .IncludeFlag(dfIndexEditorID);
 
   wbRecord(DMGT, 'Damage Type', [
     wbEDID,
     // Before form version 78, it was an array of AVIF index, since then array of AVIF formID, coupled with a SPEL formID
-    wbUnion(DNAM, 'Data', wbFormVer78Decider, [
+    wbUnion(DNAM, 'Data', wbFormVersionDecider(78), [
       wbArray('Damage Types', wbInteger('Actor Value Index', itU32)),
       wbArray('Damage Types', wbStruct('Damage Type', [
         wbFormIDck('Actor Value', [AVIF, NULL]),
@@ -15933,10 +15519,6 @@ begin
     ])
   ]);
 
-end;
-
-procedure DefineFO4r;
-begin
   wbRecord(INNR, 'Instance Naming Rules', [
     wbEDID,
     wbInteger(UNAM, 'Target', itU32, wbEnum([], [
@@ -16058,27 +15640,30 @@ begin
   ]);
 
   wbRecord(NOCM, 'Navigation Mesh Obstacle Manager', [
+    wbEDID,
     wbRArray('Unknown',
       wbRStruct('Unknown', [
         wbInteger(INDX, 'Index', itU32),
-        wbRArray('Unknown', wbUnknown(DATA)),
+        wbRArray('Unknown datas',
+          wbStruct(DATA, 'Unknown data', [
+            wbByteArray('Unknown 1',2),
+            wbByteArray('Unknown 2',2),
+            wbByteArray('Unknown 4',4)
+          ])
+        ),
         wbUnknown(INTV),
         wbString(NAM1, 'Model')
       ], [])
     )
   ]);
 
-end;
-
-procedure DefineFO4s;
-begin
   wbRecord(NOTE, 'Note', [
     wbEDID,
     wbVMAD,
     wbOBND,
     wbPTRN,
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbICON,
     wbYNAM,
     wbZNAM,
@@ -16109,18 +15694,20 @@ begin
     wbEDID,
     wbFULL,
     wbDESC,
-    wbMODL,
+    wbGenericModel,
     wbStruct(DATA, 'Data', [
       wbInteger('Include Count', itU32),
       wbInteger('Property Count', itU32),
-      wbByteArray('Unused', 2, cpIgnore),
+      wbInteger('Unknown Bool 1', itU8, wbBoolEnum),
+      wbInteger('Unknown Bool 2', itU8, wbBoolEnum),
       wbInteger('Form Type', itU32, wbEnum([], [
         Sig2Int(ARMO), 'Armor',
         Sig2Int(NPC_), 'Non-player character',
         Sig2Int(WEAP), 'Weapon',
         Sig2Int(NONE), 'None'
-      ])),
-      wbByteArray('Unused', 2, cpIgnore),
+      ])).SetDefaultEditValue('None'),
+      wbInteger('Max Rank', itU8),
+      wbInteger('Level Tier Scaled Offset', itU8),
       wbFormIDCk('Attach Point', [KYWD, NULL]),
       wbArray('Attach Parent Slots', wbFormIDCk('Keyword', [KYWD, NULL]), -1),
       // no way to change these in CK, legacy data leftover?
@@ -16145,6 +15732,7 @@ begin
   ]);
 
   wbRecord(OVIS, 'Object Visibility Manager', [
+    wbEDID,
     wbRArray('Unknown',
       wbRStruct('Unknown', [
         wbFormIDCk(INDX, 'Object', [STAT]),
@@ -16156,6 +15744,14 @@ begin
           wbFloat('Y2'),
           wbFloat('Z2')
         ])
+        .SetSummaryKeyOnValue([0, 1, 2, 3, 4, 5])
+        .SetSummaryPrefixSuffixOnValue(0, '(', '')
+        .SetSummaryPrefixSuffixOnValue(2, '', ')')
+        .SetSummaryPrefixSuffixOnValue(3, '(', '')
+        .SetSummaryPrefixSuffixOnValue(5, '', ')')
+        .SetSummaryDelimiterOnValue(', ')
+        .IncludeFlagOnValue(dfSummaryMembersNoName)
+        .IncludeFlag(dfCollapsed, wbCollapseObjectBounds)
       ], [])
     )
   ]);
@@ -16175,7 +15771,7 @@ begin
     wbEDID,
     wbString(NNAM, 'Name'),
     wbFormIDCk(RNAM, 'Reference', sigReferences),
-    wbUnknown(PNAM)
+    wbFormIDCk(PNAM, 'Pack-In', [PKIN])
   ]);
 
   {wbRecord(RGDL, 'RGDL', [
@@ -16185,28 +15781,42 @@ begin
   wbRecord(SCCO, 'Scene Collection', [
     wbEDID,
     wbFormIDCk(QNAM, 'Quest', [QUST]),
-    wbRArray('Scenes',
+    wbRArray('Scene Layout',
       wbRStruct('Scene', [
         wbFormIDCk(SNAM, 'Scene', [SCEN]),
-        wbStruct(XNAM, 'Unknown', [
-          wbInteger('Unknown', itS32),
-          wbInteger('Unknown', itS32)
+        wbStruct(XNAM, 'Coordinates', [
+          wbInteger('X', itS32),
+          wbInteger('Y', itS32)
         ])
+        .SetSummaryKeyOnValue([0, 1])
+        .SetRequired
       ], [])
+      .SetSummaryKey([0, 1])
+      .IncludeFlag(dfCollapsed)
     ),
     wbUnknown(VNAM, cpNormal, True),
-    wbRArray('Unknown', wbStruct(XNAM, 'Unknown', [
-      wbInteger('Unknown', itS32),
-      wbInteger('Unknown', itS32)
-    ])),
+    wbRArray('Original Coordinates?',
+      wbStruct(XNAM, 'Coordinates', [
+        wbInteger('X', itS32),
+        wbInteger('Y', itS32)
+      ])
+      .SetSummaryKeyOnValue([0, 1])
+      .IncludeFlag(dfCollapsed)
+    ),
     wbUnknown(VNAM, cpNormal, True)
   ]);
+
+  var wbStaticPart :=
+    wbRStructSK([0], 'Part', [
+      wbFormIDCk(ONAM, 'Static', [ACTI, ALCH, AMMO, BOOK, CONT, DOOR, FURN, MISC, MSTT, STAT, TERM, WEAP, FLOR]),
+      wbStaticPartPlacements
+    ], [], cpNormal, True);
 
   wbRecord(SCOL, 'Static Collection',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
       {0x00000004}  4, 'Non Occluder',
       {0x00000200}  9, 'Hidden From Local Map',
-      {0x00000400} 10, 'Unknown 10',
+      {0x00000400} 10, 'Loadscreen',
       {0x00000800} 11, 'Used as Platform',
       {0x00008000} 15, 'Has Distant LOD',
       {0x02000000} 25, 'Obstacle',
@@ -16215,42 +15825,23 @@ begin
       {0x40000000} 30, 'NavMesh Generation - Ground'
     ])), [
     wbEDID,
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
-    wbMODL,
+    wbGenericModel,
     wbFULL,
     wbFLTR,
-    wbRStructs('Parts', 'Part', [
-      wbFormIDCk(ONAM, 'Static', [ACTI, ALCH, AMMO, BOOK, CONT, DOOR, FURN, MISC, MSTT, STAT, TERM, WEAP]),
-      wbArrayS(DATA, 'Placements', wbStruct('Placement', [
-        wbStruct('Position', [
-          wbFloat('X'),
-          wbFloat('Y'),
-          wbFloat('Z')
-        ]),
-        wbStruct('Rotation', [
-          wbFloat('X', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-          wbFloat('Y', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
-          wbFloat('Z', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize)
-        ]),
-        wbFloat('Scale')
-      ]), 0, cpNormal, True)
-    ], [], cpNormal, True)
+    wbRArrayS('Parts', wbStaticPart, cpNormal, True)
   ]);
 
   wbRecord(SCSN, 'Audio Category Snapshot', [
     wbEDID,
     wbInteger(PNAM, 'Priority', itU16),
     wbRArray('Category Multipliers', wbStruct(CNAM, 'Category Multiplier', [
-      wbFormIDCk('Categoty', [SNCT]),
+      wbFormIDCk('Category', [SNCT]),
       wbFloat('Multiplier')
     ]))
   ]);
 
-end;
-
-procedure DefineFO4t;
-begin
   {wbRecord(SKIL, 'SKIL', [
     wbEDID
   ]);}
@@ -16272,16 +15863,16 @@ begin
     ])), [
     wbEDID,
     wbVMADFragmentedPERK, // same fragments format as in PERK
-    wbOBNDReq,
+    wbOBND(True),
     wbPTRN,
     wbLStringKC(NAM0, 'Header Text'),
     wbLStringKC(WNAM, 'Welcome Text'),
     wbFULL,
-    wbMODL,
+    wbGenericModel,
     wbKSIZ,
     wbKWDAs,
     wbPRPS,
-    wbUnknown(PNAM),
+    wbByteColors(PNAM, 'Marker Color (Unused)'),
     wbFormIDCk(SNAM, 'Looping Sound', [SNDR]),
     wbUnknown(FNAM),
     wbInteger(COCT, 'Holds Holotape (Count)', itU32),
@@ -16289,7 +15880,12 @@ begin
       wbStruct(CNTO, 'Holotape', [
         wbFormIDCk('Item', [NULL, NOTE]),
         wbInteger('Count', itS32, nil, cpNormal, False, nil, nil, 1)
-      ]),
+      ])
+        .SetSummaryKeyOnValue([1, 0])
+        .SetSummaryPrefixSuffixOnValue(1, '', 'x')
+        .SetSummaryDelimiterOnValue(' ')
+        .IncludeFlagOnValue(dfSummaryMembersNoName)
+        .IncludeFlag(dfCollapsed),
       cpNormal, False, nil, wbTERMCNTOsAfterSet
     ),
     wbMNAMFurnitureMarker,
@@ -16301,7 +15897,12 @@ begin
       wbRStruct('Item', [
         wbLStringKC(BTXT, 'Text', 0, cpTranslate),
         wbCTDAs
-      ], []),
+      ], [])
+        .SetSummaryKey([0, 1])
+        .SetSummaryMemberPrefixSuffix(1, '{', '}')
+        .SetSummaryDelimiter(' ')
+        .IncludeFlag(dfSummaryMembersNoName)
+        .IncludeFlag(dfCollapsed),
       cpNormal, False, nil, wbTERMDisplayItemsAfterSet
     ),
     wbInteger(ISIZ, 'Count', itU32, nil, cpBenign),
@@ -16333,7 +15934,14 @@ begin
         wbString(VNAM, 'Show Image'),
         wbFormIDCk(TNAM, 'Submenu', [TERM]),
         wbCTDAs
-      ], []),
+      ], [])
+        .SetSummaryKey([3, 2, 0, 7])
+        .SetSummaryMemberPrefixSuffix(3, '[', ']')
+        .SetSummaryMemberPrefixSuffix(2, '[', ']')
+        .SetSummaryMemberPrefixSuffix(7, '{', '}')
+        .SetSummaryDelimiter(' ')
+        .IncludeFlag(dfSummaryMembersNoName)
+        .IncludeFlag(dfCollapsed),
       cpNormal, False, nil, wbTERMMenuItemsAfterSet
     )
   ]);
@@ -16358,6 +15966,140 @@ begin
       wbFloat('Zoom Max')
     ], cpNormal, True, nil, 2)
   ]);
+
+  wbRecord(WTHR, 'Weather',
+    wbFlags(wbRecordFlagsFlags, wbFlagsList([
+      9, 'Unknown 9'
+    ])), [
+    wbEDID,
+    wbWeatherCloudTextures,
+    wbInteger(LNAM, 'Max Cloud Layers', itU32),
+    wbFormIDCK(MNAM, 'Precipitation Type', [SPGD, NULL]),
+    wbFormIDCK(NNAM, 'Visual Effect', [RFCT, NULL], False, cpNormal, True),
+    wbUnused(ONAM),
+    wbWeatherCloudSpeed,
+    wbWeatherCloudColors,
+    wbWeatherCloudAlphas,
+    wbWeatherColors,
+    wbArray(NAM4, 'Unknown', wbFloat('Unknown')).IncludeFlag(dfNotAlignable),
+    wbWeatherFogDistance,
+    wbStruct(DATA, 'Data', [
+      wbInteger('Wind Speed', itU8), // scaled 0..1
+      wbUnused(2),
+      wbInteger('Trans Delta', itU8), // scaled 0..0,25
+      wbInteger('Sun Glare', itU8), // scaled 0..1
+      wbInteger('Sun Damage', itU8), // scaled 0..1
+      wbInteger('Precipitation - Begin Fade In', itU8), // scaled 0..1
+      wbInteger('Precipitation - End Fade Out', itU8), // scaled 0..1
+      wbInteger('Thunder/Lightning - Begin Fade In', itU8),
+      wbInteger('Thunder/Lightning - End Fade Out', itU8),
+      wbInteger('Thunder/Lightning - Frequency', itU8),
+      wbInteger('Flags', itU8,
+        wbFlags(wbSparseFlags([
+          0, 'Weather - Pleasant',
+          1, 'Weather - Cloudy',
+          2, 'Weather - Rainy',
+          3, 'Weather - Snow',
+          4, 'Aurora - Always Visible',
+          5, 'Aurora - Follows Sun Position',
+          6, 'Rain Occlusion',
+          7, 'HUD Rain Effects'
+        ], False, 8))
+      ).IncludeFlag(dfCollapsed, wbCollapseFlags),
+      wbWeatherLightningColor,
+      wbInteger('Visual Effect - Begin', itU8), // scaled 0..1
+      wbInteger('Visual Effect - End', itU8), // scaled 0..1
+      wbInteger('Wind Direction', itU8), // scaled 0..360
+      wbInteger('Wind Direction Range', itU8), // scaled 0..180
+      wbFromVersion(119, wbInteger('Wind Turbulance', itU8).SetDefaultNativeValue(51))
+    ], cpNormal, True),
+    wbWeatherDisabledLayers,
+    wbWeatherSounds,
+    wbRArrayS('Sky Statics', wbFormIDCk(TNAM, 'Static', [STAT, NULL])),
+    wbWeatherImageSpaces,
+    wbWeatherGodRays,
+    wbWeatherDirectionalLighting,
+    wbRStruct('Aurora', [wbGenericModel], []),
+    wbFormIDCk(GNAM, 'Sun Glare Lens Flare', [LENS]),
+    wbWeatherMagic,
+    wbFloat(VNAM, 'Volatility Mult'), //Form Version 126+
+    wbFloat(WNAM, 'Visibility Mult')  //Form Version 126+
+  ]);
+
+  wbRecord(WRLD, 'Worldspace',
+    wbFlags(wbRecordFlagsFlags, wbFlagsList([
+      14, 'Partial Form',
+      19, 'Can''t Wait'
+    ]), [14]), [
+    wbEDID,
+    wbWorldLargeRefs
+    .IncludeFlag(dfCollapsed)
+    .IncludeFlag(dfFastAssign)
+    .IncludeFlag(dfNoCopyAsOverride)
+    .IncludeFlag(dfNotAlignable),
+    wbWorldMaxHeight
+    .IncludeFlag(dfCollapsed)
+    .IncludeFlag(dfFastAssign)
+    .IncludeFlag(dfNoCopyAsOverride)
+    .IncludeFlag(dfNotAlignable),
+    wbFULL,
+    wbWorldFixedCenter,
+    wbFormIDCk(LTMP, 'Interior Lighting', [LGTM]),
+    wbFormIDCk(XEZN, 'Encounter Zone', [ECZN, NULL]),
+    wbFormIDCk(XLCN, 'Location', [LCTN, NULL]),
+    wbRStruct('Parent Worldspace', [
+      wbFormIDCk(WNAM, 'World', [WRLD]),
+      wbInteger(PNAM, 'Flags', itU16,
+        wbFlags(wbSparseFlags([
+          0, 'Use Land Data',
+          1, 'Use LOD Data',
+          2, 'Use Map Data',
+          3, 'Use Water Data',
+          4, 'Use Climate Data',
+          5, 'Use Image Space Data (unused)',
+          6, 'Use Sky Cell'
+        ], False, 7), [5]),
+      cpNormal, True)
+      .IncludeFlag(dfCollapsed, wbCollapseFlags)
+    ], []),
+    wbFormIDCk(CNAM, 'Climate', [CLMT]),
+    wbWorldWaterData,
+    wbWorldLandData,
+    wbString(ICON, 'Map Image'),
+    wbRStruct('Cloud Model', [wbGenericModel], []),
+    wbWorldMapData,
+    wbWorldMapOffset,
+    wbFloat(NAMA, 'Distant LOD Multiplier'),
+    wbInteger(DATA, 'Flags', itU8,
+      wbFlags(wbSparseFlags([
+        0, 'Small World',
+        1, 'Can''t Fast Travel',
+        3, 'No LOD Water',
+        4, 'No Landscape',
+        5, 'No Sky',
+        6, 'Fixed Dimensions',
+        7, 'No Grass'
+      ], False, 8)),
+    cpNormal, True)
+    .IncludeFlag(dfCollapsed, wbCollapseFlags),
+    wbWorldObjectBounds,
+    wbFormIDCk(ZNAM, 'Music', [MUSC]),
+    wbString(NNAM, 'Canopy Shadow (unused)', 0, cpIgnore),
+    wbString(XWEM, 'Water Environment Map'),
+    wbString(TNAM, 'HD LOD Diffuse Texture'),
+    wbString(UNAM, 'HD LOD Normal Texture'),
+    wbWorldLevelData,
+    wbWorldOffsetData
+    .IncludeFlag(dfCollapsed)
+    .IncludeFlag(dfFastAssign)
+    .IncludeFlag(dfNoCopyAsOverride)
+    .IncludeFlag(dfNotAlignable),
+    wbWorldCellSizeData
+    .IncludeFlag(dfCollapsed)
+    .IncludeFlag(dfFastAssign)
+    .IncludeFlag(dfNoCopyAsOverride)
+    .IncludeFlag(dfNotAlignable)
+  ], False, nil, cpNormal, False, wbWRLDAfterLoad);
 
   wbRecord(ZOOM, 'Zoom', [
     wbEDID,
@@ -16387,14 +16129,10 @@ begin
         wbFloat('X'),
         wbFloat('Y'),
         wbFloat('Z')
-      ])
+      ]).SetToStr(wbVec3ToStr).IncludeFlag(dfCollapsed, wbCollapseVec3)
     ])
   ]);
 
-end;
-
-procedure DefineFO4u;
-begin
    wbAddGroupOrder(GMST);
    wbAddGroupOrder(KYWD);
    wbAddGroupOrder(LCRT);
@@ -16408,7 +16146,7 @@ begin
    wbAddGroupOrder(CLAS);
    wbAddGroupOrder(FACT);
    wbAddGroupOrder(HDPT);
-   //wbAddGroupOrder(EYES);
+   wbAddGroupOrder(EYES);
    wbAddGroupOrder(RACE);
    wbAddGroupOrder(SOUN);
    wbAddGroupOrder(ASPC);
@@ -16438,6 +16176,7 @@ begin
    wbAddGroupOrder(WEAP);
    wbAddGroupOrder(AMMO);
    wbAddGroupOrder(NPC_);
+   wbAddGroupOrder(PLYR);
    wbAddGroupOrder(LVLN);
    wbAddGroupOrder(KEYM);
    wbAddGroupOrder(ALCH);
@@ -16551,47 +16290,29 @@ begin
    //wbAddGroupOrder(LSPR);
    wbAddGroupOrder(GDRY);
    wbAddGroupOrder(OVIS);
-end;
-
-procedure DefineFO4;
-begin
-  DefineFO4a;
-  DefineFO4b;
-  DefineFO4c;
-  DefineFO4d;
-  DefineFO4e;
-  DefineFO4f;
-  DefineFO4g;
-  DefineFO4h;
-  DefineFO4i;
-  DefineFO4j;
-  DefineFO4k;
-  DefineFO4l;
-  DefineFO4m;
-  DefineFO4n;
-  DefineFO4o;
-  DefineFO4p;
-  DefineFO4q;
-  DefineFO4r;
-  DefineFO4s;
-  DefineFO4t;
-  DefineFO4u;
-
-  SetLength(wbOfficialDLC, 6);
+  wbNexusModsUrl := 'https://www.nexusmods.com/fallout4/mods/2737';
+  {if wbToolMode = tmLODgen then
+    wbNexusModsUrl := '';}
+  SetLength(wbOfficialDLC, 7);
   wbOfficialDLC[0] := 'DLCRobot.esm';
   wbOfficialDLC[1] := 'DLCworkshop01.esm';
   wbOfficialDLC[2] := 'DLCCoast.esm';
   wbOfficialDLC[3] := 'DLCworkshop02.esm';
   wbOfficialDLC[4] := 'DLCworkshop03.esm';
   wbOfficialDLC[5] := 'DLCNukaWorld.esm';
-
+  wbOfficialDLC[6] := 'DLCUltraHighResolution.esm';
   if wbGameMode = gmFO4VR then begin
     // new VR esm is loaded after DLCs
     SetLength(wbOfficialDLC, Succ(Length(wbOfficialDLC)));
     wbOfficialDLC[Pred(Length(wbOfficialDLC))] := 'Fallout4_VR.esm';
   end else
     wbCreationClubContentFileName := 'Fallout4.ccc';
-
+  if wbGameMode = gmFO4VR then
+    wbHEDRVersion := 0.95
+  else begin
+    wbHEDRVersion := 1.0;
+    wbHEDRNextObjectID := 1;
+  end;
 end;
 
 initialization
