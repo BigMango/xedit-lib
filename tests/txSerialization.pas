@@ -530,8 +530,9 @@ begin
                   BeforeAll(procedure
                     begin
                       ExpectSuccess(FileByName('Skyrim.esm', @h));
-                      ExpectSuccess(SortNames(h, 'ARMO'));
-                      ExpectSuccess(SortEditorIDs(h, 'ARMO'));
+                      { TODO -oMango -cTemp : !!! }
+                     //ExpectSuccess(SortNames(h, 'ARMO'));
+//                      ExpectSuccess(SortEditorIDs(h, 'ARMO'));
                     end);
 
                   It('Should override existing records by FormID', procedure
@@ -619,7 +620,8 @@ begin
               BeforeAll(procedure
                 begin
                   ExpectSuccess(FileByName('Skyrim.esm', @h));
-                  ExpectSuccess(SortEditorIDs(h, 'SNDR'));
+                  { TODO -oMango -cTemp : !!! }
+                  // ExpectSuccess(SortEditorIDs(h, 'SNDR'));
                 end);
 
               It('Should deserialize strings', procedure

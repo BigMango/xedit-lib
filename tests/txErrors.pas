@@ -1,7 +1,8 @@
 unit txErrors;
 
 interface
-
+uses
+  wbInterface;
   // public testing interface
   procedure BuildPluginErrorTests;
 
@@ -51,7 +52,7 @@ procedure OverrideRecord(hexFormID: String; f: Cardinal; winningOverride: Boolea
 var
   rec: Cardinal;
 begin
-  ExpectSuccess(GetRecord(0, StrToInt('$' + hexFormID), False, @rec));
+  ExpectSuccess(GetRecord(0, TwbFormID. StrToInt('$' + hexFormID), False, @rec));
   if winningOverride then
     ExpectSuccess(GetWinningOverride(rec, @rec));
   ExpectSuccess(AddRequiredMasters(rec, f, False));

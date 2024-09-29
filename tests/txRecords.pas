@@ -2,6 +2,9 @@ unit txRecords;
 
 interface
 
+uses
+  wbInterface;
+
 type
   TConflictAll = (
     caUnknown,
@@ -45,7 +48,7 @@ uses
 
 function TestGetRecord(h: Cardinal; formID: Cardinal): Cardinal;
 begin
-  ExpectSuccess(GetRecord(h, formID, False, @Result));
+  ExpectSuccess(GetRecord(h, TwbFormID.FromCardinal(formID), False, @Result));
   Expect(Result > 0, 'Should return a handle');
 end;
 
