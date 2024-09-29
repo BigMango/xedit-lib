@@ -57,7 +57,9 @@ uses
 
 const
   IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
-
+var
+   h: Cardinal;
+   status:byte;
 procedure BuildXETests;
 begin
   {$IFDEF SKYRIM}
@@ -108,10 +110,29 @@ begin
   ReportResults(LogToConsole);
 end;
 
+procedure RunFallout4Tests;
+var
+ h: Cardinal;
+ status:byte;
+begin
+  SetGameMode(5);
+  status := 0;
+  LoadPlugins('D:\Riishen\Product\GamesDock\SourceCode\Fallout76\matortheeternal\XeLibSharp\ExampleApp\bin\Debug\Data\Fallout4.esm',True,True);
+
+ while status <> 2 do begin
+    Sleep(100);
+    GetLoaderStatus(@status);
+  end;
+  GetElement(0,'Fallout4.esm\00012E46',@h);
+
+end;
+
 begin
   try
     BuildXETests;
     RunXETests;
+    GetElement(0,'Fallout4.esm\00012E46',@h);
+//    RunFallout4Tests;
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);

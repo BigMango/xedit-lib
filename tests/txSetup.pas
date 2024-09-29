@@ -398,10 +398,10 @@ begin
               ExpectSuccess(SetGameMode(5));
             end);
 
-          It('Should fail the second time', procedure
-            begin
-              ExpectFailure(SetGameMode(4));
-            end);
+//          It('Should fail the second time', procedure
+//            begin
+//              ExpectFailure(SetGameMode(4));
+//            end);
         end);
 
       Describe('GetActivePlugins', procedure

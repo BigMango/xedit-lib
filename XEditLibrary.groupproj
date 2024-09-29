@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{61C8C377-6E50-4796-A35A-E4E2579A18E3}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="XEditLib.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="XEditLibTests.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="XEditLib">
+        <MSBuild Projects="XEditLib.dproj"/>
+    </Target>
+    <Target Name="XEditLib:Clean">
+        <MSBuild Projects="XEditLib.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="XEditLib:Make">
+        <MSBuild Projects="XEditLib.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="XEditLibTests">
+        <MSBuild Projects="XEditLibTests.dproj"/>
+    </Target>
+    <Target Name="XEditLibTests:Clean">
+        <MSBuild Projects="XEditLibTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="XEditLibTests:Make">
+        <MSBuild Projects="XEditLibTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="XEditLib;XEditLibTests"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="XEditLib:Clean;XEditLibTests:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="XEditLib:Make;XEditLibTests:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
