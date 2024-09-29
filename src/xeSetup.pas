@@ -134,29 +134,31 @@ begin
     Result := Succ(xFiles[High(xFiles)].LoadOrder);
 end;
 
+// TfrmMain.AddNewFileName
 function NativeAddFile(const filename: string; ignoreExistence: Boolean): IwbFile;
 var
   LoadOrder : Integer;
   _file: IwbFile;
   filePath: String;
 begin
-  // fail if the file already exists
-  filePath := wbDataPath + string(filename);
-  if (not ignoreExistence) and FileExists(filePath) then
-    raise Exception.Create(Format('File with name %s already exists.', [filename]));
-
-  // fail if maximum load order reached
-  LoadOrder := NextLoadOrder;
-  if LoadOrder > 254 then
-    raise Exception.Create('Maximum plugin count of 254 reached.');
-
-  // create new file
-  _file := wbNewFile(filePath, LoadOrder);
-  SetLength(xFiles, Succ(Length(xFiles)));
-  xFiles[High(xFiles)] := _file;
-  _file._AddRef;
-  UpdateFileCount;
-  Result := _file;
+{ TODO -oMango -cTemp : !!! }
+//  // fail if the file already exists
+//  filePath := wbDataPath + string(filename);
+//  if (not ignoreExistence) and FileExists(filePath) then
+//    raise Exception.Create(Format('File with name %s already exists.', [filename]));
+//
+//  // fail if maximum load order reached
+//  LoadOrder := NextLoadOrder;
+//  if LoadOrder > 254 then
+//    raise Exception.Create('Maximum plugin count of 254 reached.');
+//
+//  // create new file
+//  _file := wbNewFile(filePath, LoadOrder);
+//  SetLength(xFiles, Succ(Length(xFiles)));
+//  xFiles[High(xFiles)] := _file;
+//  _file._AddRef;
+//  UpdateFileCount;
+//  Result := _file;
 end;
 
 procedure SetLoaderState(state: TLoaderState);
@@ -215,9 +217,10 @@ procedure LoadFile(const filePath: String; loadOrder: Integer);
 var
   _file: IwbFile;
 begin
-  _file := wbFile(filePath, loadOrder, '', False, False);
-  SetLength(xFiles, Length(xFiles) + 1);
-  xFiles[High(xFiles)] := _file;
+{ TODO -oMango -cTemp : !!! }
+//  _file := wbFile(filePath, loadOrder, '', False, False);
+//  SetLength(xFiles, Length(xFiles) + 1);
+//  xFiles[High(xFiles)] := _file;
 end;
 
 procedure LoadHardcodedDat(const filePath: String);
@@ -244,31 +247,32 @@ var
   i: Integer;
   sFileName: String;
 begin
-  BaseFileIndex := Length(xFiles);
-  for i := 0 to Pred(slLoadOrder.Count) do begin
-    sFileName := slLoadOrder[i];
-    AddMessage(Format('Loading %s (%d/%d)', [sFileName, i + 1, slLoadOrder.Count]));
-
-    // load plugin
-    try
-      if useDummies then
-        NativeAddFile(sFileName, true)
-      else
-        LoadFile(wbDataPath + sFileName, BaseFileIndex + i);
-    except
-      on x: Exception do
-        ThreadException('Exception loading ' + sFileName + ': ' + x.Message);
-    end;
-
-    // load hardcoded dat
-    if (i = 0) and (sFileName = wbGameName + '.esm') then try
-      sFileName := Globals.Values['ProgramPath'] + wbGameName + wbHardcodedDat;
-      LoadHardCodedDat(sFileName);
-    except
-      on x: Exception do
-        ThreadException('Exception loading ' + sFileName + ': ' + x.Message);
-    end;
-  end;
+{ TODO -oMango -cTemp : !!! }
+//  BaseFileIndex := Length(xFiles);
+//  for i := 0 to Pred(slLoadOrder.Count) do begin
+//    sFileName := slLoadOrder[i];
+//    AddMessage(Format('Loading %s (%d/%d)', [sFileName, i + 1, slLoadOrder.Count]));
+//
+//    // load plugin
+//    try
+//      if useDummies then
+//        NativeAddFile(sFileName, true)
+//      else
+//        LoadFile(wbDataPath + sFileName, BaseFileIndex + i);
+//    except
+//      on x: Exception do
+//        ThreadException('Exception loading ' + sFileName + ': ' + x.Message);
+//    end;
+//
+//    // load hardcoded dat
+//    if (i = 0) and (sFileName = wbGameName + '.esm') then try
+//      sFileName := Globals.Values['ProgramPath'] + wbGameName + wbHardcodedDat;
+//      LoadHardCodedDat(sFileName);
+//    except
+//      on x: Exception do
+//        ThreadException('Exception loading ' + sFileName + ': ' + x.Message);
+//    end;
+//  end;
 end;
 
 procedure LoadBSAFile(const sFileName: String);
@@ -347,20 +351,22 @@ begin
     SetLength(xFiles, len - 1);
     UpdateFileCount;
   end;
-  wbFileForceClosed(_file);
+  { TODO -oMango -cTemp : !!! }
+//  wbFileForceClosed(_file);
 end;
 {$endregion}
 
 {$region 'Load order helpers'}
 function LoadFileHeader(const filePath: String): IwbFile;
 begin
-  try
-    Result := wbFile(filePath, -1, '', False, True);
-  except
-    on x: Exception do
-      raise Exception.CreateFmt('Failed to load file header %s, %s',
-        [filePath, x.Message]);
-  end;
+{ TODO -oMango -cTemp : !!! }
+//  try
+//    Result := wbFile(filePath, -1, '', False, True);
+//  except
+//    on x: Exception do
+//      raise Exception.CreateFmt('Failed to load file header %s, %s',
+//        [filePath, x.Message]);
+//  end;
 end;
 
 procedure AddToLoadOrder(const filePath: String);
@@ -534,6 +540,31 @@ begin
     FindClose(F);
   end else
     Result := 0;
+end;
+
+
+function IsFileESM(const aFileName: string): Boolean;
+const
+  ghostesm = '.esm.ghost';
+begin
+  Result := SameText(ExtractFileExt(aFileName), '.esm') or
+    SameText(Copy(aFileName, Length(aFileName) - Length(ghostesm) + 1, Length(ghostesm)), ghostesm)
+end;
+
+function IsFileESP(const aFileName: string): Boolean;
+const
+  ghostesp = '.esp.ghost';
+begin
+  Result := SameText(ExtractFileExt(aFileName), '.esp') or
+    SameText(Copy(aFileName, Length(aFileName) - Length(ghostesp) + 1, Length(ghostesp)), ghostesp)
+end;
+
+function IsFileESL(const aFileName: string): Boolean;
+const
+  ghostesl = '.esl.ghost';
+begin
+  Result := SameText(ExtractFileExt(aFileName), '.esl') or
+    SameText(Copy(aFileName, Length(aFileName) - Length(ghostesl) + 1, Length(ghostesl)), ghostesl)
 end;
 
 { Add missing *.esp and *.esm files to list }

@@ -11,8 +11,8 @@ uses
     sort: WordBool = False; curPath: String = ''): String;
   function GetPathName(const element: IwbElement; sort: WordBool = False): String;
   function NativeName(const e: IwbElement; quoteFull: Boolean = False): String;
-  function ParseFormIDValue(const value: String; var formID: Int64): Boolean;
-  function ParseFileFormIDValue(const value: String; var _file: IwbFile; var formID: Int64): Boolean;
+  function ParseFormIDValue(const value: String; var formID: TwbFormID): Boolean;
+  function ParseFileFormIDValue(const value: String; var _file: IwbFile; var formID: TwbFormID): Boolean;
   procedure SetElementValue(const element: IwbElement; const value: String);
   function IndexOfFlag(const flagsDef: IwbFlagsDef; const name: String): Integer;
   procedure NativeSetFlag(const element: IwbElement; index: Integer; enabled: WordBool);
@@ -67,7 +67,7 @@ function FormString(const rec: IwbMainRecord): String;
 begin
   Result := Format('[%s:%s]', [
     AnsiString(rec.Signature),
-    IntToHex(rec.LoadOrderFormID, 8)
+    IntToHex(rec.LoadOrderFormID.ToCardinal, 8)
   ]);
 end;
 
@@ -124,7 +124,7 @@ end;
 {$region 'Path helpers'}
 function HexFormID(const rec: IwbMainRecord): String;
 begin
-  Result := IntToHex(rec.LoadOrderFormID, 8);
+  Result := IntToHex(rec.LoadOrderFormID.ToCardinal, 8);
 end;
 
 function GetPathName(const element: IwbElement; sort: WordBool = False): String;
@@ -202,7 +202,7 @@ begin
 end;
 
 {$region 'SetValue helpers'}
-function ParseFormIDValue(const value: String; var formID: Int64): Boolean;
+function ParseFormIDValue(const value: String; var formID: TwbFormID): Boolean;
 var
   n, len, open: Integer;
 begin
@@ -210,30 +210,33 @@ begin
   open := 0;
   n := 1;
   len := Length(value);
+
+  { TODO -oMango -cTemp : !!! }
+
   // attempt to parse formID via a string in format [SIGN:12345678] or [12345678]
   // stops parsing early if valid string cannot fit in remaining buffer
-  while n <= len do begin
-    if (open = 0) and (len - n < 9) then
-      break;
-    case value[n] of
-      '[': open := n;
-      ':':
-        if n - open = 5 then
-          open := n
-        else
-          open := 0;
-      ']':
-        if (open <> 0) and (n - open = 9)
-        and TryStrToInt64('$' + Copy(value, open + 1, 8), formID) then
-          exit;
-    end;
-    Inc(n);
-  end;
-  // attempts to convert entire key to integer
-  Result := TryStrToInt64('$' + value, formID);
+//  while n <= len do begin
+//    if (open = 0) and (len - n < 9) then
+//      break;
+//    case value[n] of
+//      '[': open := n;
+//      ':':
+//        if n - open = 5 then
+//          open := n
+//        else
+//          open := 0;
+//      ']':
+//        if (open <> 0) and (n - open = 9)
+//        and TryStrToInt64('$' + Copy(value, open + 1, 8), formID) then
+//          exit;
+//    end;
+//    Inc(n);
+//  end;
+//  // attempts to convert entire key to integer
+//  Result := TryStrToInt64('$' + value, formID);
 end;
 
-function ParseFileFormIDValue(const value: String; var _file: IwbFile; var formID: Int64): Boolean;
+function ParseFileFormIDValue(const value: String; var _file: IwbFile; var formID: TwbFormID): Boolean;
 var
   len, n: Integer;
   filename, fidStr: String;
@@ -245,33 +248,35 @@ begin
   filename := Copy(value, 2, n - 1);
   _file := NativeFileByName(filename);
   fidStr := Copy(value, n + 1, len - n - 1);
-  Result := Assigned(_file) and TryStrToInt64('$' + fidStr, formID);
+  { TODO -oMango -cTemp : !!! }
+//  Result := Assigned(_file) and TryStrToInt64('$' + fidStr, formID);
 end;
 
 procedure SetElementValue(const element: IwbElement; const value: String);
 var
-  formID: Int64;
+  formID: TwbFormID;
   _file: IwbFile;
 begin
-  if IsFormID(element) then begin
-    if value = '' then
-      element.NativeValue := 0
-    else if ParseFormIDValue(value, formID) then
-      element.NativeValue := element._File.LoadOrderFormIDtoFileFormID(formID)
-    else if ParseFileFormIDValue(value, _file, formID) then
-       element.NativeValue := _file.RecordByFormID[formID, false, false]
-    else
-      element.NativeValue := EditorIDToFormID(element._File, value);
-  end
-  else
-    element.EditValue := value;
+{ TODO -oMango -cTemp : !!! }
+//  if IsFormID(element) then begin
+//    if value = '' then
+//      element.NativeValue := 0
+//    else if ParseFormIDValue(value, formID) then
+//      element.NativeValue := element._File.LoadOrderFormIDtoFileFormID(formID,True)
+//    else if ParseFileFormIDValue(value, _file, formID) then
+//       element.NativeValue := _file.RecordByFormID[formID, false, false]
+//    else
+//      element.NativeValue := EditorIDToFormID(element._File, value);
+//  end
+//  else
+//    element.EditValue := value;
 end;
 {$endregion}
 
 function IndexOfFlag(const flagsDef: IwbFlagsDef; const name: String): Integer;
 begin
   for Result := 0 to Pred(flagsDef.FlagCount) do
-    if flagsDef.Flags[Result] = name then exit;
+    if flagsDef.Flags[Result,True] = name then exit;
   Result := -1;
 end;
 
@@ -368,7 +373,7 @@ begin
   try
     if not Supports(Resolve(_id), IwbElement, element) then
       raise Exception.Create('Interface is not an element.');
-    resultStr := element.DisplayName;
+    resultStr := element.DisplayName[True];
     len^ := Length(resultStr);
     Result := True;
   except
@@ -473,7 +478,7 @@ begin
     end
     else if Supports(element, IwbMainRecord, rec) then begin
       rec := rec.MasterOrSelf;
-      fid := IntToHex(rec.FormID and $00FFFFFF, 6)
+      fid := IntToHex(rec.FormID.ToCardinal and $00FFFFFF, 6)
     end
     else
       raise Exception.Create('Element must be a main record or form ID element.');
@@ -653,7 +658,7 @@ begin
       if not GetFlagsDef(element, flagsDef) then
         raise Exception.Create('Element does not have flags');
       for i := 0 to Pred(flagsDef.FlagCount) do
-        slFlags.Add(flagsDef.Flags[i]);
+        slFlags.Add(flagsDef.Flags[i,False]);
 
       // set output
       resultStr := slFlags.DelimitedText;
@@ -689,7 +694,7 @@ begin
       for i := 0 to Pred(flagsDef.FlagCount) do begin
         flagVal := 1 shl i;
         if element.NativeValue and flagVal then
-          slFlags.Add(flagsDef.Flags[i]);
+          slFlags.Add(flagsDef.Flags[i,False]);
       end;
 
       // set output
@@ -727,8 +732,8 @@ begin
         raise Exception.Create('Element does not have flags');
       flagVal := 0;
       for i := Pred(flagsDef.FlagCount) downto 0 do begin
-        enabled := (flagsDef.Flags[i] <> '') and
-          (slFlags.IndexOf(flagsDef.Flags[i]) > -1);
+        enabled := (flagsDef.Flags[i,False] <> '') and
+          (slFlags.IndexOf(flagsDef.Flags[i,False]) > -1);
         flagVal := flagVal shl 1 + UInt64(Ord(enabled));
       end;
       element.NativeValue := flagVal;

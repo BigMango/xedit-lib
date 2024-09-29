@@ -23,7 +23,7 @@ type
     &type: TErrorType;
     handle: Cardinal;
     signature: TwbSignature;
-    formID: integer;
+    formID: TwbFormID;
     name: string;
     path: string;
     data: string;
@@ -89,9 +89,10 @@ procedure CheckForSubrecordErrors(const rec: IwbMainRecord);
 var
   error: String;
 begin
-  error := rec.GetSubRecordErrors;
-  if error <> '' then
-    errors.Add(TRecordError.Create(rec, erUES, Error));
+{ TODO -oMango -cTemp : !!! }
+//  error := rec.GetSubRecordErrors;
+//  if error <> '' then
+//    errors.Add(TRecordError.Create(rec, erUES, Error));
 end;
 
 procedure CheckForIdenticalErrors(const rec: IwbMainRecord);
@@ -180,7 +181,7 @@ begin
     Result.I['group'] := Ord(error.&type.id);
     Result.I['handle'] := error.handle;
     Result.S['signature'] := string(error.signature);
-    Result.I['form_id'] := error.formID;
+    Result.I['form_id'] := error.formID.ToCardinal;
     Result.S['name'] := error.name;
     if error.path <> '' then
       Result.S['path'] := error.path;

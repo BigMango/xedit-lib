@@ -21,14 +21,14 @@ uses
   function FileByName(name: PWideChar; _res: PCardinal): WordBool; cdecl;
   function FileByAuthor(author: PWideChar; _res: PCardinal): WordBool; cdecl;
   function NukeFile(_id: Cardinal): WordBool; cdecl;
-  function RenameFile(_id: Cardinal; filename: PWideChar): WordBool; cdecl;
+  // function RenameFile(_id: Cardinal; filename: PWideChar): WordBool; cdecl;
   function SaveFile(_id: Cardinal; filePath: PWideChar): WordBool; cdecl;
   function MD5Hash(_id: Cardinal; len: PInteger): WordBool; cdecl;
   function CRCHash(_id: Cardinal; len: PInteger): WordBool; cdecl;
   function GetRecordCount(_id: Cardinal; count: PInteger): WordBool; cdecl;
   function GetOverrideRecordCount(_id: Cardinal; count: PInteger): WordBool; cdecl;
-  function SortEditorIDs(_id: Cardinal; sig: PWideChar): WordBool; cdecl;
-  function SortNames(_id: Cardinal; sig: PWideChar): WordBool; cdecl;
+  // function SortEditorIDs(_id: Cardinal; sig: PWideChar): WordBool; cdecl;
+  // function SortNames(_id: Cardinal; sig: PWideChar): WordBool; cdecl;
   function GetFileLoadOrder(_id: Cardinal; loadOrder: PInteger): WordBool; cdecl;
   {$endregion}
 
@@ -190,22 +190,22 @@ begin
   end;
 end;
 
-function RenameFile(_id: Cardinal; fileName: PWideChar): WordBool; cdecl;
-var
-  _file: IwbFile;
-begin
-  Result := False;
-  try
-    if not Supports(Resolve(_id), IwbFile, _file) then
-      raise Exception.Create('Interface must be a file.');
-    if not FileNameValid(fileName) then
-      raise Exception.Create('Filename has invalid characters.');
-    _file.FileName := string(fileName);
-    Result := True;
-  except
-    on x: Exception do ExceptionHandler(x);
-  end;
-end;
+//function RenameFile(_id: Cardinal; fileName: PWideChar): WordBool; cdecl;
+//var
+//  _file: IwbFile;
+//begin
+//  Result := False;
+//  try
+//    if not Supports(Resolve(_id), IwbFile, _file) then
+//      raise Exception.Create('Interface must be a file.');
+//    if not FileNameValid(fileName) then
+//      raise Exception.Create('Filename has invalid characters.');
+//    _file.FileName := string(fileName);
+//    Result := True;
+//  except
+//    on x: Exception do ExceptionHandler(x);
+//  end;
+//end;
 
 function SaveFile(_id: Cardinal; filePath: PWideChar): WordBool; cdecl;
 var
@@ -225,7 +225,10 @@ begin
     end;
     FileStream := TFileStream.Create(path, fmCreate);
     try
-      _file.WriteToStream(FileStream, False);
+      // Mango modify
+      // _file.WriteToStream(FileStream, False);
+      _file.WriteToStream(FileStream, rmSetInternal);
+
       if (filePath = '') and (slSavedFiles.IndexOf(path) = -1) then
         slSavedFiles.Add(path);
       Result := True;
@@ -303,47 +306,47 @@ begin
   end;
 end;
 
-function SortEditorIDs(_id: Cardinal; sig: PWideChar): WordBool; cdecl;
-var
-  _file: IwbFile;
-  i: Integer;
-begin
-  Result := False;
-  try
-    if _id = 0 then begin
-      for i := Low(xFiles) to High(xFiles) do
-        xFiles[i].SortEditorIDs(string(sig));
-    end
-    else if Supports(Resolve(_id), IwbFile, _file) then
-      _file.SortEditorIDs(string(sig))
-    else
-      raise Exception.Create('Interface must be a file.');
-    Result := True;
-  except
-    on x: Exception do ExceptionHandler(x);
-  end;
-end;
+//function SortEditorIDs(_id: Cardinal; sig: PWideChar): WordBool; cdecl;
+//var
+//  _file: IwbFile;
+//  i: Integer;
+//begin
+//  Result := False;
+//  try
+//    if _id = 0 then begin
+//      for i := Low(xFiles) to High(xFiles) do
+//        xFiles[i].SortEditorIDs(string(sig));
+//    end
+//    else if Supports(Resolve(_id), IwbFile, _file) then
+//      _file.SortEditorIDs(string(sig))
+//    else
+//      raise Exception.Create('Interface must be a file.');
+//    Result := True;
+//  except
+//    on x: Exception do ExceptionHandler(x);
+//  end;
+//end;
 
-function SortNames(_id: Cardinal; sig: PWideChar): WordBool; cdecl;
-var
-  _file: IwbFile;
-  i: Integer;
-begin
-  Result := False;
-  try
-    if _id = 0 then begin
-      for i := Low(xFiles) to High(xFiles) do
-        xFiles[i].SortNames(string(sig));
-    end
-    else if Supports(Resolve(_id), IwbFile, _file) then
-      _file.SortNames(string(sig))
-    else
-      raise Exception.Create('Interface must be a file.');
-    Result := True;
-  except
-    on x: Exception do ExceptionHandler(x);
-  end;
-end;
+//function SortNames(_id: Cardinal; sig: PWideChar): WordBool; cdecl;
+//var
+//  _file: IwbFile;
+//  i: Integer;
+//begin
+//  Result := False;
+//  try
+//    if _id = 0 then begin
+//      for i := Low(xFiles) to High(xFiles) do
+//        xFiles[i].SortNames(string(sig));
+//    end
+//    else if Supports(Resolve(_id), IwbFile, _file) then
+//      _file.SortNames(string(sig))
+//    else
+//      raise Exception.Create('Interface must be a file.');
+//    Result := True;
+//  except
+//    on x: Exception do ExceptionHandler(x);
+//  end;
+//end;
 
 function GetFileLoadOrder(_id: Cardinal; loadOrder: PInteger): WordBool; cdecl;
 var

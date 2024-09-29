@@ -16,9 +16,9 @@ type
   {$endregion}
 
   {$region 'API functions'}
-  function GetFormID(_id: Cardinal; formID: PCardinal; native: WordBool): WordBool; cdecl;
-  function SetFormID(_id: Cardinal; formID: Cardinal; native, fixReferences: WordBool): WordBool; cdecl;
-  function GetRecord(_id: Cardinal; formID: Cardinal; searchMasters: WordBool; _res: PCardinal): WordBool; cdecl;
+  function GetFormID(_id: Cardinal; formID: PwbFormID; native: WordBool): WordBool; cdecl;
+  function SetFormID(_id: Cardinal; formID: TwbFormID; native, fixReferences: WordBool): WordBool; cdecl;
+  function GetRecord(_id: Cardinal; formID: TwbFormID; searchMasters: WordBool; _res: PCardinal): WordBool; cdecl;
   function GetRecords(_id: Cardinal; search: PWideChar; includeOverrides: WordBool; len: PInteger): WordBool; cdecl;
   function GetREFRs(_id: Cardinal; search: PWideChar; flags: Cardinal; len: PInteger): WordBool; cdecl;
   function GetOverrides(_id: Cardinal; count: PInteger): WordBool; cdecl;
@@ -30,7 +30,7 @@ type
   function FindPreviousRecord(_id: Cardinal; search: PWideChar; byEdid, byName: Wordbool; _res: PCardinal): WordBool; cdecl;
   function FindValidReferences(_id: Cardinal; signature, search: PWideChar; limitTo: Integer; len: PInteger): WordBool; cdecl;
   function GetReferencedBy(_id: Cardinal; len: PInteger): WordBool; cdecl;
-  function ExchangeReferences(_id, oldFormID, newFormID: Cardinal): WordBool; cdecl;
+  function ExchangeReferences(_id:Cardinal; oldFormID, newFormID: TwbFormID): WordBool; cdecl;
   function IsMaster(_id: Cardinal; bool: PWordBool): WordBool; cdecl;
   function IsInjected(_id: Cardinal; bool: PWordBool): WordBool; cdecl;
   function IsOverride(_id: Cardinal; bool: PWordBool): WordBool; cdecl;
@@ -53,10 +53,11 @@ function EditorIDToFormID(const _file: IwbFile; const editorID: String): Cardina
 var
   rec: IwbMainRecord;
 begin
-  rec := _file.RecordByEditorID[editorID];
-  if not Assigned(rec) then
-    raise Exception.Create('Failed to find record with Editor ID: ' + editorID + ' in file ' + _file.FileName);
-  Result := _file.LoadOrderFormIDtoFileFormID(rec.LoadOrderFormID);
+{ TODO -oMango -cTemp : !!! }
+//  rec := _file.RecordByEditorID[editorID];
+//  if not Assigned(rec) then
+//    raise Exception.Create('Failed to find record with Editor ID: ' + editorID + ' in file ' + _file.FileName);
+//  Result := _file.LoadOrderFormIDtoFileFormID(rec.LoadOrderFormID);
 end;
 
 function NativeGetPreviousOverride(rec: IwbMainRecord; const targetFile: IwbFile): IwbMainRecord;
@@ -326,17 +327,19 @@ begin
   end;
 end;
 
+type
+ TDynFiles = array of IwbFile;
 // used for searching purposes.  returns an array where the first entry is the file passed
 // and following entries are that file's masters in reverse order
 function GetFilesArray(const _file: IwbFile): TDynFiles;
 var
   count, i: Integer;
 begin
-  count := _file.MasterCount;
+  count := _file.MasterCount[True];
   SetLength(Result, count + 1);
   Result[0] := _file;
   for i := 0 to Pred(count) do
-    Result[count - i] := _file.Masters[i];
+    Result[count - i] := _file.Masters[i,True];
 end;
 
 function SignatureInArray(sig: TwbSignature; ary: TDynSignatures): Boolean;
@@ -401,7 +404,7 @@ end;
 {$endregion}
 
 {$region 'API functions'}
-function GetFormID(_id: Cardinal; formID: PCardinal; native: WordBool): WordBool; cdecl;
+function GetFormID(_id: Cardinal; formID: PwbFormID; native: WordBool): WordBool; cdecl;
 var
   rec: IwbMainRecord;
 begin
@@ -419,42 +422,43 @@ begin
   end;
 end;
 
-function SetFormID(_id: Cardinal; formID: Cardinal; native, fixReferences: WordBool): WordBool; cdecl;
+function SetFormID(_id: Cardinal; formID: TwbFormID; native, fixReferences: WordBool): WordBool; cdecl;
 var
   rec, mRec: IwbMainRecord;
   oldFormID, newFormID: Cardinal;
   i: Integer;
 begin
-  Result := False;
-  try
-    if not Supports(Resolve(_id), IwbMainRecord, rec) then
-      raise Exception.Create('Interface must be a main record.');
-    oldFormID := rec.LoadOrderFormID;
-    if native then
-      newFormID := rec._File.FileFormIDtoLoadOrderFormID(formID)
-    else
-      newFormID := formID;
-    if fixReferences then begin
-      mRec := rec.MasterOrSelf;
-      for i := Pred(mRec.ReferencedByCount) downto 0 do
-        mRec.ReferencedBy[i].CompareExchangeFormID(oldFormID, newFormID);
-      if mRec.ReferencedByCount > 0 then
-        raise Exception.Create('Failed to fix ' + IntToStr(mRec.ReferencedByCount) + ' references');
-      if rec.IsMaster then begin
-        for i := Pred(rec.OverrideCount) downto 0 do
-          rec.Overrides[i].LoadOrderFormID := newFormID;
-        if rec.OverrideCount > 0 then
-          raise Exception.Create('Failed to renumber ' + IntToStr(rec.OverrideCount) + ' overrides');
-      end;
-    end;
-    rec.LoadOrderFormID := newFormID;
-    Result := True;
-  except
-    on x: Exception do ExceptionHandler(x);
-  end;
+{ TODO -oMango -cTemp : !!! }
+//  Result := False;
+//  try
+//    if not Supports(Resolve(_id), IwbMainRecord, rec) then
+//      raise Exception.Create('Interface must be a main record.');
+//    oldFormID := rec.LoadOrderFormID;
+//    if native then
+//      newFormID := rec._File.FileFormIDtoLoadOrderFormID(formID)
+//    else
+//      newFormID := formID;
+//    if fixReferences then begin
+//      mRec := rec.MasterOrSelf;
+//      for i := Pred(mRec.ReferencedByCount) downto 0 do
+//        mRec.ReferencedBy[i].CompareExchangeFormID(oldFormID, newFormID);
+//      if mRec.ReferencedByCount > 0 then
+//        raise Exception.Create('Failed to fix ' + IntToStr(mRec.ReferencedByCount) + ' references');
+//      if rec.IsMaster then begin
+//        for i := Pred(rec.OverrideCount) downto 0 do
+//          rec.Overrides[i].LoadOrderFormID := newFormID;
+//        if rec.OverrideCount > 0 then
+//          raise Exception.Create('Failed to renumber ' + IntToStr(rec.OverrideCount) + ' overrides');
+//      end;
+//    end;
+//    rec.LoadOrderFormID := newFormID;
+//    Result := True;
+//  except
+//    on x: Exception do ExceptionHandler(x);
+//  end;
 end;
 
-function GetRecord(_id: Cardinal; formID: Cardinal; searchMasters: WordBool; _res: PCardinal): WordBool; cdecl;
+function GetRecord(_id: Cardinal; formID: TwbFormID; searchMasters: WordBool; _res: PCardinal): WordBool; cdecl;
 var
   rec: IwbMainRecord;
   fileOrdinal: Cardinal;
@@ -463,16 +467,16 @@ begin
   Result := False;
   try
     if _id = 0 then begin
-      fileOrdinal := formID shr 24;
+      fileOrdinal := formID.ToCardinal shr 24;
       _file := NativeFileByLoadOrder(fileOrdinal);
-      formID := _file.LoadOrderFormIDtoFileFormID(formID);
+      formID := _file.LoadOrderFormIDtoFileFormID(formID,True);
     end
     else
       if not Supports(Resolve(_id), IwbFile, _file) then
         raise Exception.Create('Interface must be a file.');
     rec := _file.RecordByFormID[formID, True, searchMasters];
     if not Assigned(rec) then
-      raise Exception.Create('Failed to find record with FormID: ' + IntToHex(formID, 8));
+      raise Exception.Create('Failed to find record with FormID: ' + IntToHex(formID.ToCardinal, 8));
     _res^ := Store(rec);
     Result := True;
   except
@@ -598,15 +602,16 @@ function GetInjectionTarget(_id: Cardinal; _res: PCardinal): WordBool; cdecl;
 var
   rec: IwbMainRecord;
 begin
+{ TODO -oMango -cTemp : !!! }
   Result := False;
-  try
-    if not Supports(Resolve(_id), IwbMainRecord, rec) then
-      raise Exception.Create('Interface must be a main record.');
-    _res^ := Store(rec.InjectionTarget);
-    Result := True;
-  except
-    on x: Exception do ExceptionHandler(x);
-  end;
+//  try
+//    if not Supports(Resolve(_id), IwbMainRecord, rec) then
+//      raise Exception.Create('Interface must be a main record.');
+//    _res^ := Store(rec.InjectionTarget);
+//    Result := True;
+//  except
+//    on x: Exception do ExceptionHandler(x);
+//  end;
 end;
 
 function FindNextRecord(_id: Cardinal; search: PWideChar; byEdid, byName: WordBool;
@@ -721,7 +726,7 @@ begin
   end;
 end;
 
-function ExchangeReferences(_id, oldFormID, newFormID: Cardinal): WordBool; cdecl;
+function ExchangeReferences(_id:Cardinal; oldFormID, newFormID: TwbFormID): WordBool; cdecl;
 var
   rec: IwbMainRecord;
 begin

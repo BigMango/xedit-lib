@@ -327,22 +327,23 @@ procedure JsonToRecordHeader(const header: IwbElement; obj: TJSONObject);
 var
   container: IwbContainerElementRef;
   recordSig, objSig: String;
-  recordFormID, objFormID: Cardinal;
+  recordFormID, objFormID: TwbFormID;
 begin
-  if not Supports(header, IwbContainerElementRef, container)
-  or not Assigned(obj) then
-    exit;
-  // raise exception if signature does not match
-  recordSig := container.ElementEditValues['Signature'];
-  if GetObjSignature(obj, objSig) and (recordSig <> objSig) then
-    raise Exception.Create(Format('Error deserializing record header: record ' +
-      'signatures do not match, %s != %s', [recordSig, objSig]));
-  // set load order formID if different
-  recordFormID := container.ElementNativeValues['FormID'];
-  if GetObjFormID(obj, objFormID) and (recordFormID <> objFormID) then
-    header.ContainingMainRecord.SetLoadOrderFormID(objFormID);
-  // assign to whitelisted paths
-  JsonToElements(container, obj, ['Signature', 'Data Size', 'FormID', 'Form Version']);
+{ TODO -oMango -cTemp : !!! }
+//  if not Supports(header, IwbContainerElementRef, container)
+//  or not Assigned(obj) then
+//    exit;
+//  // raise exception if signature does not match
+//  recordSig := container.ElementEditValues['Signature'];
+//  if GetObjSignature(obj, objSig) and (recordSig <> objSig) then
+//    raise Exception.Create(Format('Error deserializing record header: record ' +
+//      'signatures do not match, %s != %s', [recordSig, objSig]));
+//  // set load order formID if different
+//  recordFormID := container.ElementNativeValues['FormID'];
+//  if GetObjFormID(obj, objFormID) and (recordFormID <> objFormID) then
+//    header.ContainingMainRecord.SetLoadOrderFormID(objFormID);
+//  // assign to whitelisted paths
+//  JsonToElements(container, obj, ['Signature', 'Data Size', 'FormID', 'Form Version']);
 end;
 
 procedure JsonToRecord(const rec: IwbMainRecord; obj: TJSONObject);

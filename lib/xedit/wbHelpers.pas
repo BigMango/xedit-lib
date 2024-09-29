@@ -84,13 +84,13 @@ function FindMatchText(Strings: TStrings; const Str: string): Integer;
 function IsFileCC(const aFileName: string): Boolean;
 procedure DeleteDirectory(const DirName: string);
 function FullPathToFilename(aString: string): string;
-procedure wbFlipBitmap(aBitmap: TBitmap; MirrorType: Integer); // MirrorType: 1 - horizontal, 2 - vertical, 0 - both
+// procedure wbFlipBitmap(aBitmap: TBitmap; MirrorType: Integer); // MirrorType: 1 - horizontal, 2 - vertical, 0 - both
 function wbAlphaBlend(DestDC, X, Y, Width, Height,
   SrcDC, SrcX, SrcY, SrcWidth, SrcHeight, Alpha: integer): Boolean;
-procedure SaveFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
-procedure LoadFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
-function wbDDSDataToBitmap(aData: TBytes; Bitmap: TBitmap): Boolean;
-function wbDDSStreamToBitmap(aStream: TStream; Bitmap: TBitmap): Boolean;
+//procedure SaveFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
+//procedure LoadFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
+// function wbDDSDataToBitmap(aData: TBytes; Bitmap: TBitmap): Boolean;
+// function wbDDSStreamToBitmap(aStream: TStream; Bitmap: TBitmap): Boolean;
 function wbCRC32Ptr(aData: Pointer; aSize: Integer): TwbCRC32;
 function wbCRC32Data(aData: TBytes): TwbCRC32;
 function wbCRC32File(aFileName: string): TwbCRC32;
@@ -563,48 +563,48 @@ begin
   Result := s;
 end;
 
-procedure wbFlipBitmap(aBitmap: TBitmap; MirrorType: Integer);
-var
-  MemBmp: TBitmap;
-  Dest: TRect;
-begin
-  if not Assigned(aBitmap) then
-    Exit;
-
-  MemBmp := TBitmap.Create;
-  try
-    MemBmp.Assign(aBitmap);
-    case MirrorType of
-      1:
-        begin
-          Dest.Left := MemBmp.Width;
-          Dest.Top := 0;
-          Dest.Right := -MemBmp.Width;
-          Dest.Bottom := MemBmp.Height
-        end;
-      2:
-        begin
-          Dest.Left := 0;
-          Dest.Top := MemBmp.Height;
-          Dest.Right := MemBmp.Width;
-          Dest.Bottom := -MemBmp.Height
-        end;
-      0:
-        begin
-          Dest.Left := MemBmp.Width;
-          Dest.Top := MemBmp.Height;
-          Dest.Right := -MemBmp.Width;
-          Dest.Bottom := -MemBmp.Height
-        end;
-    end;
-    StretchBlt(MemBmp.Canvas.Handle, Dest.Left, Dest.Top, Dest.Right, Dest.Bottom,
-               MemBmp.Canvas.Handle, 0, 0, MemBmp.Width, MemBmp.Height,
-               SRCCOPY);
-    aBitmap.Assign(MemBmp);
-  finally
-    FreeAndNil(MemBmp);
-  end;
-end;
+//procedure wbFlipBitmap(aBitmap: TBitmap; MirrorType: Integer);
+//var
+//  MemBmp: TBitmap;
+//  Dest: TRect;
+//begin
+//  if not Assigned(aBitmap) then
+//    Exit;
+//
+//  MemBmp := TBitmap.Create;
+//  try
+//    MemBmp.Assign(aBitmap);
+//    case MirrorType of
+//      1:
+//        begin
+//          Dest.Left := MemBmp.Width;
+//          Dest.Top := 0;
+//          Dest.Right := -MemBmp.Width;
+//          Dest.Bottom := MemBmp.Height
+//        end;
+//      2:
+//        begin
+//          Dest.Left := 0;
+//          Dest.Top := MemBmp.Height;
+//          Dest.Right := MemBmp.Width;
+//          Dest.Bottom := -MemBmp.Height
+//        end;
+//      0:
+//        begin
+//          Dest.Left := MemBmp.Width;
+//          Dest.Top := MemBmp.Height;
+//          Dest.Right := -MemBmp.Width;
+//          Dest.Bottom := -MemBmp.Height
+//        end;
+//    end;
+//    StretchBlt(MemBmp.Canvas.Handle, Dest.Left, Dest.Top, Dest.Right, Dest.Bottom,
+//               MemBmp.Canvas.Handle, 0, 0, MemBmp.Width, MemBmp.Height,
+//               SRCCOPY);
+//    aBitmap.Assign(MemBmp);
+//  finally
+//    FreeAndNil(MemBmp);
+//  end;
+//end;
 
 function wbAlphaBlend(DestDC, X, Y, Width, Height,
   SrcDC, SrcX, SrcY, SrcWidth, SrcHeight, Alpha: integer): Boolean;
@@ -621,23 +621,23 @@ begin
   Result := Windows.AlphaBlend(DestDC, X, Y, Width, Height, SrcDC, SrcX, SrcY, SrcWidth, SrcHeight, BlendFunc);
 end;
 
-procedure SaveFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
-begin
-  aIni.WriteString(aSection, aName + 'Name', aFont.Name);
-  aIni.WriteInteger(aSection, aName + 'CharSet', aFont.CharSet);
-  aIni.WriteInteger(aSection, aName + 'Color', aFont.Color);
-  aIni.WriteInteger(aSection, aName + 'Size', aFont.Size);
-  aIni.WriteInteger(aSection, aName + 'Style', Byte(aFont.Style));
-end;
+//procedure SaveFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
+//begin
+//  aIni.WriteString(aSection, aName + 'Name', aFont.Name);
+//  aIni.WriteInteger(aSection, aName + 'CharSet', aFont.CharSet);
+//  aIni.WriteInteger(aSection, aName + 'Color', aFont.Color);
+//  aIni.WriteInteger(aSection, aName + 'Size', aFont.Size);
+//  aIni.WriteInteger(aSection, aName + 'Style', Byte(aFont.Style));
+//end;
 
-procedure LoadFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
-begin
-  aFont.Name    := aIni.ReadString(aSection, aName + 'Name', aFont.Name);
-  aFont.CharSet := TFontCharSet(aIni.ReadInteger(aSection, aName + 'CharSet', aFont.CharSet));
-  aFont.Color   := TColor(aIni.ReadInteger(aSection, aName + 'Color', aFont.Color));
-  aFont.Size    := aIni.ReadInteger(aSection, aName + 'Size', aFont.Size);
-  aFont.Style   := TFontStyles(Byte(aIni.ReadInteger(aSection, aName + 'Style', Byte(aFont.Style))));
-end;
+//procedure LoadFont(aIni: TMemIniFile; aSection, aName: string; aFont: TFont);
+//begin
+//  aFont.Name    := aIni.ReadString(aSection, aName + 'Name', aFont.Name);
+//  aFont.CharSet := TFontCharSet(aIni.ReadInteger(aSection, aName + 'CharSet', aFont.CharSet));
+//  aFont.Color   := TColor(aIni.ReadInteger(aSection, aName + 'Color', aFont.Color));
+//  aFont.Size    := aIni.ReadInteger(aSection, aName + 'Size', aFont.Size);
+//  aFont.Style   := TFontStyles(Byte(aIni.ReadInteger(aSection, aName + 'Style', Byte(aFont.Style))));
+//end;
 
 function wbExpandFileName(const aFileName: string): string;
 begin
@@ -1325,47 +1325,47 @@ begin
   end;
 end;
 
-function wbDDSDataToBitmap(aData: TBytes; Bitmap: TBitmap): Boolean;
-var
-  img: TImageData;
-  ms: TMemoryStream;
-begin
-  Result := False;
-  if not LoadImageFromMemory(@aData[0], Length(aData), img) then
-    Exit;
-  ms := TMemoryStream.Create;
-  try
-    if SaveImageToStream('BMP', ms, img) then begin
-      ms.Position := 0;
-      Bitmap.LoadFromStream(ms);
-      Result := True;
-    end;
-  finally
-    FreeImage(img);
-    ms.Free;
-  end;
-end;
+//function wbDDSDataToBitmap(aData: TBytes; Bitmap: TBitmap): Boolean;
+//var
+//  img: TImageData;
+//  ms: TMemoryStream;
+//begin
+//  Result := False;
+//  if not LoadImageFromMemory(@aData[0], Length(aData), img) then
+//    Exit;
+//  ms := TMemoryStream.Create;
+//  try
+//    if SaveImageToStream('BMP', ms, img) then begin
+//      ms.Position := 0;
+//      Bitmap.LoadFromStream(ms);
+//      Result := True;
+//    end;
+//  finally
+//    FreeImage(img);
+//    ms.Free;
+//  end;
+//end;
 
-function wbDDSStreamToBitmap(aStream: TStream; Bitmap: TBitmap): Boolean;
-var
-  img: TImageData;
-  ms: TMemoryStream;
-begin
-  Result := False;
-  if not LoadImageFromStream(aStream, img) then
-    Exit;
-  ms := TMemoryStream.Create;
-  try
-    if SaveImageToStream('BMP', ms, img) then begin
-      ms.Position := 0;
-      Bitmap.LoadFromStream(ms);
-      Result := True;
-    end;
-  finally
-    FreeImage(img);
-    ms.Free;
-  end;
-end;
+//function wbDDSStreamToBitmap(aStream: TStream; Bitmap: TBitmap): Boolean;
+//var
+//  img: TImageData;
+//  ms: TMemoryStream;
+//begin
+//  Result := False;
+//  if not LoadImageFromStream(aStream, img) then
+//    Exit;
+//  ms := TMemoryStream.Create;
+//  try
+//    if SaveImageToStream('BMP', ms, img) then begin
+//      ms.Position := 0;
+//      Bitmap.LoadFromStream(ms);
+//      Result := True;
+//    end;
+//  finally
+//    FreeImage(img);
+//    ms.Free;
+//  end;
+//end;
 
 function wbIsAssociatedWithExtension(aExt: string): Boolean;
 var
@@ -1458,7 +1458,8 @@ begin
         try
           repeat
             dRunning := WaitForSingleObject(piProcess.hProcess, 100);
-            Application.ProcessMessages;
+            // Application.ProcessMessages;
+            // todo Mango remark
 
             if wbForceTerminate or (GetKeyState(VK_ESCAPE) and 128 = 128) then begin
               dw := Integer(TerminateProcess(piProcess.hProcess, 1));

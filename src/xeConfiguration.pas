@@ -109,13 +109,13 @@ begin
     Result := slLanguageMap.Values[Result];
 end;
 
-function GetLanguageEncoding: TwbStringEncoding;
-begin
-  Result := seCP1252;
-  if (slUTF8Languages.IndexOf(Language) > -1)
-  or ((wbGameMode in [gmSSE, gmFO4]) and (Language <> 'English')) then
-    Result := seUTF8;
-end;
+//function GetLanguageEncoding: TwbStringEncoding;
+//begin
+//  Result := seCP1252;
+//  if (slUTF8Languages.IndexOf(Language) > -1)
+//  or ((wbGameMode in [gmSSE, gmFO4]) and (Language <> 'English')) then
+//    Result := seUTF8;
+//end;
 
 { Sets the game mode in the TES5Edit API }
 procedure SetGame(id: integer);
@@ -161,7 +161,7 @@ begin
   wbMyGamesPath := GetMyGamesPath;
   wbTheGameIniFileName := GetGameIniPath(wbMyGamesPath, GameMode);
   wbLanguage := GetLanguage;
-  wbStringEncoding := GetLanguageEncoding;
+  // wbStringEncoding := GetLanguageEncoding;
 
   // load definitions
   case wbGameMode of

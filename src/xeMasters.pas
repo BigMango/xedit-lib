@@ -54,30 +54,42 @@ end;
 
 procedure NativeAddRequiredMasters(const element: IwbElement; const targetFile: IwbFile; asNew: Boolean);
 var
-  sl: TStringList;
+  lRequiredMasters: TStringList;
   i: Integer;
 begin
-  sl := TStringList.Create;
-  sl.Sorted := True;
-  sl.Duplicates := dupIgnore;
-  try
-    element.ReportRequiredMasters(sl, asNew);
-    if sl.Find(targetFile.FileName, i) then
-      sl.Delete(i);
-    for i := 0 to Pred(sl.Count) do
-      NativeAddMaster(targetFile, sl[i]);
-  finally
-    sl.Free;
-  end;
+  lRequiredMasters := TStringList.Create;
+  lRequiredMasters.Sorted := True;
+  lRequiredMasters.Duplicates := dupIgnore;
+  var lDict := TwbFilesDictionary.Create;
+
+   try
+      element.ReportRequiredMasters(lDict, asNew);
+      for var lFile in lDict.Keys do
+        lRequiredMasters.AddObject(lFile.FileName, Pointer(lFile));
+    finally
+      lDict.Free;
+    end;
+
+
+//  try
+//    element.ReportRequiredMasters(lDict, asNew);
+//    if sl.Find(targetFile.FileName, i) then
+//      sl.Delete(i);
+//    for i := 0 to Pred(sl.Count) do
+//      NativeAddMaster(targetFile, sl[i]);
+//  finally
+//    sl.Free;
+//  end;
 end;
 
 function NativeFileHasMaster(const _file, _master: IwbFile): Boolean;
 var
   i: Integer;
 begin
+  // Mango modify add MasterCount[True]
   Result := False;
-  for i := 0 to Pred(_file.MasterCount) do
-    if _file.Masters[i].FileName = _master.FileName then begin
+  for i := 0 to Pred(_file.MasterCount[True]) do
+    if _file.Masters[i,True].FileName = _master.FileName then begin
       Result := True;
       break;
     end;
@@ -181,10 +193,10 @@ begin
   Result := False;
   try
     if Supports(Resolve(_id), IwbFile, _file) then begin
-      len^ := _file.MasterCount;
+      len^ := _file.MasterCount[True];
       SetLength(resultArray, len^);
-      for i := 0 to Pred(_file.MasterCount) do
-        resultArray[i] := Store(_file.Masters[i]);
+      for i := 0 to Pred(_file.MasterCount[True]) do
+        resultArray[i] := Store(_file.Masters[i,True]);
       Result := True;
     end;
   except

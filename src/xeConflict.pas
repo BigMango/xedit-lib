@@ -252,114 +252,115 @@ begin
 end;
 
 procedure InitChilds(const aNodeDatas: PViewNodeDatas; aNodeCount: Integer; var aChildCount: Cardinal);
-var
-  NodeData: PNavNodeData;
-  Container, FirstContainer: IwbContainer;
-  SortableContainer: IwbSortableContainer;
-  Element: IwbElement;
-  i, j, k, SortedCount, NonSortedCount, DupCounter: Integer;
-  SortedKeys: array of TnxFastStringListCS;
-  Sortables: array of IwbSortableContainer;
-  SortKey, LastSortKey: string;
+//var
+//  NodeData: PNavNodeData;
+//  Container, FirstContainer: IwbContainer;
+//  SortableContainer: IwbSortableContainer;
+//  Element: IwbElement;
+//  i, j, k, SortedCount, NonSortedCount, DupCounter: Integer;
+//  SortedKeys: array of TnxFastStringListCS;
+//  Sortables: array of IwbSortableContainer;
+//  SortKey, LastSortKey: string;
 begin
-  SortedCount := 0;
-  NonSortedCount := 0;
-  FirstContainer := nil;
-  for i := 0 to Pred(aNodeCount) do begin
-    NodeData := @aNodeDatas[i];
-    Container := NodeData.Container;
-    if not Assigned(FirstContainer) then
-      FirstContainer := Container;
-    if Assigned(Container) then
-      if Supports(Container, IwbSortableContainer, SortableContainer) and SortableContainer.Sorted then
-        Inc(SortedCount)
-      else
-        Inc(NonSortedCount);
-  end;
-
-  if (NonSortedCount > 0) and (SortedCount > 0) then begin
-    if Assigned(FirstContainer) then
-      ;//PostAddMessage('Warning: Comparing sorted and unsorted entry for "' + FirstContainer.Path + '" in "'+FirstContainer.ContainingMainRecord.Name+'"');
-    SortedCount := 0;
-  end;
-
-  if SortedCount > 0 then begin
-//    Assert(NonSortedCount = 0);
-
-    SetLength(SortedKeys, Succ(aNodeCount));
-    for i := Low(SortedKeys) to High(SortedKeys) do begin
-      SortedKeys[i] := TnxFastStringListCS.Create;
-      SortedKeys[i].Sorted := True;
-      SortedKeys[i].Duplicates := dupError;
-    end;
-
-    try
-      SortedKeys[aNodeCount].Duplicates := dupIgnore;
-
-      SetLength(Sortables, aNodeCount);
-
-      for i := 0 to Pred(aNodeCount) do
-        if Supports(aNodeDatas[i].Container, IwbSortableContainer, Sortables[i]) then begin
-          SortableContainer := Sortables[i];
-          DupCounter := 0;
-          LastSortKey := '';
-          for j := 0 to Pred(SortableContainer.ElementCount) do begin
-            Element := SortableContainer.Elements[j];
-            SortKey := Element.SortKey[False];
-            if SameStr(LastSortKey, SortKey) then
-              Inc(DupCounter)
-            else begin
-              DupCounter := 0;
-              LastSortKey := SortKey;
-            end;
-
-            SortKey := SortKey + '<' + IntToHex64(DupCounter, 4) + '>';
-
-            SortedKeys[i].AddObject(SortKey, Pointer(Element));
-            SortedKeys[aNodeCount].Add(SortKey);
-          end;
-        end;
-
-      aChildCount := SortedKeys[aNodeCount].Count;
-
-      for j := 0 to Pred(aChildCount) do begin
-        SortKey := SortedKeys[aNodeCount].Strings[j];
-        for i := 0 to Pred(aNodeCount) do
-          if SortedKeys[i].Find(SortKey, k) then
-            IwbElement(Pointer(SortedKeys[i].Objects[k])).SortOrder := j;
-      end;
-
-    finally
-
-      for i := Low(SortedKeys) to High(SortedKeys) do
-        FreeAndNil(SortedKeys[i]);
-
-    end;
-
-  end
-  else
-    for i := 0 to Pred(aNodeCount) do begin
-      NodeData := @aNodeDatas[i];
-      Container := NodeData.Container;
-
-      if Assigned(Container) then begin
-        case Container.ElementType of
-          etMainRecord, etSubRecordStruct: begin
-              aChildCount := (Container.Def as IwbRecordDef).MemberCount;
-              Inc(aChildCount, Container.AdditionalElementCount);
-              if Cardinal(Container.ElementCount) > aChildCount then begin
-                //PostAddMessage('Error: Container.ElementCount {'+IntToStr(Container.ElementCount)+'} > aChildCount {'+IntToStr(aChildCount)+'} for ' + Container.Path + ' in ' + Container.ContainingMainRecord.Name);
-                //for j := 0 to Pred(Container.ElementCount) do
-                //PostAddMessage('  #'+IntToStr(j)+': ' + Container.Elements[j].Name);
-                //Assert(Cardinal(Container.ElementCount) <= aChildCount);
-              end;
-            end;
-          etSubRecordArray, etArray, etStruct, etSubRecord, etValue, etUnion, etStructChapter:
-            if aChildCount < Cardinal(Container.ElementCount) then
-              aChildCount := Container.ElementCount;
-        end;
-      end;
-    end;
+{ TODO -oMango -cTemp : !!! }
+//  SortedCount := 0;
+//  NonSortedCount := 0;
+//  FirstContainer := nil;
+//  for i := 0 to Pred(aNodeCount) do begin
+//    NodeData := @aNodeDatas[i];
+//    Container := NodeData.Container;
+//    if not Assigned(FirstContainer) then
+//      FirstContainer := Container;
+//    if Assigned(Container) then
+//      if Supports(Container, IwbSortableContainer, SortableContainer) and SortableContainer.Sorted then
+//        Inc(SortedCount)
+//      else
+//        Inc(NonSortedCount);
+//  end;
+//
+//  if (NonSortedCount > 0) and (SortedCount > 0) then begin
+//    if Assigned(FirstContainer) then
+//      ;//PostAddMessage('Warning: Comparing sorted and unsorted entry for "' + FirstContainer.Path + '" in "'+FirstContainer.ContainingMainRecord.Name+'"');
+//    SortedCount := 0;
+//  end;
+//
+//  if SortedCount > 0 then begin
+////    Assert(NonSortedCount = 0);
+//
+//    SetLength(SortedKeys, Succ(aNodeCount));
+//    for i := Low(SortedKeys) to High(SortedKeys) do begin
+//      SortedKeys[i] := TnxFastStringListCS.Create;
+//      SortedKeys[i].Sorted := True;
+//      SortedKeys[i].Duplicates := dupError;
+//    end;
+//
+//    try
+//      SortedKeys[aNodeCount].Duplicates := dupIgnore;
+//
+//      SetLength(Sortables, aNodeCount);
+//
+//      for i := 0 to Pred(aNodeCount) do
+//        if Supports(aNodeDatas[i].Container, IwbSortableContainer, Sortables[i]) then begin
+//          SortableContainer := Sortables[i];
+//          DupCounter := 0;
+//          LastSortKey := '';
+//          for j := 0 to Pred(SortableContainer.ElementCount) do begin
+//            Element := SortableContainer.Elements[j];
+//            SortKey := Element.SortKey[False];
+//            if SameStr(LastSortKey, SortKey) then
+//              Inc(DupCounter)
+//            else begin
+//              DupCounter := 0;
+//              LastSortKey := SortKey;
+//            end;
+//
+//            SortKey := SortKey + '<' + IntToHex64(DupCounter, 4) + '>';
+//
+//            SortedKeys[i].AddObject(SortKey, Pointer(Element));
+//            SortedKeys[aNodeCount].Add(SortKey);
+//          end;
+//        end;
+//
+//      aChildCount := SortedKeys[aNodeCount].Count;
+//
+//      for j := 0 to Pred(aChildCount) do begin
+//        SortKey := SortedKeys[aNodeCount].Strings[j];
+//        for i := 0 to Pred(aNodeCount) do
+//          if SortedKeys[i].Find(SortKey, k) then
+//            IwbElement(Pointer(SortedKeys[i].Objects[k])).SortOrder := j;
+//      end;
+//
+//    finally
+//
+//      for i := Low(SortedKeys) to High(SortedKeys) do
+//        FreeAndNil(SortedKeys[i]);
+//
+//    end;
+//
+//  end
+//  else
+//    for i := 0 to Pred(aNodeCount) do begin
+//      NodeData := @aNodeDatas[i];
+//      Container := NodeData.Container;
+//
+//      if Assigned(Container) then begin
+//        case Container.ElementType of
+//          etMainRecord, etSubRecordStruct: begin
+//              aChildCount := (Container.Def as IwbRecordDef).MemberCount;
+//              Inc(aChildCount, Container.AdditionalElementCount);
+//              if Cardinal(Container.ElementCount) > aChildCount then begin
+//                //PostAddMessage('Error: Container.ElementCount {'+IntToStr(Container.ElementCount)+'} > aChildCount {'+IntToStr(aChildCount)+'} for ' + Container.Path + ' in ' + Container.ContainingMainRecord.Name);
+//                //for j := 0 to Pred(Container.ElementCount) do
+//                //PostAddMessage('  #'+IntToStr(j)+': ' + Container.Elements[j].Name);
+//                //Assert(Cardinal(Container.ElementCount) <= aChildCount);
+//              end;
+//            end;
+//          etSubRecordArray, etArray, etStruct, etSubRecord, etValue, etUnion, etStructChapter:
+//            if aChildCount < Cardinal(Container.ElementCount) then
+//              aChildCount := Container.ElementCount;
+//        end;
+//      end;
+//    end;
 end;
 
 procedure InitNodes(const aNodeDatas, aParentDatas: PViewNodeDatas; aNodeCount: Integer; aIndex: Cardinal; var aInitialStates: TVirtualNodeInitStates);
@@ -512,226 +513,229 @@ begin
       aNodeDatas[i].ChildNodes := ChildNodeArrays[i];
 end;
 
-function ConflictLevelForNodeDatas(const aNodeDatas: PViewNodeDatas; aNodeCount: Integer; aSiblingCompare, aInjected: Boolean): TConflictAll;
-var
-  Element                : IwbElement;
-  CompareElement         : IwbElement;
-  i, j                   : Integer;
-  UniqueValues           : TnxFastStringListCS;
 
-  MasterPosition         : Integer;
-  FirstElement           : IwbElement;
-  FirstElementNotIgnored : IwbElement;
-  LastElement            : IwbElement;
-  SameAsLast             : Boolean;
-  SameAsFirst            : Boolean;
-  OverallConflictThis    : TConflictThis;
-  Priority               : TwbConflictPriority;
-  ThisPriority           : TwbConflictPriority;
-  FoundAny               : Boolean;
+function ConflictLevelForNodeDatas(const aNodeDatas: PViewNodeDatas; aNodeCount: Integer; aSiblingCompare, aInjected: Boolean): TConflictAll;
+// var
+//  Element                : IwbElement;
+//  CompareElement         : IwbElement;
+//  i, j                   : Integer;
+//  UniqueValues           : TnxFastStringListCS;
+//
+//  MasterPosition         : Integer;
+//  FirstElement           : IwbElement;
+//  FirstElementNotIgnored : IwbElement;
+//  LastElement            : IwbElement;
+//  SameAsLast             : Boolean;
+//  SameAsFirst            : Boolean;
+//  OverallConflictThis    : TConflictThis;
+//  Priority               : TwbConflictPriority;
+//  ThisPriority           : TwbConflictPriority;
+//  FoundAny               : Boolean;
 begin
 //  if aSiblingCompare then
 //    Priority := cpBenign
 //  else
 //    Priority := cpNormal;
+
+{ TODO -oMango -cTemp : !!! }
 //  IgnoreConflicts := False;
-  FoundAny := False;
-  MasterPosition := 0;
-  OverallConflictThis := ctUnknown;
-  case aNodeCount of
-    0: Result := caUnknown;
-    1: begin
-        Element := aNodeDatas[0].Element;
-        if Assigned(Element) then begin
-          if Element.ConflictPriority = cpIgnore then
-            aNodeDatas[0].ConflictThis := ctIgnored
-          else
-            aNodeDatas[0].ConflictThis := ctOnlyOne;
-        end else
-          aNodeDatas[0].ConflictThis := ctNotDefined;
-        Result := caOnlyOne;
-      end
-  else
-    LastElement := aNodeDatas[Pred(aNodeCount)].Element;
-    FirstElement := aNodeDatas[0].Element;
-
-    UniqueValues := TnxFastStringListCS.Create;
-    UniqueValues.Sorted := True;
-    UniqueValues.Duplicates := dupIgnore;
-    Priority := cpNormal;
-    try
-      for i := 0 to Pred(aNodeCount) do begin
-        Element := aNodeDatas[i].Element;
-        if Assigned(Element) then begin
-          FoundAny := True;
-          Priority := Element.ConflictPriority;
-          if Priority = cpNormalIgnoreEmpty then begin
-            FirstElement := Element;
-            MasterPosition := i;
-            for j := Pred(aNodeCount) downto i do begin
-              LastElement := aNodeDatas[j].Element;
-              if Assigned(LastElement) then
-                Break;
-            end;
-          end;
-          if Element.ConflictPriorityCanChange then begin
-            for j := Succ(i) to Pred(aNodeCount) do begin
-              Element := aNodeDatas[j].Element;
-              if Assigned(Element) then begin
-                ThisPriority := Element.ConflictPriority;
-                if ThisPriority > Priority then
-                  Priority := ThisPriority;
-              end;
-            end;
-          end;
-          Break;
-        end;
-      end;
-
-      if aSiblingCompare then
-        if Priority > cpBenign then
-          Priority := cpBenign;
-      if aInjected and (Priority >= cpNormal) then
-        Priority := cpCritical;
-
-      if (Priority > cpIgnore) and (not Assigned(FirstElement) or (FirstElement.ConflictPriority = cpIgnore)) then
-        FirstElementNotIgnored := nil
-      else
-        FirstElementNotIgnored := FirstElement;
-
-      for i := 0 to Pred(aNodeCount) do begin
-        Element := aNodeDatas[i].Element;
-        if Assigned(Element) then begin
-          ThisPriority := Element.ConflictPriority;
-          if ThisPriority <> cpIgnore then
-            UniqueValues.Add(Element.SortKey[True]);
-        end else begin
-          ThisPriority := Priority;
-          if not (vnfIgnore in aNodeDatas[i].ViewNodeFlags) then
-            if Priority <> cpNormalIgnoreEmpty then
-              UniqueValues.Add('');
-        end;
-
-        if (ThisPriority = cpNormalIgnoreEmpty) and not Assigned(Element) then
-          aNodeDatas[i].ConflictThis := ctIgnored
-        else if ThisPriority = cpIgnore then
-          aNodeDatas[i].ConflictThis := ctIgnored
-        else if aSiblingCompare then
-          aNodeDatas[i].ConflictThis := ctOnlyOne
-        else if i = MasterPosition then begin
-
-          if Assigned(Element) then
-            aNodeDatas[i].ConflictThis := ctMaster
-          else
-            aNodeDatas[i].ConflictThis := ctUnknown;
-
-        end else begin
-          SameAsLast := (i = Pred(aNodeCount)) or not (
-            (Assigned(Element) <> Assigned(LastElement)) or
-            (Assigned(Element) and not SameStr(Element.SortKey[True], LastElement.SortKey[True]))
-            );
-
-          SameAsFirst := not (
-            (Assigned(Element) <> Assigned(FirstElementNotIgnored)) or
-            (Assigned(Element) and not SameStr(Element.SortKey[True], FirstElementNotIgnored.SortKey[True]))
-            );
-
-          if not SameAsFirst and
-             (ThisPriority = cpBenignIfAdded) and
-             SameAsLast and  // We are not overriden later
-             not Assigned(FirstElementNotIgnored) then begin // The master did not have that element
-            ThisPriority := cpBenign;
-            Priority := cpBenign;
-            SameAsFirst := True;
-          end;
-
-          if SameAsFirst then
-            aNodeDatas[i].ConflictThis := ctIdenticalToMaster
-          else if SameAsLast then
-            aNodeDatas[i].ConflictThis := ctConflictWins
-          else
-            aNodeDatas[i].ConflictThis := ctConflictLoses;
-        end;
-
-        if (ThisPriority = cpBenign) and (aNodeDatas[i].ConflictThis > ctConflictBenign) then
-          aNodeDatas[i].ConflictThis := ctConflictBenign;
-
-        if aNodeDatas[i].ConflictThis > OverallConflictThis then
-          OverallConflictThis := aNodeDatas[i].ConflictThis;
-      end;
-
-      case UniqueValues.Count of
-        0: Result := caNoConflict;
-        1: Result := caNoConflict;
-        2: begin
-            Element := aNodeDatas[0].Element;
-            CompareElement := aNodeDatas[Pred(aNodeCount)].Element;
-            if (Assigned(Element) <> Assigned(CompareElement)) or
-              (Assigned(Element) and not SameStr(Element.SortKey[True], CompareElement.SortKey[True])) then
-              Result := caOverride
-            else if (UniqueValues.IndexOf('') >= 0) and Assigned(CompareElement) and (CompareElement.SortKey[True] <> '') then
-              Result := caOverride
-            else
-              Result := caConflict;
-          end
-      else
-        Result := caConflict;
-      end;
-
-      if aSiblingCompare and (Result > caConflictBenign) then
-        Result := caConflictBenign;
-
-      if not FoundAny then
-        for i := 0 to Pred(aNodeCount) do
-          aNodeDatas[i].ConflictThis := ctNotDefined;
-
-      if Result > caNoConflict then
-        case Priority of
-          cpBenign: Result := caConflictBenign;
-          cpCritical: begin
-            if UniqueValues.Find('', i) then
-              UniqueValues.Delete(i);
-            if UniqueValues.Count > 1 then
-              Result := caConflictCritical;
-          end;
-        end;
-
-      if Priority > cpBenign then
-        if OverallConflictThis > ctOverride then
-          with aNodeDatas[Pred(aNodeCount)] do
-            if ConflictThis < ctOverride then
-              if ConflictThis = ctIdenticalToMaster then
-                ConflictThis := ctIdenticalToMasterWinsConflict
-              else
-                ConflictThis := ctConflictWins;
-
-      if Result in [caNoConflict, caOverride, caConflict] then
-        for i := 0 to Pred(aNodeCount) do begin
-          case aNodeDatas[i].ConflictThis of
-            ctIdenticalToMaster: case Result of
-                caNoConflict: ;
-                caOverride, caConflict: if i = Pred(aNodeCount) then
-                  aNodeDatas[i].ConflictThis := ctIdenticalToMasterWinsConflict
-              end;
-            ctConflictWins: case Result of
-              caNoConflict: aNodeDatas[i].ConflictThis := ctIdenticalToMaster;
-              caOverride: aNodeDatas[i].ConflictThis := ctOverride;
-              caConflict: ;
-            end;
-          end;
-        end;
-
-      if Result < caConflict then
-        for i := 0 to Pred(aNodeCount) do
-          if aNodeDatas[i].ConflictThis >= ctIdenticalToMasterWinsConflict then begin
-            Result := caConflict;
-            Break;
-          end;
-
-    finally
-      FreeAndNil(UniqueValues);
-    end;
-  end;
+//  FoundAny := False;
+//  MasterPosition := 0;
+//  OverallConflictThis := ctUnknown;
+//  case aNodeCount of
+//    0: Result := caUnknown;
+//    1: begin
+//        Element := aNodeDatas[0].Element;
+//        if Assigned(Element) then begin
+//          if Element.ConflictPriority = cpIgnore then
+//            aNodeDatas[0].ConflictThis := ctIgnored
+//          else
+//            aNodeDatas[0].ConflictThis := ctOnlyOne;
+//        end else
+//          aNodeDatas[0].ConflictThis := ctNotDefined;
+//        Result := caOnlyOne;
+//      end
+//  else
+//    LastElement := aNodeDatas[Pred(aNodeCount)].Element;
+//    FirstElement := aNodeDatas[0].Element;
+//
+//    UniqueValues := TnxFastStringListCS.Create;
+//    UniqueValues.Sorted := True;
+//    UniqueValues.Duplicates := dupIgnore;
+//    Priority := cpNormal;
+//    try
+//      for i := 0 to Pred(aNodeCount) do begin
+//        Element := aNodeDatas[i].Element;
+//        if Assigned(Element) then begin
+//          FoundAny := True;
+//          Priority := Element.ConflictPriority;
+//          if Priority = cpNormalIgnoreEmpty then begin
+//            FirstElement := Element;
+//            MasterPosition := i;
+//            for j := Pred(aNodeCount) downto i do begin
+//              LastElement := aNodeDatas[j].Element;
+//              if Assigned(LastElement) then
+//                Break;
+//            end;
+//          end;
+//          if Element.ConflictPriorityCanChange then begin
+//            for j := Succ(i) to Pred(aNodeCount) do begin
+//              Element := aNodeDatas[j].Element;
+//              if Assigned(Element) then begin
+//                ThisPriority := Element.ConflictPriority;
+//                if ThisPriority > Priority then
+//                  Priority := ThisPriority;
+//              end;
+//            end;
+//          end;
+//          Break;
+//        end;
+//      end;
+//
+//      if aSiblingCompare then
+//        if Priority > cpBenign then
+//          Priority := cpBenign;
+//      if aInjected and (Priority >= cpNormal) then
+//        Priority := cpCritical;
+//
+//      if (Priority > cpIgnore) and (not Assigned(FirstElement) or (FirstElement.ConflictPriority = cpIgnore)) then
+//        FirstElementNotIgnored := nil
+//      else
+//        FirstElementNotIgnored := FirstElement;
+//
+//      for i := 0 to Pred(aNodeCount) do begin
+//        Element := aNodeDatas[i].Element;
+//        if Assigned(Element) then begin
+//          ThisPriority := Element.ConflictPriority;
+//          if ThisPriority <> cpIgnore then
+//            UniqueValues.Add(Element.SortKey[True]);
+//        end else begin
+//          ThisPriority := Priority;
+//          if not (vnfIgnore in aNodeDatas[i].ViewNodeFlags) then
+//            if Priority <> cpNormalIgnoreEmpty then
+//              UniqueValues.Add('');
+//        end;
+//
+//        if (ThisPriority = cpNormalIgnoreEmpty) and not Assigned(Element) then
+//          aNodeDatas[i].ConflictThis := ctIgnored
+//        else if ThisPriority = cpIgnore then
+//          aNodeDatas[i].ConflictThis := ctIgnored
+//        else if aSiblingCompare then
+//          aNodeDatas[i].ConflictThis := ctOnlyOne
+//        else if i = MasterPosition then begin
+//
+//          if Assigned(Element) then
+//            aNodeDatas[i].ConflictThis := ctMaster
+//          else
+//            aNodeDatas[i].ConflictThis := ctUnknown;
+//
+//        end else begin
+//          SameAsLast := (i = Pred(aNodeCount)) or not (
+//            (Assigned(Element) <> Assigned(LastElement)) or
+//            (Assigned(Element) and not SameStr(Element.SortKey[True], LastElement.SortKey[True]))
+//            );
+//
+//          SameAsFirst := not (
+//            (Assigned(Element) <> Assigned(FirstElementNotIgnored)) or
+//            (Assigned(Element) and not SameStr(Element.SortKey[True], FirstElementNotIgnored.SortKey[True]))
+//            );
+//
+//          if not SameAsFirst and
+//             (ThisPriority = cpBenignIfAdded) and
+//             SameAsLast and  // We are not overriden later
+//             not Assigned(FirstElementNotIgnored) then begin // The master did not have that element
+//            ThisPriority := cpBenign;
+//            Priority := cpBenign;
+//            SameAsFirst := True;
+//          end;
+//
+//          if SameAsFirst then
+//            aNodeDatas[i].ConflictThis := ctIdenticalToMaster
+//          else if SameAsLast then
+//            aNodeDatas[i].ConflictThis := ctConflictWins
+//          else
+//            aNodeDatas[i].ConflictThis := ctConflictLoses;
+//        end;
+//
+//        if (ThisPriority = cpBenign) and (aNodeDatas[i].ConflictThis > ctConflictBenign) then
+//          aNodeDatas[i].ConflictThis := ctConflictBenign;
+//
+//        if aNodeDatas[i].ConflictThis > OverallConflictThis then
+//          OverallConflictThis := aNodeDatas[i].ConflictThis;
+//      end;
+//
+//      case UniqueValues.Count of
+//        0: Result := caNoConflict;
+//        1: Result := caNoConflict;
+//        2: begin
+//            Element := aNodeDatas[0].Element;
+//            CompareElement := aNodeDatas[Pred(aNodeCount)].Element;
+//            if (Assigned(Element) <> Assigned(CompareElement)) or
+//              (Assigned(Element) and not SameStr(Element.SortKey[True], CompareElement.SortKey[True])) then
+//              Result := caOverride
+//            else if (UniqueValues.IndexOf('') >= 0) and Assigned(CompareElement) and (CompareElement.SortKey[True] <> '') then
+//              Result := caOverride
+//            else
+//              Result := caConflict;
+//          end
+//      else
+//        Result := caConflict;
+//      end;
+//
+//      if aSiblingCompare and (Result > caConflictBenign) then
+//        Result := caConflictBenign;
+//
+//      if not FoundAny then
+//        for i := 0 to Pred(aNodeCount) do
+//          aNodeDatas[i].ConflictThis := ctNotDefined;
+//
+//      if Result > caNoConflict then
+//        case Priority of
+//          cpBenign: Result := caConflictBenign;
+//          cpCritical: begin
+//            if UniqueValues.Find('', i) then
+//              UniqueValues.Delete(i);
+//            if UniqueValues.Count > 1 then
+//              Result := caConflictCritical;
+//          end;
+//        end;
+//
+//      if Priority > cpBenign then
+//        if OverallConflictThis > ctOverride then
+//          with aNodeDatas[Pred(aNodeCount)] do
+//            if ConflictThis < ctOverride then
+//              if ConflictThis = ctIdenticalToMaster then
+//                ConflictThis := ctIdenticalToMasterWinsConflict
+//              else
+//                ConflictThis := ctConflictWins;
+//
+//      if Result in [caNoConflict, caOverride, caConflict] then
+//        for i := 0 to Pred(aNodeCount) do begin
+//          case aNodeDatas[i].ConflictThis of
+//            ctIdenticalToMaster: case Result of
+//                caNoConflict: ;
+//                caOverride, caConflict: if i = Pred(aNodeCount) then
+//                  aNodeDatas[i].ConflictThis := ctIdenticalToMasterWinsConflict
+//              end;
+//            ctConflictWins: case Result of
+//              caNoConflict: aNodeDatas[i].ConflictThis := ctIdenticalToMaster;
+//              caOverride: aNodeDatas[i].ConflictThis := ctOverride;
+//              caConflict: ;
+//            end;
+//          end;
+//        end;
+//
+//      if Result < caConflict then
+//        for i := 0 to Pred(aNodeCount) do
+//          if aNodeDatas[i].ConflictThis >= ctIdenticalToMasterWinsConflict then begin
+//            Result := caConflict;
+//            Break;
+//          end;
+//
+//    finally
+//      FreeAndNil(UniqueValues);
+//    end;
+//  end;
 end;
 
 function GetRecordNodes(const aMainRecord: IwbMainRecord; store: Boolean = True): TDynViewNodeDatas;

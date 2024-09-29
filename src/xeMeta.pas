@@ -116,15 +116,16 @@ var
   i, index: Integer;
   element: IwbElement;
 begin
-  oldResults := Copy(resultArray, 0, MaxInt);
-  index := 0;
-  for i := Low(oldResults) to High(oldResults) do
-    if Supports(_store[oldResults[i]], IwbElement, element)
-    and (esFilterShow in element.ElementStates) then begin
-      resultArray[index] := oldResults[i];
-      Inc(index);
-    end;
-  SetLength(resultArray, index);
+{ TODO -oMango -cTemp : !!! }
+//  oldResults := Copy(resultArray, 0, MaxInt);
+//  index := 0;
+//  for i := Low(oldResults) to High(oldResults) do
+//    if Supports(_store[oldResults[i]], IwbElement, element)
+//    and (esFilterShow in element.ElementStates) then begin
+//      resultArray[index] := oldResults[i];
+//      Inc(index);
+//    end;
+//  SetLength(resultArray, index);
 end;
 
 function FormData(const e: IInterface): String;
@@ -134,11 +135,11 @@ var
   rec: IwbMainRecord;
 begin
   if Supports(e, IwbFile, _file) then
-    Result := _file.DisplayName
+    Result := _file.DisplayName[False]
   else if Supports(e, IwbGroupRecord, group) then
     Result := String(TwbSignature(group.GroupLabel))
   else if Supports(e, IwbMainRecord, rec) then
-    Result := IntToHex(rec.LoadOrderFormID, 8)
+    Result := IntToHex(rec.LoadOrderFormID.ToCardinal, 8)
   else
     Result := '';
 end;

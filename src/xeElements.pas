@@ -28,7 +28,7 @@ type
   function AddGroupIfMissing(const _file: IwbFile; const sig: String): IwbGroupRecord;
   function CreateFromContainer(const container: IwbContainerElementRef; const path: String): IInterface;
   function CreateFromRecord(const rec: IwbMainRecord; const path: String): IInterface;
-  function CreateRecord(const group: IwbGroupRecord; formID: Cardinal; const nextPath: String): IInterface; overload;
+  function CreateRecord(const group: IwbGroupRecord; formID: TwbFormID; const nextPath: String): IInterface; overload;
   function CreateGroupOrRecord(const group: IwbGroupRecord; key, nextPath: String): IInterface; overload;
   function CreateFromGroup(const group: IwbGroupRecord; const path: String): IInterface;
   function CreateFile(const fileName, nextPath: String): IInterface;
@@ -138,25 +138,28 @@ begin
   Result := True;
 end;
 
-function ParseFormID(const key: String; var formID: Cardinal): Boolean;
+function ParseFormID(const key: String; var formID: TwbFormID): Boolean;
 begin
   Result := (Length(key) = 8) and IsHexStr(key);
   if Result then
-    formID := StrToInt('$' + key);
+    formID.FromStr('$' + key);
+    // formID := StrToInt('$' + key);
 end;
 
-function ParseLocalFormID(const key: String; const _file: IwbFile; var formID: Cardinal): Boolean;
+function ParseLocalFormID(const key: String; const _file: IwbFile; var formID: TwbFormID): Boolean;
 begin
-  Result := (key[1] = 'L') and (Length(key) = 7) and IsHexStr(key, 2);
-  if Result then
-    formID := $1000000 * _file.MasterCount + StrToInt('$' + Copy(key, 2, 6));
+{ TODO -oMango -cTemp : !!! }
+//  Result := (key[1] = 'L') and (Length(key) = 7) and IsHexStr(key, 2);
+//  if Result then
+//    formID := $1000000 * _file.MasterCount[True] + StrToInt('$' + Copy(key, 2, 6));
 end;
 
-function ParseFileFormID(const key: String; var formID: Cardinal): Boolean;
+function ParseFileFormID(const key: String; var formID: TwbFormID): Boolean;
 begin
-  Result := (key[1] = '&') and (Length(key) = 9) and IsHexStr(key, 2);
-  if Result then
-    formID := StrToInt('$' + Copy(key, 2, 8));
+{ TODO -oMango -cTemp : !!! }
+//  Result := (key[1] = '&') and (Length(key) = 9) and IsHexStr(key, 2);
+//  if Result then
+//    formID := StrToInt('$' + Copy(key, 2, 8));
 end;
 
 function ParseFullName(const value: String; var fullName: String): Boolean;
@@ -263,34 +266,34 @@ end;
 function ResolveGroupOrRecord(const group: IwbGroupRecord; const key, nextPath: String): IInterface; overload;
 var
   name, sig: String;
-  formID, fixedFormID: Cardinal;
+  formID, fixedFormID: TwbFormID;
   grp: IwbGroupRecord;
   rec: IwbMainRecord;
 begin
-  Result := nil;
-  if ParseLocalFormID(key, group._File, formID) then
-    Result := group._File.RecordByFormID[formID, True, False]
-  else if ParseFileFormID(key, formID) then
-    Result := group._File.RecordByFormID[formID, True, False]
-  else if ParseFormID(key, formID) then begin
-    fixedFormID := group._File.LoadOrderFormIDtoFileFormID(formID);
-    Result := group._File.RecordByFormID[fixedFormID, True, False];
-  end
-  else if ParseFullName(key, name) then
-    Result := group.MainRecordByName[name]
-  else begin
-    sig := String(TwbSignature(group.GroupLabel));
-    if group._File.EditorIDSorted(sig) then
-      Result := group._File.RecordByEditorID[key];
-    if not Assigned(Result) then
-      Result := FindRecordOrGroup(group, key);
-  end;
-  if nextPath <> '' then begin
-    if Supports(Result, IwbGroupRecord, grp) then
-      Result := ResolveFromGroup(grp, nextPath)
-    else if Supports(Result, IwbMainRecord, rec) then
-      Result := ResolveFromRecord(rec, nextPath);
-  end;
+//  Result := nil;
+//  if ParseLocalFormID(key, group._File, formID) then
+//    Result := group._File.RecordByFormID[formID, True, False]
+//  else if ParseFileFormID(key, formID) then
+//    Result := group._File.RecordByFormID[formID, True, False]
+//  else if ParseFormID(key, formID) then begin
+//    fixedFormID := group._File.LoadOrderFormIDtoFileFormID(formID);
+//    Result := group._File.RecordByFormID[fixedFormID, True, False];
+//  end
+//  else if ParseFullName(key, name) then
+//    Result := group.MainRecordByName[name]
+//  else begin
+//    sig := String(TwbSignature(group.GroupLabel));
+//    if group._File.EditorIDSorted(sig) then
+//      Result := group._File.RecordByEditorID[key];
+//    if not Assigned(Result) then
+//      Result := FindRecordOrGroup(group, key);
+//  end;
+//  if nextPath <> '' then begin
+//    if Supports(Result, IwbGroupRecord, grp) then
+//      Result := ResolveFromGroup(grp, nextPath)
+//    else if Supports(Result, IwbMainRecord, rec) then
+//      Result := ResolveFromRecord(rec, nextPath);
+//  end;
 end;
 
 function ResolveFromGroup(const group: IwbGroupRecord; const path: String): IInterface;
@@ -315,32 +318,33 @@ var
   rec: IwbMainRecord;
   group: IwbGroupRecord;
 begin
-  if ParseFileFormID(key, formID) then
-    Result := _file.RecordByFormID[formID, True, False]
-  else if ParseFormID(key, formID) then begin
-    formID := _file.LoadOrderFormIDtoFileFormID(formID);
-    Result := _file.RecordByFormID[formID, True, False];
-  end
-  else if ParseFullName(key, name) then begin
-    _file.FindName(name, rec);
-    Result := rec;
-  end
-  else if Length(key) > 4 then begin
-    if GetSignatureFromName(key, sig) then
-      Result := _file.GroupBySignature[sig]
-    else begin
-      _file.FindEditorID(key, rec);
-      Result := rec;
-    end;
-  end
-  else
-    Result := _file.GroupBySignature[StrToSignature(key)];
-  if nextPath <> '' then begin
-    if Supports(Result, IwbMainRecord, rec) then
-      Result := ResolveFromRecord(rec, nextPath)
-    else if Supports(Result, IwbGroupRecord, group) then
-      Result := ResolveFromGroup(group, nextPath);
-  end;
+{ TODO -oMango -cTemp : !!! }
+//  if ParseFileFormID(key, formID) then
+//    Result := _file.RecordByFormID[formID, True, False]
+//  else if ParseFormID(key, formID) then begin
+//    formID := _file.LoadOrderFormIDtoFileFormID(formID);
+//    Result := _file.RecordByFormID[formID, True, False];
+//  end
+//  else if ParseFullName(key, name) then begin
+//    _file.FindName(name, rec);
+//    Result := rec;
+//  end
+//  else if Length(key) > 4 then begin
+//    if GetSignatureFromName(key, sig) then
+//      Result := _file.GroupBySignature[sig]
+//    else begin
+//      _file.FindEditorID(key, rec);
+//      Result := rec;
+//    end;
+//  end
+//  else
+//    Result := _file.GroupBySignature[StrToSignature(key)];
+//  if nextPath <> '' then begin
+//    if Supports(Result, IwbMainRecord, rec) then
+//      Result := ResolveFromRecord(rec, nextPath)
+//    else if Supports(Result, IwbGroupRecord, group) then
+//      Result := ResolveFromGroup(group, nextPath);
+//  end;
 end;
 
 function ResolveFromFile(const _file: IwbFile; const path: String): IInterface;
@@ -497,7 +501,7 @@ begin
   end;
 end;
 
-function CreateRecord(const group: IwbGroupRecord; formID: Cardinal; const nextPath: String): IInterface; overload;
+function CreateRecord(const group: IwbGroupRecord; formID: TwbFormID; const nextPath: String): IInterface; overload;
 var
   sig: TwbSignature;
   rec: IwbMainRecord;
@@ -518,27 +522,28 @@ var
   innerGroup: IwbGroupRecord;
   rec: IwbMainRecord;
 begin
-  if key = '.' then
-    key := String(AnsiString(TwbSignature(group.GroupLabel)));
-  if Length(key) > 4 then begin
-    Result := FindRecordOrGroup(group, key);
-    if not Assigned(Result) then
-      Result := group.AddGroup(key);
-  end
-  else
-    Result := group.Add(key);
-  if nextPath <> '' then begin
-    if Supports(Result, IwbGroupRecord, innerGroup) then
-      Result := CreateFromGroup(innerGroup, nextPath)
-    else if Supports(Result, IwbMainRecord, rec) then
-      Result := CreateFromRecord(Result as IwbMainRecord, nextPath);
-  end;
+{ TODO -oMango -cTemp : !!! }
+//  if key = '.' then
+//    key := String(AnsiString(TwbSignature(group.GroupLabel)));
+//  if Length(key) > 4 then begin
+//    Result := FindRecordOrGroup(group, key);
+//    if not Assigned(Result) then
+//      Result := group.AddGroup(key);
+//  end
+//  else
+//    Result := group.Add(key);
+//  if nextPath <> '' then begin
+//    if Supports(Result, IwbGroupRecord, innerGroup) then
+//      Result := CreateFromGroup(innerGroup, nextPath)
+//    else if Supports(Result, IwbMainRecord, rec) then
+//      Result := CreateFromRecord(Result as IwbMainRecord, nextPath);
+//  end;
 end;
 
 function CreateFromGroup(const group: IwbGroupRecord; const path: String): IInterface;
 var
   key, nextPath: String;
-  formID: Cardinal;
+  formID: TwbFormID;
 begin
   SplitPath(path, key, nextPath);
   // resolve/override record by formID
@@ -558,11 +563,11 @@ begin
     Result := CreateFromGroup(Result as IwbGroupRecord, nextPath);
 end;
 
-function CreateRecord(const _file: IwbFile; formID: Cardinal; const nextPath: String): IInterface; overload;
+function CreateRecord(const _file: IwbFile; formID: TwbFormID; const nextPath: String): IInterface; overload;
 var
   rec: IwbMainRecord;
 begin
-  formID := _file.LoadOrderFormIDToFileFormID(formID);
+  formID := _file.LoadOrderFormIDToFileFormID(formID,True);
   Result := _file.RecordByFormID[formID, True, True];
   if not Supports(Result, IwbMainRecord, rec) then exit;
   OverrideRecordIfNecessary(rec, _file, Result);
@@ -573,7 +578,7 @@ end;
 function CreateFromFile(const _file: IwbFile; const path: String): IInterface;
 var
   key, nextPath: String;
-  formID: Cardinal;
+  formID: TwbFormID;
 begin
   SplitPath(path, key, nextPath);
   // resolve record by formID if key is a formID
@@ -730,8 +735,9 @@ function DecideUnion(const e: IwbElement; const unionDef: IwbUnionDef): IwbValue
 var
   d: IwbDataContainer;
 begin
-  d := e as IwbDataContainer;
-  Result := unionDef.Decide(d.DataBasePtr, d.DataEndPtr, e);
+{ TODO -oMango -cTemp : !!! }
+//  d := e as IwbDataContainer;
+//  Result := unionDef.Decide(d.DataBasePtr, d.DataEndPtr, e);
 end;
 
 procedure NativeGetDefNames(const element: IwbElement; var sl: TStringList);
@@ -797,29 +803,29 @@ end;
 {$region 'Element matching'}
 function ElementValueMatches(element: IwbElement; value: string): WordBool;
 var
-  formID: Int64;
+  formID: TwbFormID;
   rec: IwbMainRecord;
   fullName, v: String;
   e1, e2: Extended;
   _file: IwbFile;
 begin
   Result := False;
-  if IsFormID(element) then begin
-    if ParseFormIDValue(value, formID) then
-      Result := element.NativeValue = formID
-    else if Supports(element.LinksTo, IwbMainRecord, rec) then begin
-      if ParseFullName(value, fullName) then
-        Result := rec.FullName = fullName
-      else if ParseFileFormIDValue(value, _file, formID) then
-        Result := rec._File.Equals(_file) and ((rec.FormID and $00FFFFFF) = formID)
-      else
-        Result := rec.EditorID = value;
-    end
-  end
-  else begin
-    v := element.EditValue;
-    Result := (TryStrToFloat(value, e1) and TryStrToFloat(v, e2) and (e1 = e2)) or (v = value);
-  end;
+//  if IsFormID(element) then begin
+//    if ParseFormIDValue(value, formID) then
+//      Result := element.NativeValue = formID
+//    else if Supports(element.LinksTo, IwbMainRecord, rec) then begin
+//      if ParseFullName(value, fullName) then
+//        Result := rec.FullName = fullName
+//      else if ParseFileFormIDValue(value, _file, formID) then
+//        Result := rec._File.Equals(_file) and ((rec.FormID.ToCardinal and $00FFFFFF) = formID)
+//      else
+//        Result := rec.EditorID = value;
+//    end
+//  end
+//  else begin
+//    v := element.EditValue;
+//    Result := (TryStrToFloat(value, e1) and TryStrToFloat(v, e2) and (e1 = e2)) or (v = value);
+//  end;
 end;
 
 function NativeElementMatches(element: IwbElement; path, value: string): WordBool;
@@ -907,17 +913,18 @@ var
   Container: IwbContainer;
   Target: IwbElement;
 begin
-  Result := nil;
-  Container := aSource.Container;
-  if Assigned(Container) then begin
-    if Supports(Container, IwbMainRecord, MainRecord) then
-      Container := MainRecord.HighestOverrideOrSelf[aFile.LoadOrder];
-    Target := CopyElementToFile(Container, aFile, False, False);
-    if Assigned(Target) then
-      Result := Target.AddIfMissing(aSource, aAsNew, aDeepCopy, '', '', '');
-  end
-  else
-    Result := aFile;
+{ TODO -oMango -cTemp : !!! }
+//  Result := nil;
+//  Container := aSource.Container;
+//  if Assigned(Container) then begin
+//    if Supports(Container, IwbMainRecord, MainRecord) then
+//      Container := MainRecord.HighestOverrideOrSelf[aFile.LoadOrder];
+//    Target := CopyElementToFile(Container, aFile, False, False);
+//    if Assigned(Target) then
+//      Result := Target.AddIfMissing(aSource, aAsNew, aDeepCopy, '', '', '');
+//  end
+//  else
+//    Result := aFile;
 end;
 
 function CopyElementToRecord(const aSource: IwbElement; const aMainRecord: IwbMainRecord; aAsNew, aDeepCopy: Boolean): IwbElement;
@@ -936,8 +943,9 @@ begin
   Assert(Assigned(Container));
   Target := CopyElementToRecord(Container, aMainRecord, False, False);
 
-  if Assigned(Target) then
-    Result := Target.AddIfMissing(aSource, aAsNew, aDeepCopy, '', '', '');
+{ TODO -oMango -cTemp : !!! }
+//  if Assigned(Target) then
+//    Result := Target.AddIfMissing(aSource, aAsNew, aDeepCopy, '', '', '');
 end;
 
 function CopyElementToArray(const aSource: IwbElement; const aArray: IwbElement): IwbElement;
@@ -1537,18 +1545,18 @@ var
   rec: IwbMainRecord;
 begin
   Result := False;
-  try
-    element := NativeGetElement(_id, path) as IwbElement;
-    if ElementNotFound(element, path) then exit;
-    if not Supports(Resolve(_id2), IwbMainRecord, rec) then
-      raise Exception.Create('Second interface is not a record.');
-    if not IsFormID(element) then
-      raise Exception.Create('Element cannot hold references.');
-    element.NativeValue := element._File.LoadOrderFormIDtoFileFormID(rec.LoadOrderFormID);
-    Result := True;
-  except
-    on x: Exception do ExceptionHandler(x);
-  end;
+//  try
+//    element := NativeGetElement(_id, path) as IwbElement;
+//    if ElementNotFound(element, path) then exit;
+//    if not Supports(Resolve(_id2), IwbMainRecord, rec) then
+//      raise Exception.Create('Second interface is not a record.');
+//    if not IsFormID(element) then
+//      raise Exception.Create('Element cannot hold references.');
+//    element.NativeValue := element._File.LoadOrderFormIDtoFileFormID(rec.LoadOrderFormID,True);
+//    Result := True;
+//  except
+//    on x: Exception do ExceptionHandler(x);
+//  end;
 end;
 
 function GetElementIndex(_id: Cardinal; index: PInteger): WordBool; cdecl;
@@ -1948,15 +1956,16 @@ function SetIsEditable(_id: Cardinal; bool: WordBool): WordBool; cdecl;
 var
   _file: IwbFile;
 begin
+{ TODO -oMango -cTemp : !!! }
   Result := False;
-  try
-    if not Supports(Resolve(_id), IwbFile, _file) then
-      raise Exception.Create('Interface is not a file.');
-    _file.SetIsEditable(bool);
-    Result := True;
-  except
-    on x: Exception do ExceptionHandler(x);
-  end;
+//  try
+//    if not Supports(Resolve(_id), IwbFile, _file) then
+//      raise Exception.Create('Interface is not a file.');
+//    _file.SetIsEditable(bool);
+//    Result := True;
+//  except
+//    on x: Exception do ExceptionHandler(x);
+//  end;
 end;
 
 function GetIsRemoveable(_id: Cardinal; bool: PWordBool): WordBool; cdecl;

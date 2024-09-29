@@ -109,15 +109,16 @@ end;
 
 function GetFileContainer(path: PWideChar; len: PInteger): WordBool; cdecl;
 begin
-  Result := False;
-  try
-    resultStr := wbContainerHandler.GetResourceContainer(path);
-    len^ := Length(resultStr);
-    Result := True;
-  except
-    on x: Exception do
-      ExceptionHandler(x);
-  end;
+{ TODO -oMango -cTemp : !!! }
+//  Result := False;
+//  try
+//    resultStr := wbContainerHandler.GetResourceContainer(path);
+//    len^ := Length(resultStr);
+//    Result := True;
+//  except
+//    on x: Exception do
+//      ExceptionHandler(x);
+//  end;
 end;
 
 function GetLoadedContainers(len: PInteger): WordBool; cdecl;
