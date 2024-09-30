@@ -39,7 +39,11 @@
 
 
 unit lz4io;
+{$HINTS OFF}
 {$POINTERMATH ON}
+{$Q-}
+{$R-}
+
 
 interface
 
@@ -68,7 +72,11 @@ function LZ4IO_compressFilename(input_filename: string; output_filename: string;
 function LZ4IO_decompressFilename(input_filename: string; output_filename: string): integer;
 procedure lz4DecompressToUserBuf(const InBuf: Pointer; InBytes: Integer;
   const OutBuf: Pointer; BufSize: Integer);
+procedure lz4BlockDecompressToUserBuf(const InBuf: Pointer; InBytes: Integer;
+  const OutBuf: Pointer; BufSize: Integer);
+function lz4BlockCompressStream(aSource, aCompressed: TStream): Integer;
 function lz4CompressStream(aSource, aCompressed: TStream; aCompressionLevel: Integer = 8): Integer;
+function lz4DeCompressStream(aCompressed, aTarget: TStream): Integer;
 
 implementation
 
@@ -478,13 +486,55 @@ begin
 
     if decompressedSize <> BufSize then
       Exception.Create('lz4 decompression size mismatch');
-
-    //Move(stout.Memory^, OutBuf^, BufSize);
   finally
     stin.Free;
     stout.Free;
   end;
 end;
+
+procedure lz4BlockDecompressToUserBuf(const InBuf: Pointer; InBytes: Integer;
+  const OutBuf: Pointer; BufSize: Integer);
+begin
+  LZ4_decompress_safe(InBuf, OutBuf, InBytes, BufSize);
+end;
+
+function lz4BlockCompressStream(aSource, aCompressed: TStream): Integer;
+var
+  in_buff: pAnsiChar;
+  out_buff: pAnsiChar;
+  inSize: Integer;
+  outSize: Integer;
+begin
+  inSize := aSource.Size;
+  in_buff := AllocMem(inSize);
+  out_buff := AllocMem(LZ4_compressBound(inSize));
+  try
+    aSource.Read(in_buff^, inSize);
+    outSize := LZ4_compressHC(in_buff, out_buff, inSize);
+    aCompressed.Write(out_buff^, outSize);
+    Result := outSize;
+  finally
+    if in_buff <> nil then
+      FreeMem(in_buff);
+    if out_buff <> nil then
+      FreeMem(out_buff);
+  end;
+end;
+
+function lz4DeCompressStream(aCompressed, aTarget: TStream): Integer;
+var
+  decodedSize: uint64;
+  decompressedSize: uint64;
+begin
+  decompressedSize := 0;
+  repeat
+    decodedSize := selectDecoder(aCompressed, aTarget);
+    if decodedSize <> ENDOFSTREAM then
+      Inc(decompressedSize, decodedSize);
+  until decodedSize = ENDOFSTREAM;
+  Result := decompressedSize;
+end;
+
 
 function lz4CompressStream(aSource, aCompressed: TStream; aCompressionLevel: Integer = 8): Integer;
 var

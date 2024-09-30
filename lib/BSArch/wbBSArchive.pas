@@ -20,7 +20,7 @@ uses
   System.Generics.Collections,
   wbStreams,
   tfTypes,
-  lz4,
+  lz4io,
   tfMD5;
 
 const
@@ -495,8 +495,7 @@ implementation
 
 uses
   TypInfo,
-  zlibEx,
-  lz4io;
+  zlibEx;
 
 const
   MAGIC_TES3: TMagic4 = #0#1#0#0;
